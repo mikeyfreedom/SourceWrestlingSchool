@@ -3,20 +3,28 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using System.ComponentModel.DataAnnotations;
 
 namespace SourceWrestlingSchool.Models
 {
     // You can add profile data for the user by adding more properties to your ApplicationUser class, please visit http://go.microsoft.com/fwlink/?LinkID=317594 to learn more.
     public class ApplicationUser : IdentityUser
     {
+        [Required]
+        [StringLength(50)]
         public string Address { get; set; }
         public int? Age { get; set; }
         public ClassLevel ClassLevel { get; set; }
+        [Required]
         public string FirstName { get; set; }
         public int? Height { get; set; }
+        [Required]
         public string LastName { get; set; }
+        [Phone]
         public string MobileNumber { get; set; }
+        [Required]
         public string Postcode { get; set; }
+        [Required]
         public string Town { get; set; }
         public int? Weight { get; set; }
         

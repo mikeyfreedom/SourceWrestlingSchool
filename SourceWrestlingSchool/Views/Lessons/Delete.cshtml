@@ -1,0 +1,80 @@
+﻿@model SourceWrestlingSchool.Models.Lesson
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Lesson</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ClassType)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ClassType)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ClassLevel)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ClassLevel)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ClassDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ClassDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ClassTime)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ClassTime)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Duration)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Duration)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ClassCost)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ClassCost)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.InstructorID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.InstructorID)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

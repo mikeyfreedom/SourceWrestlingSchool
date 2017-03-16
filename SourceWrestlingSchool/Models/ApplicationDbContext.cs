@@ -21,6 +21,22 @@ namespace SourceWrestlingSchool.Models
         {
             return new ApplicationDbContext();
         }
+
+        public System.Data.Entity.DbSet<SourceWrestlingSchool.Models.Booking> Bookings { get; set; }
+
+        public System.Data.Entity.DbSet<SourceWrestlingSchool.Models.ApplicationUser> ApplicationUsers { get; set; }
+
+        public System.Data.Entity.DbSet<SourceWrestlingSchool.Models.Lesson> Lessons { get; set; }
+
+        public System.Data.Entity.DbSet<SourceWrestlingSchool.Models.LiveEvent> LiveEvents { get; set; }
+
+        public System.Data.Entity.DbSet<SourceWrestlingSchool.Models.Order> Orders { get; set; }
+
+        public System.Data.Entity.DbSet<SourceWrestlingSchool.Models.Payment> Payments { get; set; }
+
+        public System.Data.Entity.DbSet<SourceWrestlingSchool.Models.PaymentMethod> PaymentMethods { get; set; }
+
+        public System.Data.Entity.DbSet<SourceWrestlingSchool.Models.Seat> Seats { get; set; }
     }
 
     public class ApplicationDbInitializer : DropCreateDatabaseIfModelChanges<ApplicationDbContext>

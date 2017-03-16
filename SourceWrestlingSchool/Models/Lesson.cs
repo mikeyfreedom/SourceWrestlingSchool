@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,6 +9,7 @@ namespace SourceWrestlingSchool.Models
 {
     public class Lesson
     {
+        [Key]
         public int ClassID { get; set; }
         public LessonType ClassType { get; set; }
         public ClassLevel? ClassLevel { get; set; }

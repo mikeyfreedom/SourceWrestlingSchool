@@ -1,0 +1,74 @@
+﻿@model SourceWrestlingSchool.Models.Lesson
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Lesson</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ClassType)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ClassType)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ClassLevel)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ClassLevel)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ClassDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ClassDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ClassTime)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ClassTime)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Duration)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Duration)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ClassCost)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ClassCost)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.InstructorID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.InstructorID)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ClassID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

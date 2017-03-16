@@ -65,8 +65,27 @@ namespace SourceWrestlingSchool.Models
     public class RegisterViewModel
     {
         [Required]
+        [Display(Name = "First Name")]
+        public string FirstName { get; set; }
+        [Required]
+        [Display(Name = "Last Name")]
+        public string LastName { get; set; }
+        [Required]
+        public string Address { get; set; }
+        [Required]
+        public string Town { get; set; }
+        [Required]
+        [DataType(DataType.PostalCode, ErrorMessage = "The format of the Post Code is incorrect")]
+        public string Postcode { get; set; }
+        [Required]
+        [DataType(DataType.PhoneNumber, ErrorMessage = "The format of the PhoneNumber is incorrect")]
+        public string PhoneNumber { get; set; }
+        [DataType(DataType.PhoneNumber, ErrorMessage = "The format of the PhoneNumber is incorrect")]
+        public string MobileNumber { get; set; }
+
+        [Required]
         [EmailAddress]
-        [Display(Name = "Email")]
+        [Display(Name = "Email Address")]
         public string Email { get; set; }
 
         [Required]

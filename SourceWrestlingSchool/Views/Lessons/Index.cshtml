@@ -1,0 +1,69 @@
+﻿@model IEnumerable<SourceWrestlingSchool.Models.Lesson>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.ClassType)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ClassLevel)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ClassDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ClassTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Duration)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ClassCost)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.InstructorID)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.ClassType)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ClassLevel)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ClassDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ClassTime)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Duration)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ClassCost)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.InstructorID)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.ClassID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.ClassID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.ClassID })
+        </td>
+    </tr>
+}
+
+</table>
