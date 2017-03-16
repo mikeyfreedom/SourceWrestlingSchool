@@ -10,9 +10,12 @@ namespace SourceWrestlingSchool.Models
     {
         public int SeatID { get; set; }
         public string SeatNumber { get; set; }
-        public int EventID { get; set; }
         public bool IsBooked { get; set; }
         public SeatBookingStatus Status { get; set; }
+
+        //navigational properties
+        public int EventID { get; set; }
+        public LiveEvent Event { get; set; }
         
         public enum SeatBookingStatus
         {

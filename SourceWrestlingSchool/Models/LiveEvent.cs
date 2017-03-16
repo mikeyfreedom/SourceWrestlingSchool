@@ -14,10 +14,10 @@ namespace SourceWrestlingSchool.Models
         public TimeSpan EventTime { get; set; }
         public string Location { get; set; }
         
-
         public LiveEvent()
         {
             Seats = new List<Seat>();
+
         }
         public List<Seat> Seats { get; set; }
 
