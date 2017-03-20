@@ -11,6 +11,17 @@ namespace SourceWrestlingSchool.Models
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
+        public DbSet<Booking> Bookings { get; set; }
+        public DbSet<Lesson> Lessons { get; set; }
+        public DbSet<LiveEvent> LiveEvents { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderItem> OrderItems { get; set; }
+        public DbSet<Payment> Payments { get; set; }
+        public DbSet<PaymentMethod> PaymentMethods { get; set; }
+        public DbSet<Product> Products { get; set; }
+        public DbSet<Seat> Seats { get; set; }
+        public DbSet<ApplyViewModel> Applications { get; set; }
+
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
         {
@@ -21,23 +32,9 @@ namespace SourceWrestlingSchool.Models
         {
             return new ApplicationDbContext();
         }
-
-        public System.Data.Entity.DbSet<SourceWrestlingSchool.Models.Booking> Bookings { get; set; }
-
-        public System.Data.Entity.DbSet<SourceWrestlingSchool.Models.Lesson> Lessons { get; set; }
-
-        public System.Data.Entity.DbSet<SourceWrestlingSchool.Models.LiveEvent> LiveEvents { get; set; }
-
-        public System.Data.Entity.DbSet<SourceWrestlingSchool.Models.Order> Orders { get; set; }
-
-        public System.Data.Entity.DbSet<SourceWrestlingSchool.Models.Payment> Payments { get; set; }
-
-        public System.Data.Entity.DbSet<SourceWrestlingSchool.Models.PaymentMethod> PaymentMethods { get; set; }
-
-        public System.Data.Entity.DbSet<SourceWrestlingSchool.Models.Seat> Seats { get; set; }
     }
 
-    public class ApplicationDbInitializer : DropCreateDatabaseIfModelChanges<ApplicationDbContext>
+    public class ApplicationDbInitializer : DropCreateDatabaseAlways<ApplicationDbContext>
     {
         protected override void Seed(ApplicationDbContext context)
         {
@@ -74,7 +71,7 @@ namespace SourceWrestlingSchool.Models
                     var roleResult = roleManager.Create(new IdentityRole(RoleNames.ROLE_STANDARDUSER));
                 }
 
-                string userName = "admin";
+                string userName = "admin@admin.com";
                 string password = "123456";
 
                 //No need to hash passwords using this initializer method.
@@ -94,13 +91,31 @@ namespace SourceWrestlingSchool.Models
                         Town = "Glasgow",
                         Postcode = "G1 A99",
                         ClassLevel = ClassLevel.Open,
-                        UserName = "admin",
+                        UserName = userName,
                         Email = userName,
                         EmailConfirmed = true
 
                     };
                     userManager.Create(newUser, password);
                     userManager.AddToRole(newUser.Id, RoleNames.ROLE_ADMINISTRATOR);
+
+                    password = "freedom78";
+                    var newStandardUser = new ApplicationUser()
+                    {
+                        FirstName = "Michael",
+                        LastName = "Devlin",
+                        PhoneNumber = "01389999999",
+                        MobileNumber = "07595543816",
+                        Address = "187 Crosslet Road",
+                        Town = "Dumbarton",
+                        Postcode = "G82 2LQ",
+                        UserName = "lowlander_glen@yahoo.co.uk",
+                        Email = "lowlander_glen@yahoo.co.uk",
+                        EmailConfirmed = true
+
+                    };
+                    userManager.Create(newStandardUser, password);
+                    userManager.AddToRole(newStandardUser.Id, RoleNames.ROLE_STANDARDUSER);
                 }
             }
             //Complete the seeding of the database

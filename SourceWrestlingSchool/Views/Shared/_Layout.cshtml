@@ -33,7 +33,7 @@
                     
                     @if (User.IsInRole("Standard_User"))
                     {
-                        
+                        <li>@Html.ActionLink("Apply", "ApplyForm", "Apply")</li>
                     }
                     else if (User.IsInRole("Student_User"))
                     {
@@ -41,11 +41,11 @@
                     }
                     else if (User.IsInRole("Instructor"))
                     {
-
+                        <li>@Html.ActionLink("ViewApps", "Index", "ViewApps")</li>
                     }
                     else if (User.IsInRole("Administrator"))
                     {
-
+                        <li>@Html.ActionLink("Users", "Index", "User")</li>
                     }
                     else if (User.IsInRole("Staff_Member"))
                     {

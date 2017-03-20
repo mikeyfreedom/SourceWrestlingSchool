@@ -1,0 +1,61 @@
+﻿@model SourceWrestlingSchool.Models.UserViewModel
+
+@{
+    ViewBag.Title = "Index";
+    
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Users.ElementAt(0).FirstName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Users.ElementAt(0).LastName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Users.ElementAt(0).Email)
+        </th>
+        <th>Roles</th>
+    </tr>
+
+@foreach (var user in Model.Users)
+{
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => user.FirstName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => user.LastName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => user.Email)
+        </td>
+        <td>
+            @foreach (var role in Model.Roles)
+            {
+                foreach (var userRole in user.Roles)
+                {
+                    if (userRole.RoleId == role.Id)
+                    {
+                        <p>@role.Name </p>
+                    }
+                }
+            }
+
+        </td>
+        
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=user.Id }) |
+            @Html.ActionLink("Details", "Details", new { id=user.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=user.Id })
+        </td>
+    </tr>
+}
+
+</table>
