@@ -78,11 +78,12 @@ namespace SourceWrestlingSchool.Models
         [DataType(DataType.PostalCode, ErrorMessage = "The format of the Post Code is incorrect")]
         public string Postcode { get; set; }
         [Required]
+        [Display(Name = "Phone Number")]
         [DataType(DataType.PhoneNumber, ErrorMessage = "The format of the PhoneNumber is incorrect")]
         public string PhoneNumber { get; set; }
-        [DataType(DataType.PhoneNumber, ErrorMessage = "The format of the PhoneNumber is incorrect")]
+        [Display(Name = "Mobile Number")]
+        [DataType(DataType.PhoneNumber, ErrorMessage = "The format of the Mobile Number is incorrect")]
         public string MobileNumber { get; set; }
-
         [Required]
         [EmailAddress]
         [Display(Name = "Email Address")]

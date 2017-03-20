@@ -24,8 +24,6 @@ namespace SourceWrestlingSchool.Models
 
         public System.Data.Entity.DbSet<SourceWrestlingSchool.Models.Booking> Bookings { get; set; }
 
-        public System.Data.Entity.DbSet<SourceWrestlingSchool.Models.ApplicationUser> ApplicationUsers { get; set; }
-
         public System.Data.Entity.DbSet<SourceWrestlingSchool.Models.Lesson> Lessons { get; set; }
 
         public System.Data.Entity.DbSet<SourceWrestlingSchool.Models.LiveEvent> LiveEvents { get; set; }

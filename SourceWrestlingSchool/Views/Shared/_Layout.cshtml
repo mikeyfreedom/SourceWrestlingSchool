@@ -6,9 +6,15 @@
     <title>@ViewBag.Title - My ASP.NET Application</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+   <style>
+       .container
+       {
+         color:antiquewhite;
+       }
+   </style> 
 
 </head>
-<body style="background-color:black">
+<body style="background-color:black" >
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
@@ -24,8 +30,30 @@
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
                     <li>@Html.ActionLink("About", "About", "Home")</li>
                     <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-                </ul>
+                    
+                    @if (User.IsInRole("Standard_User"))
+                    {
+                        
+                    }
+                    else if (User.IsInRole("Student_User"))
+                    {
+
+                    }
+                    else if (User.IsInRole("Instructor"))
+                    {
+
+                    }
+                    else if (User.IsInRole("Administrator"))
+                    {
+
+                    }
+                    else if (User.IsInRole("Staff_Member"))
+                    {
+
+                    }
                 @Html.Partial("_LoginPartial")
+                    
+                    </ul>
             </div>
         </div>
     </div>

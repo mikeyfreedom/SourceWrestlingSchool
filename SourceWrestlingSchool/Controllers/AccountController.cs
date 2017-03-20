@@ -9,6 +9,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using SourceWrestlingSchool.Models;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace SourceWrestlingSchool.Controllers
 {
@@ -24,7 +25,7 @@ namespace SourceWrestlingSchool.Controllers
 
         public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
         {
-            UserManager = userManager;
+            this.userManager = userManager;
             SignInManager = signInManager;
         }
 
@@ -40,7 +41,7 @@ namespace SourceWrestlingSchool.Controllers
             }
         }
 
-        public ApplicationUserManager UserManager
+        public ApplicationUserManager userManager
         {
             get
             {
@@ -149,6 +150,9 @@ namespace SourceWrestlingSchool.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
+            ApplicationDbContext db = new ApplicationDbContext();
+            var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser
@@ -163,11 +167,11 @@ namespace SourceWrestlingSchool.Controllers
                     Town = model.Town,
                     Postcode = model.Postcode                    
                 };
-                var result = await UserManager.CreateAsync(user, model.Password);
+                var result = await userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
                     //Add the newly created user to the Standard User list
-                    result = UserManager.AddToRole(user.Id, RoleNames.ROLE_STANDARDUSER);
+                    result = this.userManager.AddToRole(user.Id, RoleNames.ROLE_STANDARDUSER);
 
                     await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
                     
@@ -195,7 +199,7 @@ namespace SourceWrestlingSchool.Controllers
             {
                 return View("Error");
             }
-            var result = await UserManager.ConfirmEmailAsync(userId, code);
+            var result = await userManager.ConfirmEmailAsync(userId, code);
             return View(result.Succeeded ? "ConfirmEmail" : "Error");
         }
 
@@ -216,8 +220,8 @@ namespace SourceWrestlingSchool.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = await UserManager.FindByNameAsync(model.Email);
-                if (user == null || !(await UserManager.IsEmailConfirmedAsync(user.Id)))
+                var user = await userManager.FindByNameAsync(model.Email);
+                if (user == null || !(await userManager.IsEmailConfirmedAsync(user.Id)))
                 {
                     // Don't reveal that the user does not exist or is not confirmed
                     return View("ForgotPasswordConfirmation");
@@ -262,13 +266,13 @@ namespace SourceWrestlingSchool.Controllers
             {
                 return View(model);
             }
-            var user = await UserManager.FindByNameAsync(model.Email);
+            var user = await userManager.FindByNameAsync(model.Email);
             if (user == null)
             {
                 // Don't reveal that the user does not exist
                 return RedirectToAction("ResetPasswordConfirmation", "Account");
             }
-            var result = await UserManager.ResetPasswordAsync(user.Id, model.Code, model.Password);
+            var result = await userManager.ResetPasswordAsync(user.Id, model.Code, model.Password);
             if (result.Succeeded)
             {
                 return RedirectToAction("ResetPasswordConfirmation", "Account");
@@ -306,7 +310,7 @@ namespace SourceWrestlingSchool.Controllers
             {
                 return View("Error");
             }
-            var userFactors = await UserManager.GetValidTwoFactorProvidersAsync(userId);
+            var userFactors = await userManager.GetValidTwoFactorProvidersAsync(userId);
             var factorOptions = userFactors.Select(purpose => new SelectListItem { Text = purpose, Value = purpose }).ToList();
             return View(new SendCodeViewModel { Providers = factorOptions, ReturnUrl = returnUrl, RememberMe = rememberMe });
         }
@@ -382,10 +386,10 @@ namespace SourceWrestlingSchool.Controllers
                     return View("ExternalLoginFailure");
                 }
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
-                var result = await UserManager.CreateAsync(user);
+                var result = await userManager.CreateAsync(user);
                 if (result.Succeeded)
                 {
-                    result = await UserManager.AddLoginAsync(user.Id, info.Login);
+                    result = await userManager.AddLoginAsync(user.Id, info.Login);
                     if (result.Succeeded)
                     {
                         await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);

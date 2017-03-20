@@ -11,20 +11,25 @@ namespace SourceWrestlingSchool.Models
     public class ApplicationUser : IdentityUser
     {
         [Required]
-        [StringLength(50)]
+        [MaxLength(20)]
         public string Address { get; set; }
         public int? Age { get; set; }
-        public ClassLevel ClassLevel { get; set; }
+        public ClassLevel? ClassLevel { get; set; }
         [Required]
+        [MaxLength(20)]
         public string FirstName { get; set; }
         public int? Height { get; set; }
         [Required]
+        [MaxLength(20)]
         public string LastName { get; set; }
         [Phone]
         public string MobileNumber { get; set; }
         [Required]
+        [MinLength(6)]
+        [MaxLength(8)]
         public string Postcode { get; set; }
         [Required]
+        [MaxLength(20)]
         public string Town { get; set; }
         public int? Weight { get; set; }
         

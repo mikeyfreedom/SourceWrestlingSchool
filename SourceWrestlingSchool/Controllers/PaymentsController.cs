@@ -40,7 +40,7 @@ namespace SourceWrestlingSchool.Controllers
         public ActionResult Create()
         {
             ViewBag.PaymentMethodID = new SelectList(db.PaymentMethods, "PaymentMethodID", "PaymentMethodDescription");
-            ViewBag.UserID = new SelectList(db.ApplicationUsers, "Id", "Address");
+            ViewBag.UserID = new SelectList(db.Users, "Id", "Address");
             return View();
         }
 
@@ -59,7 +59,7 @@ namespace SourceWrestlingSchool.Controllers
             }
 
             ViewBag.PaymentMethodID = new SelectList(db.PaymentMethods, "PaymentMethodID", "PaymentMethodDescription", payment.PaymentMethodID);
-            ViewBag.UserID = new SelectList(db.ApplicationUsers, "Id", "Address", payment.UserID);
+            ViewBag.UserID = new SelectList(db.Users, "Id", "Address", payment.UserID);
             return View(payment);
         }
 
@@ -76,7 +76,7 @@ namespace SourceWrestlingSchool.Controllers
                 return HttpNotFound();
             }
             ViewBag.PaymentMethodID = new SelectList(db.PaymentMethods, "PaymentMethodID", "PaymentMethodDescription", payment.PaymentMethodID);
-            ViewBag.UserID = new SelectList(db.ApplicationUsers, "Id", "Address", payment.UserID);
+            ViewBag.UserID = new SelectList(db.Users, "Id", "Address", payment.UserID);
             return View(payment);
         }
 
@@ -94,7 +94,7 @@ namespace SourceWrestlingSchool.Controllers
                 return RedirectToAction("Index");
             }
             ViewBag.PaymentMethodID = new SelectList(db.PaymentMethods, "PaymentMethodID", "PaymentMethodDescription", payment.PaymentMethodID);
-            ViewBag.UserID = new SelectList(db.ApplicationUsers, "Id", "Address", payment.UserID);
+            ViewBag.UserID = new SelectList(db.Users, "Id", "Address", payment.UserID);
             return View(payment);
         }
 

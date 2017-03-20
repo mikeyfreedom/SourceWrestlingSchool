@@ -39,7 +39,7 @@ namespace SourceWrestlingSchool.Controllers
         // GET: Bookings/Create
         public ActionResult Create()
         {
-            ViewBag.UserID = new SelectList(db.ApplicationUsers, "Id", "Address");
+            ViewBag.UserID = new SelectList(db.Users, "Id", "Address");
             return View();
         }
 
@@ -57,7 +57,7 @@ namespace SourceWrestlingSchool.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.UserID = new SelectList(db.ApplicationUsers, "Id", "Address", booking.UserID);
+            ViewBag.UserID = new SelectList(db.Users, "Id", "Address", booking.UserID);
             return View(booking);
         }
 
@@ -73,7 +73,7 @@ namespace SourceWrestlingSchool.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.UserID = new SelectList(db.ApplicationUsers, "Id", "Address", booking.UserID);
+            ViewBag.UserID = new SelectList(db.Users, "Id", "Address", booking.UserID);
             return View(booking);
         }
 
@@ -90,7 +90,7 @@ namespace SourceWrestlingSchool.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.UserID = new SelectList(db.ApplicationUsers, "Id", "Address", booking.UserID);
+            ViewBag.UserID = new SelectList(db.Users, "Id", "Address", booking.UserID);
             return View(booking);
         }
 
