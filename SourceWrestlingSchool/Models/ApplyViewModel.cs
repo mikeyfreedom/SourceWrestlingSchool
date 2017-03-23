@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
@@ -12,8 +13,11 @@ namespace SourceWrestlingSchool.Models
         [Key]
         public int ApplicationID { get; set; }
         public int Age { get; set; }
+        [DisplayName("Height (in cm)")]
         public int Height { get; set; }
+        [DisplayName("Weight (in kg)")]
         public int Weight { get; set; }
+        [DataType(DataType.MultilineText)]
         public string Notes { get; set; }
 
         //Navigation properties

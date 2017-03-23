@@ -116,6 +116,24 @@ namespace SourceWrestlingSchool.Models
                     };
                     userManager.Create(newStandardUser, password);
                     userManager.AddToRole(newStandardUser.Id, RoleNames.ROLE_STANDARDUSER);
+
+                    password = "123456";
+                    var newInstructor = new ApplicationUser()
+                    {
+                        FirstName = "Test",
+                        LastName = "Instructor",
+                        PhoneNumber = "01419999999",
+                        MobileNumber = "07999999998",
+                        Address = "187 Crosslet Road",
+                        Town = "Dumbarton",
+                        Postcode = "G82 2LQ",
+                        UserName = "test@test.com",
+                        Email = "test@test.com",
+                        EmailConfirmed = true
+
+                    };
+                    userManager.Create(newInstructor, password);
+                    userManager.AddToRole(newInstructor.Id, RoleNames.ROLE_INSTRUCTOR);
                 }
             }
             //Complete the seeding of the database

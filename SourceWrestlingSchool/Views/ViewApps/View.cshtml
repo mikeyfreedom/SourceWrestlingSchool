@@ -1,0 +1,67 @@
+﻿@model SourceWrestlingSchool.Models.ApplyViewModel
+
+@{
+    ViewBag.Title = "View";
+}
+
+<h2>View</h2>
+
+<div class="container">
+    <h4>ApplyViewModel</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.User.FirstName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.User.LastName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Age)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Age)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Height)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Height)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Weight)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Weight)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Notes)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Notes)
+        </dd>
+    </dl>
+    @using (Html.BeginForm("Accept", "ViewApps", FormMethod.Post))
+    {
+        <input type="hidden" name="appID" value="model.ApplicationID" />
+        <input class="btn btn-success" type="submit" value="Accept Application">
+    }
+    @using (Html.BeginForm("Reject", "ViewApps", FormMethod.Post))
+    {
+        <input type="hidden" />
+        <input type="hidden" name="appID" value="model.ApplicationID" />
+        <input class="btn btn-warning" type="submit" value="Reject Application">
+    }
+</div>
+<p>
+    @Html.ActionLink("Back to List", "Index")
+</p>
