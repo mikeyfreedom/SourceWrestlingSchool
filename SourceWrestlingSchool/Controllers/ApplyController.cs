@@ -5,6 +5,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.IO;
+using System.Drawing;
+using System.Drawing.Imaging;
 
 namespace SourceWrestlingSchool.Controllers
 {
@@ -15,24 +18,55 @@ namespace SourceWrestlingSchool.Controllers
         public ActionResult ApplyForm()
         {
             ApplyViewModel viewModel = new ApplyViewModel();
-            viewModel.UserID = User.Identity.GetUserId();
+            //Build User & UserID
+            string username = User.Identity.Name;
+            using (db)
+            {
+                var query = (from u in db.Users
+                             where u.UserName == username
+                             select u);
 
+                var user = query.Single();
+                viewModel.User = user;
+                viewModel.UserID = user.Id;
+            }
             return View(viewModel);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult ApplyForm([Bind(Include = "Age,Height,Weight,Notes")] ApplyViewModel model)
+        public ActionResult ApplyForm([Bind(Include = "Age,Height,Weight,Notes,UserID")] ApplyViewModel model, HttpPostedFileBase uploadFile)
         {
-            model.UserID = HttpContext.User.Identity.GetUserId();
             model.User = db.Users.Find(model.UserID);
-            model.Status = ApplyViewModel.ApplicationStatus.Open;
+            
+            //Upload File to Directory
+            if (uploadFile != null)
+            {
+                string path = Server.MapPath("/images/");
+                string imagePath = "";
+                try
+                {
+                    string extension = Path.GetExtension(uploadFile.FileName);
+                    string currentTime = "" + DateTime.Now.Hour + DateTime.Now.Minute + DateTime.Now.Second + DateTime.Now.Millisecond;
+                    imagePath = imagePath + model.User.FirstName + "_" + currentTime + "_ApplicationPhoto" + extension;
+                    uploadFile.SaveAs(path + imagePath);
+                }
+                catch (Exception ex)
+                {
+                    Console.Write("ERROR:" + ex.Message.ToString());
+                }
+                model.FileName = imagePath;
+
+            }
+            
+            //Save Application to DB
             if (ModelState.IsValid)
             {
                 db.Applications.Add(model);
                 db.SaveChanges();
                 return RedirectToAction("Success");
             }
+            
             return View();
         }
 

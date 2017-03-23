@@ -188,6 +188,7 @@
     <Compile Include="Models\Booking.cs" />
     <Compile Include="Models\ClassLevel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\ImageHelper.cs" />
     <Compile Include="Models\Lesson.cs" />
     <Compile Include="Models\LiveEvent.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
@@ -293,10 +294,10 @@
     <Content Include="Views\Apply\ApplyForm.cshtml" />
     <Content Include="Views\Apply\Success.cshtml" />
     <Content Include="Views\ViewApps\Index.cshtml" />
-    <Content Include="Views\ViewApps\View.cshtml" />
+    <Content Include="Views\ViewApps\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
+    <Folder Include="App_Data\images\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

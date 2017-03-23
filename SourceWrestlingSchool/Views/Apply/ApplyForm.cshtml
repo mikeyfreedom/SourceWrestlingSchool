@@ -1,17 +1,18 @@
 ﻿@model SourceWrestlingSchool.Models.ApplyViewModel
+@using Microsoft.AspNet.Identity;
 @{
-    ViewBag.Title = "ApplyForm";
+    ViewBag.Title = "Apply To Become a Student";
 }
 
-<h2>ApplyForm</h2>
+<h2>Student Application</h2>
 
 
-@using (Html.BeginForm())
+@using (Html.BeginForm("ApplyForm", "Apply", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
 
     <div class="form-horizontal">
-        <h4>Lesson</h4>
+        <h4>Application Form</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
@@ -46,8 +47,12 @@
             </div>
         </div>
         <div class="form-group">
-            @Html.Display()
+            @Html.LabelFor(model => model.FileName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input type="file" name="uploadFile" class="form-control-file">
+            </div>
         </div>
+        @Html.Hidden("UserID")
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" name="createApplication" value="Submit Application" class="btn btn-success" />
