@@ -35,33 +35,7 @@ namespace SourceWrestlingSchool.Controllers
             ImageFormat format = source.RawFormat;
             source.Dispose();
             ImageHelper.RotateImageByExifOrientationData(Server.MapPath("/images/") + application.FileName, Server.MapPath("/images/") + application.FileName,format);
-            //Image source = Bitmap.FromFile(Server.MapPath("/images/") + application.FileName);
-
-            //Image tmpImage;
-            //Bitmap returnImage;
-
-            //using (var fs = new FileStream(Server.MapPath("/images/") + application.FileName, FileMode.Open, FileAccess.Read))
-            //{
-            //    tmpImage = Image.FromStream(fs);
-            //    returnImage = new Bitmap(tmpImage);
-            //    tmpImage.Dispose();
-            //}
             
-            //System.IO.File.Delete(Server.MapPath("/images/") + application.FileName);
-            //foreach (int i in returnImage.PropertyIdList)
-            //{
-            //    returnImage.RemovePropertyItem(i);
-            //}
-
-            //try
-            //{
-            //    returnImage.Save(Server.MapPath("/images/") + application.FileName, returnImage.RawFormat);
-            //}
-            //catch (Exception ex)
-            //{
-            //    Console.Write(ex.Message);
-            //}
-
             if (application == null)
             {
                 return HttpNotFound();

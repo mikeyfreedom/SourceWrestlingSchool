@@ -13,7 +13,7 @@ namespace SourceWrestlingSchool.Controllers
     public class BookingsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
-
+        
         // GET: Bookings
         public ActionResult Index()
         {

@@ -6,6 +6,7 @@
     <title>@ViewBag.Title - My ASP.NET Application</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    
    <style>
        .container
        {
@@ -34,18 +35,28 @@
                     @if (User.IsInRole("Standard_User"))
                     {
                         <li>@Html.ActionLink("Apply", "ApplyForm", "Apply")</li>
+                        <!-- To be coded -->
+                        <li>@Html.ActionLink("Events", "Index", "Events")</li>
                     }
                     else if (User.IsInRole("Student_User"))
                     {
-
+                        <!-- To be coded -->
+                        <li>@Html.ActionLink("Schedule", "Index", "Schedule")</li>
+                        <li>@Html.ActionLink("Events","Index","Events")</li>
+                        <li>@Html.ActionLink("Profile", "Index", "StudentProfile")</li>
                     }
                     else if (User.IsInRole("Instructor"))
                     {
                         <li>@Html.ActionLink("ViewApps", "Index", "ViewApps")</li>
+                        <li>@Html.ActionLink("Lessons", "Index", "Lessons")</li>
+                        <!-- To be coded -->
+                        <li>@Html.ActionLink("Schedule","Index","Schedule")</li>
                     }
                     else if (User.IsInRole("Administrator"))
                     {
                         <li>@Html.ActionLink("Users", "Index", "User")</li>
+                        <!-- To be coded -->
+                        <li>@Html.ActionLink("Admin Panel","Index","Admin")</li>
                     }
                     else if (User.IsInRole("Staff_Member"))
                     {
@@ -68,5 +79,6 @@
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
+    
 </body>
 </html>

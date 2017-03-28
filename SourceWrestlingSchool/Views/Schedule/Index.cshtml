@@ -1,0 +1,27 @@
+﻿@using DayPilot.Web.Mvc;
+@using DayPilot.Web.Mvc.Events.Calendar;
+@using DayPilot.Web.Mvc.Enums.Calendar;
+@{
+    ViewBag.Title = "Lesson Schedule";
+}
+
+<h2>Lesson Schedule</h2>
+
+<script src="@Url.Content("~/Scripts/DayPilot/daypilot-all.min.js")" type="text/javascript"></script>
+
+
+<div class="container">
+    @Html.DayPilotCalendar("Dpc", new DayPilotCalendarConfig
+    {
+        BusinessBeginsHour = 9,
+        BackendUrl = Url.Content("~/Schedule/Backend"),
+        EventClickHandling = EventClickHandlingType.CallBack,
+        ViewType = DayPilot.Web.Mvc.Enums.Calendar.ViewType.Week,
+        Days = 7,
+        CssOnly = true,
+        Theme = "source_wrestling_school"
+    })
+</div>
+
+
+
