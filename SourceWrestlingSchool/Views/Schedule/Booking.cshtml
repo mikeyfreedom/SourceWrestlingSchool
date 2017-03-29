@@ -1,12 +1,15 @@
 ﻿@model SourceWrestlingSchool.Models.Lesson
+@using Microsoft.AspNet.Identity
 
 @{
     ViewBag.Title = "Booking";
+    var userId = User.Identity.GetUserId();
+    bool userFound = false;   
 }
 
-<h2>Booking</h2>
+<h2>Make a Booking/Cancellation</h2>
 
-<div>
+<div class="container">
     <h4>Lesson</h4>
     <hr />
     <dl class="dl-horizontal">
@@ -58,9 +61,68 @@
             @Html.DisplayFor(model => model.InstructorID)
         </dd>
 
+        <dt>
+            @Html.DisplayNameFor(model => model.Attendees)
+        </dt>
+
+        <dd>
+            @if (Model.Attendees != null)
+            {
+                foreach (var user in Model.Attendees)
+                {
+                    @Html.Display(user.FirstName)<br />
+                }
+            }
+            else
+            {
+                <p>No Attendees</p>
+            }
+        </dd>
+
     </dl>
 </div>
+<div class="container">
+    @if (Model.Attendees == null)
+    {
+        using (Html.BeginForm("BookUser", "Schedule", FormMethod.Post))
+        {
+            <input type="hidden" name="userID" value="@userId" />
+            <input type="hidden" name="classID" value="@Model.ClassID" />
+            <input class="btn btn-success" type="submit" value="Book Attendance">
+        }
+    }
+    else
+    {
+        foreach (var user in Model.Attendees)
+        {
+            if (user.Id.Equals(userId))
+            {
+                userFound = true;
+                break;
+            }
+        }
+
+        if (!userFound)
+        {
+            using (Html.BeginForm("BookUser", "Schedule", FormMethod.Post))
+            {
+                <input type="hidden" name="userID" value="@userId" />
+                <input type="hidden" name="classID" value="model.ClassID" />
+                <input class="btn btn-success" type="submit" value="Book Attendance">
+            }
+        }
+        else
+        {
+            using (Html.BeginForm("CancelUser", "Schedule", FormMethod.Post))
+            {
+                <input type="hidden" name="userID" value="@userId" />
+                <input type="hidden" name="classID" value="model.ClassID" />
+                <input class="btn btn-danger" type="submit" value="Cancel Attendance">
+            }
+        }
+    }    
+    
+</div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.ClassID }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Back to Schedule", "Index")
 </p>

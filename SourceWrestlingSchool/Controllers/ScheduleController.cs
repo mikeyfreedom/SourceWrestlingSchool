@@ -20,7 +20,8 @@ namespace SourceWrestlingSchool.Controllers
     {
         public static int eventID;
         public static string email;
-            
+        private ApplicationDbContext db = new ApplicationDbContext();
+        
         // GET: Schedule
         public ActionResult Index()
         {
@@ -35,20 +36,35 @@ namespace SourceWrestlingSchool.Controllers
         // GET: Booking
         public ActionResult Booking()
         {
-            ApplicationDbContext db = new ApplicationDbContext();
-            var instance = new Dpc();
             int id = eventID;
-
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
             Lesson lesson = db.Lessons.Find(id);
+
             if (lesson == null)
             {
                 return HttpNotFound();
             }
             return View(lesson);
+        }
+
+        public void BookUser()
+        {
+            //string userID = Request.Form["userID"];
+            ApplicationUser user = db.Users.First(i => i.UserName == User.Identity.Name);
+            int classID = int.Parse(Request.Form["classID"]);
+            Lesson lesson = db.Lessons.Find(classID);
+            lesson.Attendees.Add(user);
+            db.Lessons.Remove(lesson);
+            db.Lessons.Add(lesson);
+            db.SaveChanges();
+        }
+
+        public void CancelUser()
+        {
+            string userID = Request.Form["userID"];
+            ApplicationUser user = db.Users.Find(userID);
+            string classID = Request.Form["classID"];
+            db.Lessons.Find(classID).Attendees.Remove(user);
+            db.SaveChanges();
         }
 
         class Dpc : DayPilotCalendar
@@ -58,6 +74,20 @@ namespace SourceWrestlingSchool.Controllers
             protected override void OnInit(InitArgs e)
             {
                 Update();
+            }
+
+            protected override void OnBeforeEventRender(BeforeEventRenderArgs e)
+            {
+                string classlevel = e.DataItem["ClassLevel"].ToString();
+                if (classlevel.Equals("Beginner"))
+                    e.BackgroundColor = "red";
+                else if (classlevel.Equals("Intermediate"))
+                    e.BackgroundColor = "yellow";
+                else if (classlevel.Equals("Advanced"))
+                    e.BackgroundColor = "green";
+                else if (classlevel.Equals("Womens"))
+                    e.BackgroundColor = "pink";
+                base.OnBeforeEventRender(e);
             }
 
             protected override void OnFinish()
