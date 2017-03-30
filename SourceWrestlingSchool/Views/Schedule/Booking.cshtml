@@ -55,11 +55,11 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.InstructorID)
+            @Html.DisplayNameFor(model => model.InstructorName)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.InstructorID)
+            @Html.DisplayFor(model => model.InstructorName)
         </dd>
 
         <dt>
@@ -86,7 +86,7 @@
     {
         foreach (var student in Model.Students)
         {
-            if (student.Id.Equals(userId))
+            if (student.UserName.Equals(User.Identity.Name))
             {
                 userFound = true;
                 break;

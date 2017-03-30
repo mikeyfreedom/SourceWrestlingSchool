@@ -16,14 +16,8 @@ namespace SourceWrestlingSchool.Models
         public DateTime ClassStartDate { get; set; }
         public DateTime ClassEndDate { get; set; }
         public float ClassCost { get; set; }
-
-        public int? InstructorID { get; set; }
-
-        public Lesson()
-        {
-            Students = new List<ApplicationUser>();
-        }
-
+        public string InstructorName { get; set; }
+        
         public virtual ICollection<ApplicationUser> Students { get; set; }
         
         public enum LessonType

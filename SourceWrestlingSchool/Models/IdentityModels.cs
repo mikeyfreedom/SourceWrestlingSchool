@@ -33,12 +33,6 @@ namespace SourceWrestlingSchool.Models
         [MaxLength(20)]
         public string Town { get; set; }
         public int? Weight { get; set; }
-
-        public ApplicationUser()
-        {
-            Lessons = new List<Lesson>();
-        }
-
         public virtual ICollection<Lesson> Lessons { get; set; }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)

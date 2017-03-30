@@ -27,10 +27,7 @@
             @Html.DisplayNameFor(model => model.ClassCost)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.InstructorID)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Students)
+            @Html.DisplayNameFor(model => model.InstructorName)
         </th>
         <th></th>
     </tr>
@@ -53,16 +50,7 @@
             @Html.DisplayFor(modelItem => item.ClassCost)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.InstructorID)
-        </td>
-        <td>
-            @if (item.Students.Count > 0)
-            {
-                foreach (var student in item.Students)
-                {
-                    <p>@student.FirstName</p>
-                }
-            }            
+            @Html.DisplayFor(modelItem => item.InstructorName)
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.LessonID }) |

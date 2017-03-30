@@ -66,12 +66,13 @@ namespace SourceWrestlingSchool.Controllers
         }
 
         [HttpPost]
-        public void CancelUser()
+        public ActionResult CancelUser()
         {
             ApplicationUser user = db.Users.First(i => i.UserName == User.Identity.Name);
             int classID = int.Parse(Request.Form["classID"]);
             db.Lessons.Find(classID).Students.Remove(user);
             db.SaveChanges();
+            return View("Index");
         }
 
         class Dpc : DayPilotCalendar
@@ -85,6 +86,8 @@ namespace SourceWrestlingSchool.Controllers
 
             protected override void OnBeforeEventRender(BeforeEventRenderArgs e)
             {
+                e.FontColor = "black";
+                
                 string classlevel = e.DataItem["ClassLevel"].ToString();
                 if (classlevel.Equals("Beginner"))
                     e.BackgroundColor = "red";
@@ -94,6 +97,7 @@ namespace SourceWrestlingSchool.Controllers
                     e.BackgroundColor = "green";
                 else if (classlevel.Equals("Womens"))
                     e.BackgroundColor = "pink";
+                    
                 base.OnBeforeEventRender(e);
             }
 

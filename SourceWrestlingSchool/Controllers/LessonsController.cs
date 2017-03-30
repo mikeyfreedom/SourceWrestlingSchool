@@ -7,6 +7,8 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using SourceWrestlingSchool.Models;
+using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.AspNet.Identity;
 
 namespace SourceWrestlingSchool.Controllers
 {
@@ -38,6 +40,15 @@ namespace SourceWrestlingSchool.Controllers
         // GET: Lessons/Create
         public ActionResult Create()
         {
+            var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+            var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(db));
+            var instructorRole = roleManager.Roles.Single(r => r.Name == RoleNames.ROLE_INSTRUCTOR);
+            List<ApplicationUser> instructors = new List<ApplicationUser>(); 
+            foreach (var user in instructorRole.Users)
+            {
+                instructors.Add(userManager.FindById(user.UserId));                
+            }
+            ViewBag.Instructors = instructors;
             return View();
         }
 
@@ -46,7 +57,7 @@ namespace SourceWrestlingSchool.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "LessonID,ClassType,ClassLevel,ClassStartDate,ClassEndDate,ClassCost,InstructorID")] Lesson lesson)
+        public ActionResult Create([Bind(Include = "LessonID,ClassType,ClassLevel,ClassStartDate,ClassEndDate,ClassCost,InstructorName")] Lesson lesson)
         {
             if (ModelState.IsValid)
             {
@@ -70,6 +81,16 @@ namespace SourceWrestlingSchool.Controllers
             {
                 return HttpNotFound();
             }
+
+            var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+            var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(db));
+            var instructorRole = roleManager.Roles.Single(r => r.Name == RoleNames.ROLE_INSTRUCTOR);
+            List<ApplicationUser> instructors = new List<ApplicationUser>();
+            foreach (var user in instructorRole.Users)
+            {
+                instructors.Add(userManager.FindById(user.UserId));
+            }
+            ViewBag.Instructors = instructors;
             return View(lesson);
         }
 
@@ -78,7 +99,7 @@ namespace SourceWrestlingSchool.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "LessonID,ClassType,ClassLevel,ClassStartDate,ClassEndDate,ClassCost,InstructorID")] Lesson lesson)
+        public ActionResult Edit([Bind(Include = "LessonID,ClassType,ClassLevel,ClassStartDate,ClassEndDate,ClassCost,InstructorName")] Lesson lesson)
         {
             if (ModelState.IsValid)
             {
