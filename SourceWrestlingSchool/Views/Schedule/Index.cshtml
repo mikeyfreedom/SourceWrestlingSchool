@@ -12,9 +12,13 @@
 <div class="container">
     @Html.DayPilotCalendar("Dpc", new DayPilotCalendarConfig
     {
-        BusinessBeginsHour = 9,
+        BusinessBeginsHour = 10,
         BackendUrl = Url.Content("~/Schedule/Backend"),
         EventClickHandling = EventClickHandlingType.CallBack,
+        TimeRangeSelectedHandling = TimeRangeSelectedHandlingType.CallBack,
+        EventMoveHandling = EventMoveHandlingType.Disabled,
+        EventResizeHandling = EventResizeHandlingType.Disabled,
+        ShowToolTip = true,
         ViewType = DayPilot.Web.Mvc.Enums.Calendar.ViewType.Week,
         Days = 7,
         CssOnly = true,

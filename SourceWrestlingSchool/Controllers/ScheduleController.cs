@@ -21,6 +21,7 @@ namespace SourceWrestlingSchool.Controllers
     {
         public static int eventID;
         public static string email;
+        public static PrivateSession request;
         private ApplicationDbContext db = new ApplicationDbContext();
         
         // GET: Schedule
@@ -40,6 +41,38 @@ namespace SourceWrestlingSchool.Controllers
             int id = eventID;
             var model = db.Lessons.Find(id);
             
+            return View(model);
+        }
+
+        public ActionResult RequestPrivate()
+        {
+            var model = request;
+
+            var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+            var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(db));
+            var instructorRole = roleManager.Roles.Single(r => r.Name == RoleNames.ROLE_INSTRUCTOR);
+            List<ApplicationUser> instructors = new List<ApplicationUser>();
+            foreach (var user in instructorRole.Users)
+            {
+                instructors.Add(userManager.FindById(user.UserId));
+            }
+            ViewBag.Instructors = instructors;
+            
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult RequestPrivate([Bind(Include = "SessionStart,SessionEnd,InstructorID,Notes")] PrivateSession model)
+        {
+
+            if (ModelState.IsValid)
+            {
+                db.PrivateSessions.Add(model);
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+
             return View(model);
         }
 
@@ -131,6 +164,14 @@ namespace SourceWrestlingSchool.Controllers
                 eventID = int.Parse(e.Id);
                 //Redirect to the booking page
                 Redirect("/Schedule/Booking");
+            }
+
+            protected override void OnTimeRangeSelected(TimeRangeSelectedArgs e)
+            {
+                request = new PrivateSession();
+                request.SessionStart = e.Start;
+                request.SessionEnd = e.End;
+                Redirect("/Schedule/RequestPrivate");                
             }
         }
     }

@@ -32,6 +32,8 @@ namespace SourceWrestlingSchool.Models
         {
             return new ApplicationDbContext();
         }
+
+        public System.Data.Entity.DbSet<SourceWrestlingSchool.Models.PrivateSession> PrivateSessions { get; set; }
     }
 
     public class ApplicationDbInitializer : DropCreateDatabaseAlways<ApplicationDbContext>
