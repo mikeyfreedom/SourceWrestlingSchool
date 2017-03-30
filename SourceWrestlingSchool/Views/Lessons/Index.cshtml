@@ -29,6 +29,9 @@
         <th>
             @Html.DisplayNameFor(model => model.InstructorID)
         </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Students)
+        </th>
         <th></th>
     </tr>
 
@@ -53,9 +56,18 @@
             @Html.DisplayFor(modelItem => item.InstructorID)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ClassID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ClassID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ClassID })
+            @if (item.Students.Count > 0)
+            {
+                foreach (var student in item.Students)
+                {
+                    <p>@student.FirstName</p>
+                }
+            }            
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.LessonID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.LessonID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.LessonID })
         </td>
     </tr>
 }

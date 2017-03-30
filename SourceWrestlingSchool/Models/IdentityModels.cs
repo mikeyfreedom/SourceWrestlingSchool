@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.ComponentModel.DataAnnotations;
+using System.Collections.Generic;
 
 namespace SourceWrestlingSchool.Models
 {
@@ -32,7 +33,14 @@ namespace SourceWrestlingSchool.Models
         [MaxLength(20)]
         public string Town { get; set; }
         public int? Weight { get; set; }
-        
+
+        public ApplicationUser()
+        {
+            Lessons = new List<Lesson>();
+        }
+
+        public virtual ICollection<Lesson> Lessons { get; set; }
+
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {
             // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType

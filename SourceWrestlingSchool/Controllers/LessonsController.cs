@@ -46,7 +46,7 @@ namespace SourceWrestlingSchool.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ClassID,ClassType,ClassLevel,ClassStartDate,ClassEndDate,ClassCost,InstructorID")] Lesson lesson)
+        public ActionResult Create([Bind(Include = "LessonID,ClassType,ClassLevel,ClassStartDate,ClassEndDate,ClassCost,InstructorID")] Lesson lesson)
         {
             if (ModelState.IsValid)
             {
@@ -78,7 +78,7 @@ namespace SourceWrestlingSchool.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ClassID,ClassType,ClassLevel,ClassStartDate,ClassEndDate,ClassCost,InstructorID")] Lesson lesson)
+        public ActionResult Edit([Bind(Include = "LessonID,ClassType,ClassLevel,ClassStartDate,ClassEndDate,ClassCost,InstructorID")] Lesson lesson)
         {
             if (ModelState.IsValid)
             {

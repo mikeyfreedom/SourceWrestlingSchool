@@ -6,6 +6,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using SourceWrestlingSchool.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
@@ -37,33 +38,39 @@ namespace SourceWrestlingSchool.Controllers
         public ActionResult Booking()
         {
             int id = eventID;
-            Lesson lesson = db.Lessons.Find(id);
-
-            if (lesson == null)
-            {
-                return HttpNotFound();
-            }
-            return View(lesson);
+            var model = db.Lessons.Find(id);
+            
+            return View(model);
         }
 
-        public void BookUser()
+        [HttpPost]
+        public ActionResult BookUser()
         {
-            //string userID = Request.Form["userID"];
+            //Gather required variables
             ApplicationUser user = db.Users.First(i => i.UserName == User.Identity.Name);
             int classID = int.Parse(Request.Form["classID"]);
-            Lesson lesson = db.Lessons.Find(classID);
-            lesson.Attendees.Add(user);
-            db.Lessons.Remove(lesson);
-            db.Lessons.Add(lesson);
-            db.SaveChanges();
+            
+            using (db)
+            {
+                var editedLesson = db.Lessons.Single(s => s.LessonID == classID);
+                db.Lessons.Attach(editedLesson);
+
+                var editedUser = db.Users.Single(s => s.Id == user.Id);
+                db.Users.Attach(editedUser);
+
+                editedLesson.Students.Add(editedUser);
+                
+                db.SaveChanges();
+            }
+            return View("Index");
         }
 
+        [HttpPost]
         public void CancelUser()
         {
-            string userID = Request.Form["userID"];
-            ApplicationUser user = db.Users.Find(userID);
-            string classID = Request.Form["classID"];
-            db.Lessons.Find(classID).Attendees.Remove(user);
+            ApplicationUser user = db.Users.First(i => i.UserName == User.Identity.Name);
+            int classID = int.Parse(Request.Form["classID"]);
+            db.Lessons.Find(classID).Students.Remove(user);
             db.SaveChanges();
         }
 
@@ -97,18 +104,16 @@ namespace SourceWrestlingSchool.Controllers
                     return;
                 }
 
-                var store = new UserStore<ApplicationUser>(db);
-                var userManager = new UserManager<ApplicationUser>(store);
-                ApplicationUser user = userManager.FindByNameAsync(System.Web.HttpContext.Current.User.Identity.Name).Result;
-
+                string username = System.Web.HttpContext.Current.User.Identity.Name;
+                ApplicationUser user = db.Users.First(i => i.Email == username);
                 ClassLevel level = (ClassLevel) user.ClassLevel;
                 
                 if (level == ClassLevel.Open)
                     Events = from ev in db.Lessons select ev;
                 else
-                    Events = from ev in db.Lessons where ev.ClassLevel == level select ev  ;
+                    Events = from ev in db.Lessons where ev.ClassLevel == level select ev ;
 
-                DataIdField = "ClassID";
+                DataIdField = "LessonID";
                 DataTextField = "ClassLevel";
                 DataStartField = "ClassStartDate";
                 DataEndField = "ClassEndDate";

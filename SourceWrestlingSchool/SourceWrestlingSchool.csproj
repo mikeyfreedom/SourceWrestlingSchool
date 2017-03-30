@@ -248,6 +248,8 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\DayPilot\daypilot-all.min.js" />
+    <Content Include="ClassDiagram1.cd" />
+    <Content Include="ClassDiagram2.cd" />
     <None Include="Scripts\jquery-1.11.3.intellisense.js" />
     <Content Include="Scripts\jquery-1.11.3.js" />
     <Content Include="Scripts\jquery-1.11.3.min.js" />
@@ -328,12 +330,17 @@
     <Content Include="Views\ViewApps\Index.cshtml" />
     <Content Include="Views\ViewApps\Details.cshtml" />
     <Content Include="Views\Schedule\Index.cshtml" />
+    <Content Include="Views\Schedule\Booking.cshtml" />
+    <Content Include="Views\Attendees\Create.cshtml" />
+    <Content Include="Views\Attendees\Delete.cshtml" />
+    <Content Include="Views\Attendees\Details.cshtml" />
+    <Content Include="Views\Attendees\Edit.cshtml" />
+    <Content Include="Views\Attendees\Index.cshtml" />
     <Content Include="Views\Lessons\Create.cshtml" />
     <Content Include="Views\Lessons\Delete.cshtml" />
     <Content Include="Views\Lessons\Details.cshtml" />
     <Content Include="Views\Lessons\Edit.cshtml" />
     <Content Include="Views\Lessons\Index.cshtml" />
-    <Content Include="Views\Schedule\Booking.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\images\" />

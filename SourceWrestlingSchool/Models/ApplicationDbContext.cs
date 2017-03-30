@@ -21,13 +21,13 @@ namespace SourceWrestlingSchool.Models
         public DbSet<Product> Products { get; set; }
         public DbSet<Seat> Seats { get; set; }
         public DbSet<ApplyViewModel> Applications { get; set; }
-
+                
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
         {
             Database.SetInitializer<ApplicationDbContext>(new ApplicationDbInitializer());
         }
-
+        
         public static ApplicationDbContext Create()
         {
             return new ApplicationDbContext();
@@ -76,81 +76,6 @@ namespace SourceWrestlingSchool.Models
 
                 //No need to hash passwords using this initializer method.
                 //If using migration strategy, use PasswordHasher to hash the password.
-
-                //Seed Lessons
-                DateTime startDate = new DateTime(2017, 3, 25);
-                DateTime endDate = new DateTime(2017, 4, 30);
-
-                for (DateTime date = startDate; date.Date <= endDate.Date; date = date.AddDays(1))
-                {
-                    Lesson lesson = null;
-                    if (date.DayOfWeek == DayOfWeek.Sunday)
-                    {
-                        lesson = new Lesson()
-                        {
-                            ClassType = Lesson.LessonType.Group,
-                            ClassStartDate = new DateTime(date.Year, date.Month, date.Day, 13, 00, 00),
-                            ClassEndDate = new DateTime(date.Year, date.Month, date.Day, 17, 00, 00),
-                            ClassCost = 10,
-                            ClassLevel = ClassLevel.Beginner,
-                            Attendees = new List<ApplicationUser>()
-                        };
-
-                    }
-                    else if (date.DayOfWeek == DayOfWeek.Tuesday)
-                    {
-                        lesson = new Lesson()
-                        {
-                            ClassType = Lesson.LessonType.Group,
-                            ClassStartDate = new DateTime(date.Year, date.Month, date.Day, 18, 00, 00),
-                            ClassEndDate = new DateTime(date.Year, date.Month, date.Day, 21, 00, 00),
-                            ClassCost = 10,
-                            ClassLevel = ClassLevel.Intermediate,
-                            Attendees = new List<ApplicationUser>()
-                        };
-                    }
-                    else if (date.DayOfWeek == DayOfWeek.Wednesday)
-                    {
-                        lesson = new Lesson()
-                        {
-                            ClassType = Lesson.LessonType.Group,
-                            ClassStartDate = new DateTime(date.Year, date.Month, date.Day, 18, 00, 00),
-                            ClassEndDate = new DateTime(date.Year, date.Month, date.Day, 21, 00, 00),
-                            ClassCost = 10,
-                            ClassLevel = ClassLevel.Beginner,
-                            Attendees = new List<ApplicationUser>()
-                        };
-                    }
-                    else if (date.DayOfWeek == DayOfWeek.Thursday)
-                    {
-                        lesson = new Lesson()
-                        {
-                            ClassType = Lesson.LessonType.Group,
-                            ClassStartDate = new DateTime(date.Year, date.Month, date.Day, 18, 00, 00),
-                            ClassEndDate = new DateTime(date.Year, date.Month, date.Day, 21, 00, 00),
-                            ClassCost = 10,
-                            ClassLevel = ClassLevel.Advanced,
-                            Attendees = new List<ApplicationUser>()
-                        };
-                    }
-                    else if (date.DayOfWeek == DayOfWeek.Saturday)
-                    {
-                        lesson = new Lesson()
-                        {
-                            ClassType = Lesson.LessonType.Group,
-                            ClassStartDate = new DateTime(date.Year, date.Month, date.Day, 11, 00, 00),
-                            ClassEndDate = new DateTime(date.Year, date.Month, date.Day, 14, 00, 00),
-                            ClassCost = 10,
-                            ClassLevel = ClassLevel.Womens,
-                            Attendees = new List<ApplicationUser>()
-                        };
-                    }
-
-                    if (lesson != null)
-                        context.Lessons.Add(lesson);
-                }
-
-                
 
                 //Create Admin user and role
                 var user = userManager.FindByName(userName);
@@ -206,11 +131,81 @@ namespace SourceWrestlingSchool.Models
                         Email = "test@test.com",
                         EmailConfirmed = true,
                         ClassLevel = ClassLevel.Open
+
                     };
-                    
+
                     userManager.Create(newInstructor, password);
                     userManager.AddToRole(newInstructor.Id, RoleNames.ROLE_INSTRUCTOR);
                 }
+
+                //Seed Lessons
+                DateTime startDate = new DateTime(2017, 3, 25);
+                DateTime endDate = new DateTime(2017, 4, 30);
+
+                for (DateTime date = startDate; date.Date <= endDate.Date; date = date.AddDays(1))
+                {
+                    Lesson lesson = null;
+                    if (date.DayOfWeek == DayOfWeek.Sunday)
+                    {
+                        lesson = new Lesson()
+                        {
+                            ClassType = Lesson.LessonType.Group,
+                            ClassStartDate = new DateTime(date.Year, date.Month, date.Day, 13, 00, 00),
+                            ClassEndDate = new DateTime(date.Year, date.Month, date.Day, 17, 00, 00),
+                            ClassCost = 10,
+                            ClassLevel = ClassLevel.Beginner
+                        };
+
+                    }
+                    else if (date.DayOfWeek == DayOfWeek.Tuesday)
+                    {
+                        lesson = new Lesson()
+                        {
+                            ClassType = Lesson.LessonType.Group,
+                            ClassStartDate = new DateTime(date.Year, date.Month, date.Day, 18, 00, 00),
+                            ClassEndDate = new DateTime(date.Year, date.Month, date.Day, 21, 00, 00),
+                            ClassCost = 10,
+                            ClassLevel = ClassLevel.Intermediate
+                        };
+                    }
+                    else if (date.DayOfWeek == DayOfWeek.Wednesday)
+                    {
+                        lesson = new Lesson()
+                        {
+                            ClassType = Lesson.LessonType.Group,
+                            ClassStartDate = new DateTime(date.Year, date.Month, date.Day, 18, 00, 00),
+                            ClassEndDate = new DateTime(date.Year, date.Month, date.Day, 21, 00, 00),
+                            ClassCost = 10,
+                            ClassLevel = ClassLevel.Beginner
+                        };
+                    }
+                    else if (date.DayOfWeek == DayOfWeek.Thursday)
+                    {
+                        lesson = new Lesson()
+                        {
+                            ClassType = Lesson.LessonType.Group,
+                            ClassStartDate = new DateTime(date.Year, date.Month, date.Day, 18, 00, 00),
+                            ClassEndDate = new DateTime(date.Year, date.Month, date.Day, 21, 00, 00),
+                            ClassCost = 10,
+                            ClassLevel = ClassLevel.Advanced
+                        };
+                    }
+                    else if (date.DayOfWeek == DayOfWeek.Saturday)
+                    {
+                        lesson = new Lesson()
+                        {
+                            ClassType = Lesson.LessonType.Group,
+                            ClassStartDate = new DateTime(date.Year, date.Month, date.Day, 11, 00, 00),
+                            ClassEndDate = new DateTime(date.Year, date.Month, date.Day, 14, 00, 00),
+                            ClassCost = 10,
+                            ClassLevel = ClassLevel.Womens
+                        };
+                    }
+
+                    if (lesson != null)
+                        context.Lessons.Add(lesson);
+                }
+                string id = userManager.FindByEmail("test@test.com").Id;                
             }
             //Complete the seeding of the database
             base.Seed(context);
