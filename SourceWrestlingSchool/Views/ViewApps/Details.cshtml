@@ -59,16 +59,19 @@
             <img class="img img-responsive" src="~/images/@(Model.FileName)" />
         </dd>
     </dl>
-    @using (Html.BeginForm("Accept", "ViewApps", FormMethod.Post))
+    @if (Model.Status == SourceWrestlingSchool.Models.ApplyViewModel.ApplicationStatus.Open)
     {
-        <input type="hidden" name="appID" value="model.ApplicationID" />
-        <input class="btn btn-success" type="submit" value="Accept Application">
-    }
-    @using (Html.BeginForm("Reject", "ViewApps", FormMethod.Post))
-    {
-        <input type="hidden" />
-        <input type="hidden" name="appID" value="model.ApplicationID" />
-        <input class="btn btn-warning" type="submit" value="Reject Application">
+        using (Html.BeginForm("Accept", "ViewApps", FormMethod.Post))
+        {
+            <input type="hidden" name="appID" value="model.ApplicationID" />
+            <input class="btn btn-success" type="submit" value="Accept Application">
+        }
+        using (Html.BeginForm("Reject", "ViewApps", FormMethod.Post))
+        {
+            <input type="hidden" />
+            <input type="hidden" name="appID" value="model.ApplicationID" />
+            <input class="btn btn-warning" type="submit" value="Reject Application">
+        }
     }
 </div>
 <p>

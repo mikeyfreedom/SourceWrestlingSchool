@@ -1,0 +1,65 @@
+﻿@model IEnumerable<SourceWrestlingSchool.Models.PrivateSession>
+
+@{
+    ViewBag.Title = "Index";    
+}
+
+<h2>Index</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.StudentName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SessionStart)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SessionEnd)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Notes)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Status)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.StudentName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SessionStart)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SessionEnd)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Notes)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Status)
+        </td>
+        <td>
+            <!-- Button Form for Accept and Refuse Session  -->
+            @if (item.Status == SourceWrestlingSchool.Models.PrivateSession.RequestStatus.Submitted)
+            {
+                using (Html.BeginForm("Accept", "PrivateRequests", FormMethod.Post))
+                {
+                    <input type="hidden" name="sessionID" value=@item.PrivateSessionID />
+                    <input class="btn btn-success" type="submit" value="Grant Session">
+                }
+                using (Html.BeginForm("Refuse", "PrivateRequests", FormMethod.Post))
+                {
+                    <input type="hidden" name="sessionID" value=@item.PrivateSessionID />
+                    <input class="btn btn-warning" type="submit" value="Refuse Session">
+                }
+            }
+        </td>
+    </tr>
+}
+
+</table>

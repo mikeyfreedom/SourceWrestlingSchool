@@ -155,9 +155,9 @@ namespace SourceWrestlingSchool.Models
                             ClassStartDate = new DateTime(date.Year, date.Month, date.Day, 13, 00, 00),
                             ClassEndDate = new DateTime(date.Year, date.Month, date.Day, 17, 00, 00),
                             ClassCost = 10,
-                            ClassLevel = ClassLevel.Beginner
+                            ClassLevel = ClassLevel.Beginner,
+                            Students = new List<ApplicationUser>()
                         };
-
                     }
                     else if (date.DayOfWeek == DayOfWeek.Tuesday)
                     {
@@ -167,7 +167,8 @@ namespace SourceWrestlingSchool.Models
                             ClassStartDate = new DateTime(date.Year, date.Month, date.Day, 18, 00, 00),
                             ClassEndDate = new DateTime(date.Year, date.Month, date.Day, 21, 00, 00),
                             ClassCost = 10,
-                            ClassLevel = ClassLevel.Intermediate
+                            ClassLevel = ClassLevel.Intermediate,
+                            Students = new List<ApplicationUser>()
                         };
                     }
                     else if (date.DayOfWeek == DayOfWeek.Wednesday)
@@ -178,7 +179,8 @@ namespace SourceWrestlingSchool.Models
                             ClassStartDate = new DateTime(date.Year, date.Month, date.Day, 18, 00, 00),
                             ClassEndDate = new DateTime(date.Year, date.Month, date.Day, 21, 00, 00),
                             ClassCost = 10,
-                            ClassLevel = ClassLevel.Beginner
+                            ClassLevel = ClassLevel.Beginner,
+                            Students = new List<ApplicationUser>()
                         };
                     }
                     else if (date.DayOfWeek == DayOfWeek.Thursday)
@@ -189,7 +191,8 @@ namespace SourceWrestlingSchool.Models
                             ClassStartDate = new DateTime(date.Year, date.Month, date.Day, 18, 00, 00),
                             ClassEndDate = new DateTime(date.Year, date.Month, date.Day, 21, 00, 00),
                             ClassCost = 10,
-                            ClassLevel = ClassLevel.Advanced
+                            ClassLevel = ClassLevel.Advanced,
+                            Students = new List<ApplicationUser>()
                         };
                     }
                     else if (date.DayOfWeek == DayOfWeek.Saturday)
@@ -200,7 +203,8 @@ namespace SourceWrestlingSchool.Models
                             ClassStartDate = new DateTime(date.Year, date.Month, date.Day, 11, 00, 00),
                             ClassEndDate = new DateTime(date.Year, date.Month, date.Day, 14, 00, 00),
                             ClassCost = 10,
-                            ClassLevel = ClassLevel.Womens
+                            ClassLevel = ClassLevel.Womens,
+                            Students = new List<ApplicationUser>()
                         };
                     }
 

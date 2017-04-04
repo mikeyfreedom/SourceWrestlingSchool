@@ -21,13 +21,15 @@ namespace SourceWrestlingSchool.Controllers
     {
         public static int eventID;
         public static string email;
+        public static string errormessage = " ";
         public static PrivateSession request;
         private ApplicationDbContext db = new ApplicationDbContext();
         
         // GET: Schedule
         public ActionResult Index()
         {
-            return View();
+            var model = errormessage;
+            return View(model:model);
         }
         
         public ActionResult Backend()
@@ -47,6 +49,8 @@ namespace SourceWrestlingSchool.Controllers
         public ActionResult RequestPrivate()
         {
             var model = request;
+            string name = db.Users.Single(n => n.UserName == User.Identity.Name).FirstName;
+            model.StudentName = name;
 
             var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
             var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(db));
@@ -63,9 +67,9 @@ namespace SourceWrestlingSchool.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult RequestPrivate([Bind(Include = "SessionStart,SessionEnd,InstructorID,Notes")] PrivateSession model)
+        public ActionResult RequestPrivate([Bind(Include = "StudentName,SessionStart,SessionEnd,InstructorID,Notes")] PrivateSession model)
         {
-
+            model.Status = PrivateSession.RequestStatus.Submitted;
             if (ModelState.IsValid)
             {
                 db.PrivateSessions.Add(model);
@@ -95,7 +99,8 @@ namespace SourceWrestlingSchool.Controllers
                 
                 db.SaveChanges();
             }
-            return View("Index");
+            errormessage = "BookSuccess";
+            return RedirectToAction("Index","Schedule");
         }
 
         [HttpPost]
@@ -105,7 +110,9 @@ namespace SourceWrestlingSchool.Controllers
             int classID = int.Parse(Request.Form["classID"]);
             db.Lessons.Find(classID).Students.Remove(user);
             db.SaveChanges();
-            return View("Index");
+
+            errormessage = "CancelSuccess";
+            return RedirectToAction("Index", "Schedule"); 
         }
 
         class Dpc : DayPilotCalendar
@@ -146,20 +153,21 @@ namespace SourceWrestlingSchool.Controllers
                 ClassLevel level = (ClassLevel) user.ClassLevel;
                 
                 if (level == ClassLevel.Open)
-                    Events = from ev in db.Lessons select ev;
+                    Events = from ev in db.Lessons
+                             select ev;
                 else
-                    Events = from ev in db.Lessons where ev.ClassLevel == level select ev ;
+                    Events = from ev in db.Lessons
+                             where ev.ClassLevel == level || ev.ClassLevel == ClassLevel.Private
+                             select ev ;
 
                 DataIdField = "LessonID";
                 DataTextField = "ClassLevel";
                 DataStartField = "ClassStartDate";
-                DataEndField = "ClassEndDate";
+                DataEndField = "ClassEndDate";                
             }
 
             protected override void OnEventClick(EventClickArgs e)
             {
-                //Test to check the method was firing
-                Debug.WriteLine("Hey I clicked you");
                 //Parse the event ID for processing
                 eventID = int.Parse(e.Id);
                 //Redirect to the booking page
@@ -168,10 +176,51 @@ namespace SourceWrestlingSchool.Controllers
 
             protected override void OnTimeRangeSelected(TimeRangeSelectedArgs e)
             {
-                request = new PrivateSession();
-                request.SessionStart = e.Start;
-                request.SessionEnd = e.End;
-                Redirect("/Schedule/RequestPrivate");                
+                //Set a LINQ query to get all lessons that take place the same day as the requested session
+                DateTime startDate = e.Start.Date;
+                int startDay = e.Start.Day;
+                int startMonth = e.Start.Month;
+
+                var lessons = from l in db.Lessons
+                              where (l.ClassStartDate.Day == startDay && l.ClassStartDate.Month == startMonth)
+                              select l;
+
+                //If there is are any other classes that day, loop through them to check for a time conflict
+                if (lessons != null)
+                {
+                    //Set a flag to denote if an overlap exists
+                    bool overlapExists = false;
+
+                    //Loop though all the day's classes and check if the start or end overlaps with the request time
+                    foreach (var lesson in lessons)
+                    {
+                        if ((lesson.ClassStartDate.TimeOfDay < e.End.TimeOfDay) || (lesson.ClassEndDate.TimeOfDay < e.Start.TimeOfDay))
+                        {
+                            //Break out the loop if a match is found
+                            overlapExists = true;
+                            break;
+                        }
+                    }
+
+                    //If there's a match, set an error message for the page alert and refresh the page to show it
+                    if (overlapExists)
+                    {
+                        Debug.WriteLine("Overlap Exists");
+                        errormessage = "Overlap";
+                        Redirect("/Schedule/Index");
+                    }
+                    else
+                    {
+                        //If no overlap occurs:
+                        //Create new session
+                        request = new PrivateSession();
+                        //Set the start and end times
+                        request.SessionStart = e.Start;
+                        request.SessionEnd = e.End;
+                        //Send the model to the request form
+                        Redirect("/Schedule/RequestPrivate");
+                    }
+                }
             }
         }
     }

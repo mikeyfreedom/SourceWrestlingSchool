@@ -1,4 +1,5 @@
-﻿@using DayPilot.Web.Mvc;
+﻿@model string
+@using DayPilot.Web.Mvc;
 @using DayPilot.Web.Mvc.Events.Calendar;
 @{
     ViewBag.Title = "Lesson Schedule";
@@ -6,8 +7,31 @@
 
 <h2>Lesson Schedule</h2>
 
-<script src="@Url.Content("~/Scripts/DayPilot/daypilot-all.min.js")" type="text/javascript"></script>
-
+@if (Model.Equals(" ") || Model == null)
+{
+    <p>Welcome!</p>
+}
+else if (Model.Equals("Overlap"))
+{
+    <div class="alert alert-danger alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <strong>Sorry!</strong> You cannot select a time slot which contains another class.
+    </div>
+}
+else if (Model.Equals("BookSuccess"))
+{
+    <div class="alert alert-success alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <strong>Success!</strong> You are now booked in to attend the class.
+    </div>
+}
+else if (Model.Equals("CancelSuccess"))
+{
+    <div class="alert alert-info alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <strong>Sorry!</strong> You have cancelled your participation in the class.
+    </div>
+}
 
 <div class="container">
     @Html.DayPilotCalendar("Dpc", new DayPilotCalendarConfig

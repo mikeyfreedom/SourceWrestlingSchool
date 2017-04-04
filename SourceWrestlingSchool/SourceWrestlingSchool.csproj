@@ -180,6 +180,7 @@
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\OrdersController.cs" />
     <Compile Include="Controllers\PaymentsController.cs" />
+    <Compile Include="Controllers\PrivateRequestsController.cs" />
     <Compile Include="Controllers\PrivateSessionsController.cs" />
     <Compile Include="Controllers\ScheduleController.cs" />
     <Compile Include="Controllers\SeatsController.cs" />
@@ -349,6 +350,7 @@
     <Content Include="Views\PrivateSessions\Details.cshtml" />
     <Content Include="Views\PrivateSessions\Edit.cshtml" />
     <Content Include="Views\PrivateSessions\Index.cshtml" />
+    <Content Include="Views\PrivateRequests\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\images\" />

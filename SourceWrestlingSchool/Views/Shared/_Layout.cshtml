@@ -6,6 +6,7 @@
     <title>@ViewBag.Title - My ASP.NET Application</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    <script src="@Url.Content("~/Scripts/DayPilot/daypilot-all.min.js")" type="text/javascript"></script>
     
    <style>
        .container
@@ -48,6 +49,7 @@
                     else if (User.IsInRole("Instructor"))
                     {
                         <li>@Html.ActionLink("ViewApps", "Index", "ViewApps")</li>
+                        <li>@Html.ActionLink("PrivateRequests","Index","PrivateRequests")</li>
                         <li>@Html.ActionLink("Lessons", "Index", "Lessons")</li>
                         <!-- To be coded -->
                         <li>@Html.ActionLink("Schedule","Index","Schedule")</li>
