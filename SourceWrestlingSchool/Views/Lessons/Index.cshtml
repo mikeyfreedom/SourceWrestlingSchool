@@ -2,62 +2,111 @@
 
 @{
     ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Index</h2>
+@section Menu {
+    @Scripts.Render("~/Scripts/Tables/Data/menu")
+}
+
+@Styles.Render("~/AdminLTE/plugins/datatables/css")
 
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.ClassType)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ClassLevel)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ClassStartDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ClassEndDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ClassCost)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.InstructorName)
-        </th>
-        <th></th>
-    </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.ClassType)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ClassLevel)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ClassStartDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ClassEndDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ClassCost)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.InstructorName)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.LessonID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.LessonID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.LessonID })
-        </td>
-    </tr>
+<div class="row">
+    <div class="col-xs-12">
+        <div class="box">
+            <div class="box-header">
+                <h3 class="box-title">Data Table With Full Features</h3>
+            </div>
+            <div class="box-body">
+                <table id="example1" class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.ClassType)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.ClassLevel)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.ClassStartDate)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.ClassEndDate)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.ClassCost)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.InstructorName)
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                       @foreach (var item in Model)
+                       {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ClassType)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ClassLevel)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ClassStartDate)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ClassEndDate)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ClassCost)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.InstructorName)
+                            </td>
+                            <td>
+                                @Html.ActionLink("Edit", "Edit", new { id = item.LessonID }) |
+                                @Html.ActionLink("Details", "Details", new { id = item.LessonID }) |
+                                @Html.ActionLink("Delete", "Delete", new { id = item.LessonID })
+                            </td>
+                        </tr>
+                       }
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.ClassType)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.ClassLevel)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.ClassStartDate)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.ClassEndDate)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.ClassCost)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.InstructorName)
+                            </th>
+                            <th></th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/AdminLTE/plugins/datatables/js")
+    @Scripts.Render("~/Scripts/Tables/Data")
 }
-
-</table>

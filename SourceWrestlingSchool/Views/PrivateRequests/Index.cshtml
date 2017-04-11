@@ -1,65 +1,109 @@
 ﻿@model IEnumerable<SourceWrestlingSchool.Models.PrivateSession>
 
 @{
-    ViewBag.Title = "Index";    
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Index</h2>
-
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.StudentName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.SessionStart)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.SessionEnd)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Notes)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Status)
-        </th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.StudentName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.SessionStart)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.SessionEnd)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Notes)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Status)
-        </td>
-        <td>
-            <!-- Button Form for Accept and Refuse Session  -->
-            @if (item.Status == SourceWrestlingSchool.Models.PrivateSession.RequestStatus.Submitted)
-            {
-                using (Html.BeginForm("Accept", "PrivateRequests", FormMethod.Post))
-                {
-                    <input type="hidden" name="sessionID" value=@item.PrivateSessionID />
-                    <input class="btn btn-success" type="submit" value="Grant Session">
-                }
-                using (Html.BeginForm("Refuse", "PrivateRequests", FormMethod.Post))
-                {
-                    <input type="hidden" name="sessionID" value=@item.PrivateSessionID />
-                    <input class="btn btn-warning" type="submit" value="Refuse Session">
-                }
-            }
-        </td>
-    </tr>
+@section Menu {
+    @Scripts.Render("~/Scripts/Tables/Data/menu")
 }
 
-</table>
+@Styles.Render("~/AdminLTE/plugins/datatables/css")
+
+<div class="row">
+    <div class="col-xs-12">
+        <div class="box">
+            <div class="box-header">
+                <h3 class="box-title">Private Session Requests</h3>
+            </div>
+            <div class="box-body">
+                <table id="example1" class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.StudentName)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.SessionStart)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.SessionEnd)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Notes)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Status)
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.StudentName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.SessionStart)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.SessionEnd)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Notes)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Status)
+                                </td>
+                                <td>
+                                    <!-- Button Form for Accept and Refuse Session  -->
+                                    @if (item.Status == SourceWrestlingSchool.Models.PrivateSession.RequestStatus.Submitted)
+                                    {
+                                        using (Html.BeginForm("Accept", "PrivateRequests", FormMethod.Post))
+                                        {
+                                            <input type="hidden" name="sessionID" value=@item.PrivateSessionID />
+                                            <input class="btn btn-success" type="submit" value="Grant Session">
+                                        }
+                                        using (Html.BeginForm("Refuse", "PrivateRequests", FormMethod.Post))
+                                        {
+                                            <input type="hidden" name="sessionID" value=@item.PrivateSessionID />
+                                            <input class="btn btn-warning" type="submit" value="Refuse Session">
+                                        }
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.StudentName)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.SessionStart)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.SessionEnd)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Notes)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Status)
+                            </th>
+                            <th></th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/AdminLTE/plugins/datatables/js")
+    @Scripts.Render("~/Scripts/Tables/Data")
+}

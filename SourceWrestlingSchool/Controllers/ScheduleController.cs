@@ -115,6 +115,19 @@ namespace SourceWrestlingSchool.Controllers
             return RedirectToAction("Index", "Schedule"); 
         }
 
+        public ActionResult PersonalSchedule()
+        {
+            var firstName = (from u in db.Users
+                        where u.Email == User.Identity.Name
+                        select u.FirstName).FirstOrDefault();
+
+            var model = (from ev in db.Lessons
+                          where ev.InstructorName == firstName
+                          select ev).ToList();
+            
+            return View(model);
+        }
+
         class Dpc : DayPilotCalendar
         {
             ApplicationDbContext db = new ApplicationDbContext();

@@ -1,0 +1,39 @@
+﻿@model IEnumerable<SourceWrestlingSchool.Models.Attendee>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Lesson.LessonID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.User.Address)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Lesson.LessonID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.User.Address)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.AttendeeID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.AttendeeID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.AttendeeID })
+        </td>
+    </tr>
+}
+
+</table>

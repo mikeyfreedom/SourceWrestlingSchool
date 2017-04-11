@@ -3,6 +3,7 @@
 @using DayPilot.Web.Mvc.Events.Calendar;
 @{
     ViewBag.Title = "Lesson Schedule";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h2>Lesson Schedule</h2>
@@ -36,6 +37,7 @@ else if (Model.Equals("CancelSuccess"))
 <div class="container">
     @Html.DayPilotCalendar("Dpc", new DayPilotCalendarConfig
     {
+        Width = "85%",
         BusinessBeginsHour = 10,
         BackendUrl = Url.Content("~/Schedule/Backend"),
         EventClickHandling = EventClickHandlingType.CallBack,
