@@ -1,0 +1,47 @@
+﻿@model SourceWrestlingSchool.Models.LiveEvent
+@using SourceWrestlingSchool.Models
+@{
+    ViewBag.Title = "Tickets";
+    Layout = "~/Views/Shared/_LayoutNonAdmin.cshtml";
+    var seatInfo = ViewBag.seatInfo as Seat[][];
+}
+
+<h2>Tickets</h2>
+<!-- Display Event Details -->
+<!-- Display Price List -->
+<!-- Display Seat Map -->
+
+<div class="container">
+    <table>
+        <thead>
+            <tr><text style="justify-content:center">RING</text></tr>
+        </thead>        
+        @for (int i = 0; i < 8; i++)
+        {
+            <tr>
+                @foreach (var seat in seatInfo[i])
+                { 
+                    <td>
+                        @using (Html.BeginForm("Booking", "LiveTour", FormMethod.Post, new { seatNo = seat.SeatNumber, id = Model.EventID }))
+                        {
+                            @Html.Hidden("seatNumber", seat.SeatNumber)
+                            if (seat.Status == Seat.SeatBookingStatus.Free)
+                            {
+                                <button type="submit"><img src="~/images/freeSeat.png" height="35px" width="35px"></button>
+                            }
+                            else if (seat.Status == Seat.SeatBookingStatus.Reserved)
+                            {
+                                <button type="submit" class="disabled"><img src="~/images/reserveSeat.png" height="35px" width="35px"></button>
+                            }
+                            else if (seat.Status == Seat.SeatBookingStatus.Booked)
+                            {
+                                <button type="submit" class="disabled"><img src="~/images/bookedSeat.png" height="35px" width="35px"></button>
+                            }
+                        }
+                    </td>
+                }
+            </tr>
+        }
+
+    </table>
+</div>

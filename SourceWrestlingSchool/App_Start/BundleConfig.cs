@@ -30,6 +30,11 @@ namespace SourceWrestlingSchool
                       "~/Content/source_wrestling_school.css"
                       ));
 
+            bundles.Add(new StyleBundle("~/Content/adminCSS").Include(
+                      "~/Content/site.css",
+                      "~/Content/source_wrestling_school.css"
+                      ));
+
             RegisterLayout(bundles);
             RegisterShared(bundles);
             RegisterAccount(bundles);

@@ -21,7 +21,8 @@ namespace SourceWrestlingSchool.Models
         public DbSet<Product> Products { get; set; }
         public DbSet<Seat> Seats { get; set; }
         public DbSet<ApplyViewModel> Applications { get; set; }
-                
+        public DbSet<Venue> Venues { get; set; }
+        
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
         {
@@ -156,6 +157,7 @@ namespace SourceWrestlingSchool.Models
                             ClassEndDate = new DateTime(date.Year, date.Month, date.Day, 17, 00, 00),
                             ClassCost = 10,
                             ClassLevel = ClassLevel.Beginner,
+                            InstructorName = "test@test.com",
                             Students = new List<ApplicationUser>()
                         };
                     }
@@ -168,6 +170,7 @@ namespace SourceWrestlingSchool.Models
                             ClassEndDate = new DateTime(date.Year, date.Month, date.Day, 21, 00, 00),
                             ClassCost = 10,
                             ClassLevel = ClassLevel.Intermediate,
+                            InstructorName = "test@test.com",
                             Students = new List<ApplicationUser>()
                         };
                     }
@@ -180,6 +183,7 @@ namespace SourceWrestlingSchool.Models
                             ClassEndDate = new DateTime(date.Year, date.Month, date.Day, 21, 00, 00),
                             ClassCost = 10,
                             ClassLevel = ClassLevel.Beginner,
+                            InstructorName = "test@test.com",
                             Students = new List<ApplicationUser>()
                         };
                     }
@@ -192,6 +196,7 @@ namespace SourceWrestlingSchool.Models
                             ClassEndDate = new DateTime(date.Year, date.Month, date.Day, 21, 00, 00),
                             ClassCost = 10,
                             ClassLevel = ClassLevel.Advanced,
+                            InstructorName = "test@test.com",
                             Students = new List<ApplicationUser>()
                         };
                     }
@@ -204,6 +209,7 @@ namespace SourceWrestlingSchool.Models
                             ClassEndDate = new DateTime(date.Year, date.Month, date.Day, 14, 00, 00),
                             ClassCost = 10,
                             ClassLevel = ClassLevel.Womens,
+                            InstructorName = "test@test.com",
                             Students = new List<ApplicationUser>()
                         };
                     }
@@ -211,7 +217,32 @@ namespace SourceWrestlingSchool.Models
                     if (lesson != null)
                         context.Lessons.Add(lesson);
                 }
-                string id = userManager.FindByEmail("test@test.com").Id;                
+                //Seed Venue
+                Venue school = new Venue()
+                {
+                    VenueName = "Source Wrestling School",
+                    VenueLocation = "Pollokshaws, Glasgow",
+                    VenueAddress = "26 Cogan Street",
+                    VenuePostcode = "G43 1AP",
+                    NoOfSeats = 64
+                };
+                context.Venues.Add(school);
+
+                //Seed Live Event
+                DateTime newDate = DateTime.Now.AddMonths(2);
+                LiveEvent sampleEvent = new LiveEvent()
+                {
+                    EventDate = newDate.Date,
+                    EventTime = new DateTime(newDate.Year, newDate.Month, newDate.Day, 18, 30, 00).TimeOfDay,
+                    EventName = "Source Wrestling Showcase",
+                    Venue = school
+                };
+                List<Seat> seats = sampleEvent.CreateSeatMap();
+                foreach (Seat seat in seats)
+                {
+                    context.Seats.Add(seat);
+                }
+                context.LiveEvents.Add(sampleEvent);
             }
             //Complete the seeding of the database
             base.Seed(context);

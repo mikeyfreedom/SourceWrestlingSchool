@@ -84,7 +84,9 @@ namespace SourceWrestlingSchool.Controllers
         public ActionResult BookUser()
         {
             //Gather required variables
-            ApplicationUser user = db.Users.First(i => i.UserName == User.Identity.Name);
+            var user = (from u in db.Users
+                        where u.Email == User.Identity.Name
+                        select u).First();
             int classID = int.Parse(Request.Form["classID"]);
             
             using (db)

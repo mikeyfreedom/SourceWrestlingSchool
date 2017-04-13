@@ -17,8 +17,7 @@ namespace SourceWrestlingSchool.Controllers
         // GET: Seats
         public ActionResult Index()
         {
-            var seats = db.Seats.Include(s => s.Event);
-            return View(seats.ToList());
+            return View(db.Seats.ToList());
         }
 
         // GET: Seats/Details/5
@@ -39,7 +38,6 @@ namespace SourceWrestlingSchool.Controllers
         // GET: Seats/Create
         public ActionResult Create()
         {
-            ViewBag.EventID = new SelectList(db.LiveEvents, "EventID", "EventName");
             return View();
         }
 
@@ -48,7 +46,7 @@ namespace SourceWrestlingSchool.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "SeatID,SeatNumber,IsBooked,Status,EventID")] Seat seat)
+        public ActionResult Create([Bind(Include = "SeatID,SeatNumber,Status")] Seat seat)
         {
             if (ModelState.IsValid)
             {
@@ -57,7 +55,6 @@ namespace SourceWrestlingSchool.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.EventID = new SelectList(db.LiveEvents, "EventID", "EventName", seat.EventID);
             return View(seat);
         }
 
@@ -73,7 +70,6 @@ namespace SourceWrestlingSchool.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.EventID = new SelectList(db.LiveEvents, "EventID", "EventName", seat.EventID);
             return View(seat);
         }
 
@@ -82,7 +78,7 @@ namespace SourceWrestlingSchool.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "SeatID,SeatNumber,IsBooked,Status,EventID")] Seat seat)
+        public ActionResult Edit([Bind(Include = "SeatID,SeatNumber,Status")] Seat seat)
         {
             if (ModelState.IsValid)
             {
@@ -90,7 +86,6 @@ namespace SourceWrestlingSchool.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.EventID = new SelectList(db.LiveEvents, "EventID", "EventName", seat.EventID);
             return View(seat);
         }
 

@@ -3,6 +3,7 @@
 
 @{
     ViewBag.Title = "Booking";
+    Layout = "~/Views/Shared/_Layout.cshtml";
     var userId = User.Identity.GetUserId();
     bool userFound = false;
     int id = Model.LessonID;   
@@ -10,68 +11,73 @@
 
 <h2>Make a Booking/Cancellation</h2>
 
-<div class="container">
-    <h4>Lesson</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.ClassType)
-        </dt>
+<div class="box box-solid">
+    <div class="box-header with-border">
+        <i class="fa fa-text-width"></i>
+        <h3 class="box-title">Lesson Details</h3>
+    </div>
+    <div class="box-body">
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.ClassType)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.ClassType)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.ClassType)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.ClassLevel)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.ClassLevel)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.ClassLevel)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.ClassLevel)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.ClassStartDate)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.ClassStartDate)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.ClassStartDate)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.ClassStartDate)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.ClassEndDate)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.ClassEndDate)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.ClassEndDate)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.ClassEndDate)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.ClassCost)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.ClassCost)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.ClassCost)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.ClassCost)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.InstructorName)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.InstructorName)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.InstructorName)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.InstructorName)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Students)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.Students)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Students.Count)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.Students.Count)
+            </dd>
 
-    </dl>
+        </dl>
+    </div>
 </div>
+
 <div class="container">
     @if (Model.Students.Count == 0)
     {

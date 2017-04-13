@@ -1,0 +1,43 @@
+﻿@model IEnumerable<SourceWrestlingSchool.Models.LiveEvent>
+@using System.Globalization
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutNonAdmin.cshtml";
+}
+<link href="~/Content/TourIndex.css" rel="stylesheet" type="text/css" />
+<link href="~/AdminLTE/plugins/font-awesome/css/font-awesome.css" rel="stylesheet" type="text/css" />
+
+<div class="container">
+    <div class="row">
+        <div class="[ col-xs-12 col-sm-offset-2 col-sm-8 ]">
+            <ul class="event-list">
+                @foreach (var item in Model)
+                {
+                    <li>
+                        <time datetime=@item.EventDate>
+                            <span class="day">@item.EventDate.Day</span>
+                            <span class="month">@DateTimeFormatInfo.CurrentInfo.GetAbbreviatedMonthName(item.EventDate.Month)</span>
+                            <span class="year">@item.EventDate.Year</span>
+                            <span class="time">@item.EventTime</span>
+                        </time>
+                        <div class="info">
+                            <h2 class="title" style="color:black">@item.EventName</h2>
+                            <p class="desc" style="color:black">@item.Venue.VenueLocation</p>
+                            <ul>
+                                <li style="width:50%;"><a href="@Url.Action("Tickets","LiveTour",new { id = item.EventID })"><span class="fa fa-ticket">Book Tickets</span></a></li>
+                                <li class="disabled" style="width:50%;"><span class="fa fa-clock-o">@item.EventTime</span></li>
+                            </ul>
+                        </div>
+                        <div class="social">
+                            <ul>
+                                <li class="facebook" style="width:50%;"><a href="https://www.facebook.com/SourceWres/"><span class="fa fa-facebook"></span></a></li>
+                                <li class="twitter" style="width:50%;"><a href="https://twitter.com/SourceWres"><span class="fa fa-twitter"></span></a></li>
+                            </ul>
+                        </div>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+</div>
+

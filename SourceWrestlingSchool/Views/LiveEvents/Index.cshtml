@@ -2,50 +2,93 @@
 
 @{
     ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Index</h2>
+
+@section Menu {
+    @Scripts.Render("~/Scripts/Tables/Data/menu")
+}
+
+@Styles.Render("~/AdminLTE/plugins/datatables/css")
 
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.EventName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.EventDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.EventTime)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Location)
-        </th>
-        <th></th>
-    </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.EventName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.EventDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.EventTime)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Location)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.EventID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.EventID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.EventID })
-        </td>
-    </tr>
+<div class="row">
+    <div class="col-xs-12">
+        <div class="box">
+            <div class="box-header">
+                <h3 class="box-title">Data Table With Full Features</h3>
+            </div>
+            <div class="box-body">
+                <table id="example1" class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.EventName)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.EventDate)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.EventTime)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Location)
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.EventName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.EventDate)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.EventTime)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Location)
+                                </td>
+                                <td>
+                                    @Html.ActionLink("Edit", "Edit", new { id = item.EventID }) |
+                                    @Html.ActionLink("Details", "Details", new { id = item.EventID }) |
+                                    @Html.ActionLink("Delete", "Delete", new { id = item.EventID })
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.EventName)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.EventDate)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.EventTime)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Location)
+                            </th>
+                            <th></th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/AdminLTE/plugins/datatables/js")
+    @Scripts.Render("~/Scripts/Tables/Data")
 }
-
-</table>

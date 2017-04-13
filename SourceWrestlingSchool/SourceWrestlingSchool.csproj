@@ -188,6 +188,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LessonsController.cs" />
     <Compile Include="Controllers\LiveEventsController.cs" />
+    <Compile Include="Controllers\LiveTourController.cs" />
     <Compile Include="Controllers\MailboxController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\OrdersController.cs" />
@@ -223,6 +224,7 @@
     <Compile Include="Models\RoleNames.cs" />
     <Compile Include="Models\Seat.cs" />
     <Compile Include="Models\UserViewModel.cs" />
+    <Compile Include="Models\Venue.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -1054,12 +1056,16 @@
     <Content Include="Content\themes\base\jquery.ui.slider.css" />
     <Content Include="Content\themes\base\jquery.ui.tabs.css" />
     <Content Include="Content\themes\base\jquery.ui.theme.css" />
+    <Content Include="Content\TourIndex.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Icon.png" />
+    <Content Include="images\bookedSeat.png" />
     <Content Include="images\Dunbar1.jpg" />
+    <Content Include="images\freeSeat.png" />
+    <Content Include="images\reserveSeat.png" />
     <Content Include="images\SourceLogo.png" />
     <Content Include="Scripts\Account\Login.js" />
     <Content Include="Scripts\Account\Register.js" />
@@ -1230,11 +1236,6 @@
     <Content Include="Views\Payments\Details.cshtml" />
     <Content Include="Views\Payments\Edit.cshtml" />
     <Content Include="Views\Payments\Index.cshtml" />
-    <Content Include="Views\Seats\Create.cshtml" />
-    <Content Include="Views\Seats\Delete.cshtml" />
-    <Content Include="Views\Seats\Details.cshtml" />
-    <Content Include="Views\Seats\Edit.cshtml" />
-    <Content Include="Views\Seats\Index.cshtml" />
     <Content Include="Views\User\Index.cshtml" />
     <Content Include="Views\Apply\ApplyForm.cshtml" />
     <Content Include="Views\Apply\Success.cshtml" />
@@ -1299,6 +1300,13 @@
     <Content Include="Views\Admin\InstructorProfile.cshtml" />
     <Content Include="Views\Admin\AdminProfile.cshtml" />
     <Content Include="Views\Admin\StaffProfile.cshtml" />
+    <Content Include="Views\LiveTour\Index.cshtml" />
+    <Content Include="Views\LiveTour\Tickets.cshtml" />
+    <Content Include="Views\Seats\Create.cshtml" />
+    <Content Include="Views\Seats\Delete.cshtml" />
+    <Content Include="Views\Seats\Details.cshtml" />
+    <Content Include="Views\Seats\Edit.cshtml" />
+    <Content Include="Views\Seats\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
