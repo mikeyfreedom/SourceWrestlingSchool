@@ -28,6 +28,7 @@ namespace SourceWrestlingSchool.Models
         public ApplicationUser User { get; set; }
 
         //enumerated status of application
+        [DisplayName("Current Status")]
         public ApplicationStatus Status { get; set; }
 
         public enum ApplicationStatus

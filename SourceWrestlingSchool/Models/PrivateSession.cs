@@ -12,6 +12,7 @@ namespace SourceWrestlingSchool.Models
     {
         [Key]
         public int PrivateSessionID { get; set; }
+        [DisplayName("Name")]
         public string StudentName { get; set; }
         [DisplayName("Start")]
         public DateTime SessionStart { get; set; }
@@ -20,6 +21,7 @@ namespace SourceWrestlingSchool.Models
         [DisplayName("Instructor")]
         public string InstructorID { get; set; }
         public string Notes { get; set; }
+        [DisplayName("Current Status")]
         public RequestStatus Status { get; set; }
 
         public enum RequestStatus

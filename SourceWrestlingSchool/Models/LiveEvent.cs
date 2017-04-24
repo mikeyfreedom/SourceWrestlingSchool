@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
@@ -11,9 +12,12 @@ namespace SourceWrestlingSchool.Models
     {
         [Key]
         public int EventID { get; set; }
+        [DisplayName("Event Name")]
         public string EventName { get; set; }
+        [DisplayName("Event Date")]
         [DataType(DataType.Date)]
         public DateTime EventDate { get; set; }
+        [DisplayName("Event Time")]
         public TimeSpan EventTime { get; set; }
 
         public virtual Venue Venue { get; set; }
