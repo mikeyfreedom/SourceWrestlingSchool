@@ -1,4 +1,5 @@
 ﻿using SourceWrestlingSchool.Models;
+using System.Data.Entity;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -19,7 +20,7 @@ namespace SourceWrestlingSchool.Controllers
         // GET: ViewApps
         public ActionResult Index()
         {
-            var applications = db.Applications;
+            var applications = db.Applications.Include(x => x.User);
             return View(applications.ToList());
         }
 
@@ -30,8 +31,8 @@ namespace SourceWrestlingSchool.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ApplyViewModel application = db.Applications.Find(id);
-            application.User = db.Users.Find(application.UserID);
+            ApplyViewModel application = db.Applications.Where(a => a.ApplicationID == id).Include(a => a.User).Single(); 
+            //application.User = db.Users.Find(application.UserID);
             Image source = Bitmap.FromFile(Server.MapPath("/images/") + application.FileName);
             ImageFormat format = source.RawFormat;
             source.Dispose();
@@ -52,7 +53,7 @@ namespace SourceWrestlingSchool.Controllers
             int appID = int.Parse(aID);
             using (db)
             {
-                var app = db.Applications.Find(aID);
+                var app = db.Applications.Where(a => a.ApplicationID == appID).Include(a => a.User).Single();
                 user = app.User.UserName;
                 app.Status = ApplyViewModel.ApplicationStatus.Accepted;
                 db.SaveChanges();
@@ -70,7 +71,10 @@ namespace SourceWrestlingSchool.Controllers
             int appID = int.Parse(aID);
             using (db)
             {
-                var app = db.Applications.Find(aID);
+                var app = db.Applications
+                            .Where(a => a.ApplicationID == appID)
+                            .Include(a => a.User)
+                            .Single(); 
                 user = app.User.UserName;
                 app.Status = ApplyViewModel.ApplicationStatus.Declined;
                 db.SaveChanges();

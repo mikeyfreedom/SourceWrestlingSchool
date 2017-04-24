@@ -15,16 +15,14 @@ namespace SourceWrestlingSchool.Controllers
         // GET: LiveTour
         public ActionResult Index()
         {
-            var model = db.LiveEvents.ToList();
-            
+             var model = db.LiveEvents.Include(ev => ev.Venue).Include(ev => ev.Seats);
+                                      
             return View(model);
         }
 
         public ActionResult Tickets(int id)
         {
-            var model = (from ev in db.LiveEvents
-                         where ev.EventID == id
-                         select ev).First();
+            var model = db.LiveEvents.Where(ev => ev.EventID == id).Include(ev => ev.Venue).Include(ev => ev.Seats).Single();
 
             Seat[][] seatModel = new Seat[8][];
             int j = 0;

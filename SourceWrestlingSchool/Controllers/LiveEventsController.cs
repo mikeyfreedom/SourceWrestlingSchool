@@ -17,7 +17,8 @@ namespace SourceWrestlingSchool.Controllers
         // GET: LiveEvents
         public ActionResult Index()
         {
-            return View(db.LiveEvents.ToList());
+            var model = db.LiveEvents.Include(ev => ev.Venue).Include(ev => ev.Seats).ToList();
+            return View(model);
         }
 
         // GET: LiveEvents/Details/5
@@ -27,7 +28,7 @@ namespace SourceWrestlingSchool.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            LiveEvent liveEvent = db.LiveEvents.Find(id);
+            LiveEvent liveEvent = db.LiveEvents.Where(ev => ev.EventID == id).Include(ev => ev.Venue).Include(ev => ev.Seats).Single();
             if (liveEvent == null)
             {
                 return HttpNotFound();
@@ -65,7 +66,7 @@ namespace SourceWrestlingSchool.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            LiveEvent liveEvent = db.LiveEvents.Find(id);
+            LiveEvent liveEvent = db.LiveEvents.Where(ev => ev.EventID == id).Include(ev => ev.Venue).Include(ev => ev.Seats).Single();
             if (liveEvent == null)
             {
                 return HttpNotFound();
@@ -96,7 +97,7 @@ namespace SourceWrestlingSchool.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            LiveEvent liveEvent = db.LiveEvents.Find(id);
+            LiveEvent liveEvent = db.LiveEvents.Where(ev => ev.EventID == id).Include(ev => ev.Venue).Include(ev => ev.Seats).Single();
             if (liveEvent == null)
             {
                 return HttpNotFound();
@@ -109,7 +110,7 @@ namespace SourceWrestlingSchool.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            LiveEvent liveEvent = db.LiveEvents.Find(id);
+            LiveEvent liveEvent = db.LiveEvents.Where(ev => ev.EventID == id).Include(ev => ev.Venue).Include(ev => ev.Seats).Single();
             db.LiveEvents.Remove(liveEvent);
             db.SaveChanges();
             return RedirectToAction("Index");

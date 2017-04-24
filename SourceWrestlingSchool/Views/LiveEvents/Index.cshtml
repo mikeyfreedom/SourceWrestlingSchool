@@ -36,7 +36,7 @@
                                 @Html.DisplayNameFor(model => model.EventTime)
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.Location)
+                                @Html.DisplayNameFor(model => model.Venue.VenueLocation)
                             </th>
                             <th></th>
                         </tr>
@@ -55,7 +55,7 @@
                                     @Html.DisplayFor(modelItem => item.EventTime)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.Location)
+                                    @Html.DisplayFor(modelItem => item.Venue.VenueLocation)
                                 </td>
                                 <td>
                                     @Html.ActionLink("Edit", "Edit", new { id = item.EventID }) |
@@ -77,7 +77,7 @@
                                 @Html.DisplayNameFor(model => model.EventTime)
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.Location)
+                                @Html.DisplayNameFor(model => model.Venue.VenueLocation)
                             </th>
                             <th></th>
                         </tr>

@@ -64,13 +64,12 @@
     {
         using (Html.BeginForm("Accept", "ViewApps", FormMethod.Post))
         {
-            <input type="hidden" name="appID" value="model.ApplicationID" />
+            <input type="hidden" name="appID" value=@Model.ApplicationID />
             <input class="btn btn-success" type="submit" value="Accept Application">
         }
         using (Html.BeginForm("Reject", "ViewApps", FormMethod.Post))
         {
-            <input type="hidden" />
-            <input type="hidden" name="appID" value="model.ApplicationID" />
+            <input type="hidden" name="appID" value=@Model.ApplicationID />
             <input class="btn btn-warning" type="submit" value="Reject Application">
         }
     }
