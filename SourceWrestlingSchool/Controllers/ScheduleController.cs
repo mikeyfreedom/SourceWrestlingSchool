@@ -154,15 +154,19 @@ namespace SourceWrestlingSchool.Controllers
 
         public ActionResult PersonalSchedule()
         {
-            var firstName = (from u in db.Users
-                        where u.Email == User.Identity.Name
-                        select u.FirstName).FirstOrDefault();
+            using (db)
+            {
+                var firstName = (from u in db.Users
+                                 where u.Email == User.Identity.Name
+                                 select u.FirstName).FirstOrDefault();
 
-            var model = (from ev in db.Lessons
-                          where ev.InstructorName == firstName
-                          select ev).ToList();
-            
-            return View(model);
+                var model = db.Lessons
+                        .Where(ev => ev.InstructorName == firstName)
+                        .Include(ev => ev.Students)
+                        .ToList();
+
+                return View(model);
+            }
         }
 
         class Dpc : DayPilotCalendar
