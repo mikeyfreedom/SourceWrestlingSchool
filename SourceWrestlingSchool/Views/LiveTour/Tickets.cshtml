@@ -2,46 +2,150 @@
 @using SourceWrestlingSchool.Models
 @{
     ViewBag.Title = "Tickets";
-    Layout = "~/Views/Shared/_LayoutNonAdmin.cshtml";
+    Layout = "~/Views/Shared/_Layout.cshtml";
     var seatInfo = ViewBag.seatInfo as Seat[][];
 }
+<link rel="stylesheet" type="text/css" href="~/Content/jquery.seat-charts.css">
+<script src="~/Scripts/SeatChart/jquery.seat-charts.js"></script>
 
 <h2>Tickets</h2>
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-6">
+            <div id="seat-map"></div>
+        </div>
+        <div class="col-lg-6">
+            <div class="booking-details">
+                <h2>Booking Details</h2>
+
+                <h3> Selected Seats (<span id="counter">0</span>):</h3>
+                <ul id="selected-seats"></ul>
+
+                Total: <b>$<span id="total">0</span></b>
+                
+                @using (Html.BeginForm("Booking", "LiveTour", FormMethod.Post))
+                {
+                    <input id="eventID" name="eventID" type="hidden" value=@Model.EventID />
+                    <input id="seatList" name="seatList" type="hidden" />
+                    <input id="checkoutButton" class="checkout-button" type="submit" value="Checkout »">
+                }
+
+                <div id="legend" class="seatCharts-legend"></div>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- Display Event Details -->
 <!-- Display Price List -->
 <!-- Display Seat Map -->
 
-<div class="container">
-    <table>
-        <thead>
-            <tr><text style="justify-content:center">RING</text></tr>
-        </thead>        
-        @for (int i = 0; i < 8; i++)
-        {
-            <tr>
-                @foreach (var seat in seatInfo[i])
-                { 
-                    <td>
-                        @using (Html.BeginForm("Booking", "LiveTour", FormMethod.Post, new { seatNo = seat.SeatNumber, id = Model.EventID }))
-                        {
-                            @Html.Hidden("seatNumber", seat.SeatNumber)
-                            if (seat.Status == Seat.SeatBookingStatus.Free)
-                            {
-                                <button type="submit"><img src="~/images/freeSeat.png" height="35px" width="35px"></button>
-                            }
-                            else if (seat.Status == Seat.SeatBookingStatus.Reserved)
-                            {
-                                <button type="submit" class="disabled"><img src="~/images/reserveSeat.png" height="35px" width="35px"></button>
-                            }
-                            else if (seat.Status == Seat.SeatBookingStatus.Booked)
-                            {
-                                <button type="submit" class="disabled"><img src="~/images/bookedSeat.png" height="35px" width="35px"></button>
-                            }
-                        }
-                    </td>
-                }
-            </tr>
-        }
 
-    </table>
-</div>
+<script>
+    var firstSeatLabel = 1;
+$(document).ready(function() {
+    var seats = new Array();
+    var $cart = $('#selected-seats'),
+        $counter = $('#counter'),
+        $total = $('#total'),
+        sc = $('#seat-map').seatCharts({
+        map: [
+            'aaaaaaaa',
+            'aaaaaaaa',
+            'aaaaaaaa',
+            'aaaaaaaa',
+            'aaaaaaaa',
+            'aaaaaaaa',
+            'aaaaaaaa',
+            'aaaaaaaa'            
+        ],
+        seats: {
+            a: {
+                price   : 5.00,
+                classes: 'general-seat', //your custom CSS class
+                category: 'General Seating'
+            }
+        },
+        naming : {
+            columns: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'],
+            getId: function (character, row, column) {
+                return row + column;
+            },
+            getLabel: function (character, row, column) {
+                return row + column;
+            },
+        },
+        legend: {
+            node: $('#legend'),
+            items: [
+                ['a', 'available', 'General Seating'],
+                ['u', 'unavailable', 'Already Booked']
+                ]
+        },
+        click: function () {
+            if (this.status() == 'available') {
+                //let's create a new <li> which we'll add to the cart items
+                $('<li>' + this.data().category + ' Seat # ' + this.settings.label + ': <b>£' + this.data().price + '</b> <a href="#" class="cancel-cart-item">[cancel]</a></li>')
+                    .attr('id', 'cart-item-' + this.settings.id)
+                    .data('seatId', this.settings.id)
+                    .appendTo($cart);
+
+                /*
+                 * Lets update the counter and total
+                 *
+                 * .find function will not find the current seat, because it will change its stauts only after return
+                 * 'selected'. This is why we have to add 1 to the length and the current seat price to the total.
+                 */
+                seats.push(this.settings.label);
+                console.log(this.settings.label);
+                $("#seatList").val(seats.join(','));
+
+                $counter.text(sc.find('selected').length + 1);
+                $total.text(recalculateTotal(sc) + this.data().price);
+
+                return 'selected';
+            } else if (this.status() == 'selected'){ 
+                
+                seats.pop(this.settings.label);
+                $("#seatList").val(seats.join(','));
+                console.log(seats.join(','));
+                //update the counter
+                $counter.text(sc.find('selected').length - 1);
+                //and total
+                $total.text(recalculateTotal(sc) - this.data().price);
+
+                //remove the item from our cart
+                $('#cart-item-' + this.settings.id).remove();
+
+                //seat has been vacated
+                return 'available';
+            } else if (this.status() == 'unavailable') {
+                //seat has been already booked
+                return 'unavailable';
+            } else {
+                return this.style();
+            }
+        }
+        });
+    //this will handle "[cancel]" link clicks
+    $('#selected-seats').on('click', '.cancel-cart-item', function () {
+        //let's just trigger Click event on the appropriate seat, so we don't have to repeat the logic here
+        sc.get($(this).parents('li:first').data('seatId')).click();
+    });
+
+    //Make all available 'u' seats unavailable
+    sc.find('u.available').status('unavailable');
+
+});
+
+function recalculateTotal(sc) {
+    var total = 0;
+
+    //basically find every selected seat and sum its price
+    sc.find('selected').each(function () {
+        total += this.data().price;
+    });
+
+    return total;
+}
+</script>

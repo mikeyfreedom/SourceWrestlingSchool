@@ -10,6 +10,7 @@ using System.Data.Entity;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
+using System.Net.Mail;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
@@ -24,6 +25,7 @@ namespace SourceWrestlingSchool.Controllers
         public static string errormessage = " ";
         public static PrivateSession request;
         private ApplicationDbContext db = new ApplicationDbContext();
+        private ApplicationUser currentUser;
         
         // GET: Schedule
         public ActionResult Index()
@@ -49,7 +51,8 @@ namespace SourceWrestlingSchool.Controllers
         public ActionResult RequestPrivate()
         {
             var model = request;
-            string name = db.Users.Single(n => n.UserName == User.Identity.Name).FirstName;
+            currentUser = db.Users.Single(n => n.UserName == User.Identity.Name);
+            string name = currentUser.FirstName;
             model.StudentName = name;
 
             var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
@@ -74,12 +77,13 @@ namespace SourceWrestlingSchool.Controllers
             {
                 db.PrivateSessions.Add(model);
                 db.SaveChanges();
+                sendEmail(currentUser.UserName,"private");
                 return RedirectToAction("Index");
             }
 
             return View(model);
         }
-
+        
         [HttpPost]
         public ActionResult BookUser()
         {
@@ -87,6 +91,7 @@ namespace SourceWrestlingSchool.Controllers
             var user = (from u in db.Users
                         where u.Email == User.Identity.Name
                         select u).First();
+            currentUser = user;
             int classID = int.Parse(Request.Form["classID"]);
             
             using (db)
@@ -102,19 +107,49 @@ namespace SourceWrestlingSchool.Controllers
                 db.SaveChanges();
             }
             errormessage = "BookSuccess";
+            sendEmail(currentUser.UserName, "book");
+
             return RedirectToAction("Index","Schedule");
         }
-
+        
         [HttpPost]
         public ActionResult CancelUser()
         {
-            ApplicationUser user = db.Users.First(i => i.UserName == User.Identity.Name);
-            int classID = int.Parse(Request.Form["classID"]);
-            db.Lessons.Find(classID).Students.Remove(user);
-            db.SaveChanges();
-
+            using (db)
+            {
+                ApplicationUser user = db.Users.First(i => i.UserName == User.Identity.Name);
+                int classID = int.Parse(Request.Form["classID"]);
+                db.Lessons.Find(classID).Students.Remove(user);
+                db.SaveChanges();
+            }
+            
             errormessage = "CancelSuccess";
+            sendEmail(currentUser.UserName, "cancel");
+
             return RedirectToAction("Index", "Schedule"); 
+        }
+        
+        private void sendEmail(string user,string reason)
+        {
+            MailMessage message = new MailMessage("lowlander_glen@yahoo.co.uk", user);
+            if (reason.Equals("book"))
+            {
+                message.Subject = "Booking Accepted";
+                message.Body = "You have successfully booked in for a class. We look forward to seeing you there!";
+
+            }
+            else if (reason.Equals("cancel"))
+            {
+                message.Subject = "Cancellation Processed";
+                message.Body = "You have cancelled your participation in the class.";
+            }
+            else if (reason.Equals("private"))
+            {
+                message.Subject = "Private Request Received";
+                message.Body = "We have received your request for a private session. Your chosen instructor will respond as soon as possible";
+            }
+            SmtpClient smtpClient = new SmtpClient();
+            smtpClient.Send(message);
         }
 
         public ActionResult PersonalSchedule()

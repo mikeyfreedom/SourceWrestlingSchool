@@ -6,14 +6,12 @@
     <title>@ViewBag.Title - Source Wrestling School</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-        
-   <style>
-       .container
-       {
-         color:antiquewhite;
-       }
-   </style> 
-
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+    <style>
+        .container{color:antiquewhite}
+    </style>
 </head>
 <body style="background-color:black" >
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -70,9 +68,5 @@
         </footer>
     </div>
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", required: false)
-    
 </body>
 </html>

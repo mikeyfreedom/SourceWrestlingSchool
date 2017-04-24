@@ -8,6 +8,7 @@ using System.Web.Mvc;
 using System.IO;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Net.Mail;
 
 namespace SourceWrestlingSchool.Controllers
 {
@@ -22,11 +23,10 @@ namespace SourceWrestlingSchool.Controllers
             string username = User.Identity.Name;
             using (db)
             {
-                var query = (from u in db.Users
+                var user = (from u in db.Users
                              where u.UserName == username
-                             select u);
+                             select u).Single();
 
-                var user = query.Single();
                 viewModel.User = user;
                 viewModel.UserID = user.Id;
             }
@@ -64,10 +64,20 @@ namespace SourceWrestlingSchool.Controllers
             {
                 db.Applications.Add(model);
                 db.SaveChanges();
+                sendAppliedConfirmation(model.User);
                 return RedirectToAction("Success");
             }
             
             return View();
+        }
+
+        private void sendAppliedConfirmation(ApplicationUser user)
+        {
+            MailMessage message = new MailMessage("lowlander_glen@yahoo.co.uk",user.UserName);
+            message.Subject = "School Application Received";
+            message.Body = "We have received your application to join the school on a student member basis.";
+            SmtpClient smtpClient = new SmtpClient();
+            smtpClient.Send(message);
         }
 
         public ActionResult Success()

@@ -12,6 +12,7 @@ namespace SourceWrestlingSchool.Models
         [Key]
         public int EventID { get; set; }
         public string EventName { get; set; }
+        [DataType(DataType.Date)]
         public DateTime EventDate { get; set; }
         public TimeSpan EventTime { get; set; }
 

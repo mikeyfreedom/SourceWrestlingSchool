@@ -6,6 +6,7 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Mail;
 using System.Web;
 using System.Web.Mvc;
 
@@ -47,8 +48,17 @@ namespace SourceWrestlingSchool.Controllers
         public ActionResult Accept()
         {
             string aID = Request.Form["appID"];
+            string user = "";
             int appID = int.Parse(aID);
-            db.Applications.Find(aID).Status = ApplyViewModel.ApplicationStatus.Accepted;
+            using (db)
+            {
+                var app = db.Applications.Find(aID);
+                user = app.User.UserName;
+                app.Status = ApplyViewModel.ApplicationStatus.Accepted;
+                db.SaveChanges();
+            }
+
+            sendEmail("accept", user);    
             return View();
         }
 
@@ -56,9 +66,37 @@ namespace SourceWrestlingSchool.Controllers
         public ActionResult Refuse()
         {
             string aID = Request.Form["appID"];
+            string user = "";
             int appID = int.Parse(aID);
-            db.Applications.Find(aID).Status = ApplyViewModel.ApplicationStatus.Declined;
+            using (db)
+            {
+                var app = db.Applications.Find(aID);
+                user = app.User.UserName;
+                app.Status = ApplyViewModel.ApplicationStatus.Declined;
+                db.SaveChanges();
+            }
+                
+            sendEmail("refuse",user);
             return View();
+        }
+
+        public void sendEmail(string reason, string userMail)
+        {
+            MailMessage message = new MailMessage("lowlander_glen@yahoo.co.uk", userMail);
+            if (reason.Equals("accept"))
+            {
+                message.Subject = "Membership Approved";
+                message.Body = "Congratulations, your membership has been approved. Welcome to the school!";
+
+            }
+            else if (reason.Equals("refuse"))
+            {
+                message.Subject = "Membership Refused";
+                message.Body = "Your application has been received, but unfortunately you have been turned down for student membership";
+            }
+
+            SmtpClient smtpClient = new SmtpClient();
+            smtpClient.Send(message);
         }
     }
 }

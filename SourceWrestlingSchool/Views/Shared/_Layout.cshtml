@@ -7,12 +7,14 @@
     <title>WebApplication</title>
     <meta content="width=device-width, initial-scale=0.8, maximum-scale=0.8, user-scalable=yes" name="viewport">
     @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/AdminLTE/plugins/jquery/js")
     @Styles.Render("~/AdminLTE/plugins/font-awesome/css")
     @Styles.Render("~/AdminLTE/plugins/ionicons/css")
     @Styles.Render("~/AdminLTE/bootstrap/css")
     @Styles.Render("~/AdminLTE/dist/css")
     @Styles.Render("~/AdminLTE/dist/css/skins")
-    <link rel="stylesheet" href="~/Content/source_wrestling_school.css">    
+    <link rel="stylesheet" href="~/Content/source_wrestling_school.css">  
+    <link rel="stylesheet" href="~/Content/TourIndex.css">  
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
     <div class="wrapper">
@@ -296,13 +298,6 @@
                             <li id="left-sidebar-menu-forms-editors"><a href="@Url.Action("Editors", "Forms")"><i class="fa fa-circle-o"></i> Editors</a></li>
                         </ul>
                     </li>
-                    <li id="left-sidebar-menu-calendar">
-                        <a href="@Url.Action("Index", "Calendar")">
-                            <i class="fa fa-calendar"></i>
-                            <span>Calendar</span>
-                            <small class="label pull-right bg-red">3</small>
-                        </a>
-                    </li>
                     <li id="left-sidebar-menu-mailbox" class="treeview">
                         <a href="#">
                             <i class="fa fa-envelope"></i> <span>Mailbox</span>
@@ -331,50 +326,56 @@
                             <li id="left-sidebar-menu-examples-pace"><a href="@Url.Action("Pace", "Examples")"><i class="fa fa-circle-o"></i> Pace Page</a></li>
                         </ul>
                     </li>
-                    <li id="left-sidebar-menu-multilevel" class="treeview">
-                        <a href="#">
-                            <i class="fa fa-share"></i> <span>Multilevel</span>
-                            <i class="fa fa-angle-left pull-right"></i>
-                        </a>
-                        <ul class="treeview-menu">
-                            <li><a href="#"><i class="fa fa-circle-o"></i> Level One</a></li>
-                            <li>
-                                <a href="#"><i class="fa fa-circle-o"></i> Level One <i class="fa fa-angle-left pull-right"></i></a>
-                                <ul class="treeview-menu">
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Level Two</a></li>
-                                    <li>
-                                        <a href="#"><i class="fa fa-circle-o"></i> Level Two <i class="fa fa-angle-left pull-right"></i></a>
-                                        <ul class="treeview-menu">
-                                            <li><a href="#"><i class="fa fa-circle-o"></i> Level Three</a></li>
-                                            <li><a href="#"><i class="fa fa-circle-o"></i> Level Three</a></li>
-                                        </ul>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li><a href="#"><i class="fa fa-circle-o"></i> Level One</a></li>
-                        </ul>
-                    </li>
-                    <li id="left-sidebar-menu-documentation">
-                        <a href="@Url.Action("Index", "Documentation")">
-                            <i class="fa fa-book"></i>
-                            <span>Layout Documentation</span>
-                        </a>
-                    </li>
-                    <li id="left-sidebar-menu-profile">
-                        <a href="@Url.Action("Profile", "Admin")">
-                            <i class="fa fa-book"></i>
-                            <span>Profile</span>
-                        </a>
-                    </li>
-                    <li id="left-sidebar-menu-events">
-                        <a href="@Url.Action("Index", "LiveEvents")">
-                            <i class="fa fa-book"></i>
-                            <span>Live Events</span>
-                        </a>
-                    </li>
-
-                    @if (User.IsInRole("Instructor"))
+                    @if (User.IsInRole("Standard_User"))
                     {
+                        <li id="left-sidebar-menu-events">
+                            <a href="@Url.Action("Index", "LiveTour")">
+                                <i class="fa fa-book"></i>
+                                <span>Live Events</span>
+                            </a>
+                        </li>
+                        <li id="left-sidebar-menu-apply">
+                            <a href="@Url.Action("ApplyForm", "Apply")">
+                                <i class="fa fa-book"></i>
+                                <span>Apply To School</span>
+                            </a>
+                        </li>
+                        <li id="left-sidebar-menu-profile">
+                            <a href="@Url.Action("StandardProfile", "Admin")">
+                                <i class="fa fa-book"></i>
+                                <span>Profile</span>
+                            </a>
+                        </li>
+                    }
+                    else if (User.IsInRole("Student_User"))
+                    {
+                        <li id="left-sidebar-menu-events">
+                            <a href="@Url.Action("Index", "LiveTour")">
+                                <i class="fa fa-book"></i>
+                                <span>Live Events</span>
+                            </a>
+                        </li>
+                        <li id="left-sidebar-menu-schedule">
+                            <a href="@Url.Action("Index", "Schedule")">
+                                <i class="fa fa-table"></i>
+                                <span>Class Schedule</span>
+                            </a>
+                        </li>
+                        <li id="left-sidebar-menu-profile">
+                            <a href="@Url.Action("StudentProfile", "Admin")">
+                                <i class="fa fa-book"></i>
+                                <span>Profile</span>
+                            </a>
+                        </li>
+                    }
+                    else if (User.IsInRole("Instructor"))
+                    {
+                        <li id="left-sidebar-menu-events">
+                            <a href="@Url.Action("Index", "LiveTour")">
+                                <i class="fa fa-book"></i>
+                                <span>Live Events</span>
+                            </a>
+                        </li>
                         <li id="left-sidebar-menu-applications">
                             <a href="@Url.Action("Index", "ViewApps")">
                                 <i class="fa fa-table"></i>
@@ -399,6 +400,12 @@
                                 <span>Personal Schedule</span>
                             </a>
                         </li>
+                        <li id="left-sidebar-menu-profile">
+                            <a href="@Url.Action("InstructorProfile", "Admin")">
+                                <i class="fa fa-book"></i>
+                                <span>Profile</span>
+                            </a>
+                        </li>
                     }
                     else if (User.IsInRole("Administrator"))
                     {
@@ -414,12 +421,13 @@
                                 <span>Lessons</span>
                             </a>
                         </li>
+                        <li id="left-sidebar-menu-profile">
+                            <a href="@Url.Action("Profile", "Admin")">
+                                <i class="fa fa-book"></i>
+                                <span>Profile</span>
+                            </a>
+                        </li>
                     }
-
-                    <li class="header">LABELS</li>
-                    <li><a href="#"><i class="fa fa-circle-o text-red"></i> <span>Important</span></a></li>
-                    <li><a href="#"><i class="fa fa-circle-o text-yellow"></i> <span>Warning</span></a></li>
-                    <li><a href="#"><i class="fa fa-circle-o text-aqua"></i> <span>Information</span></a></li>
                 </ul>
             </section>
         </aside>
@@ -596,7 +604,6 @@
         <div class="control-sidebar-bg"></div>
     </div>
     
-    @Scripts.Render("~/AdminLTE/plugins/jquery/js")
     @RenderSection("menu", required: false)
     @Scripts.Render("~/AdminLTE/bootstrap/js")
     @Scripts.Render("~/AdminLTE/plugins/slimscroll/js")

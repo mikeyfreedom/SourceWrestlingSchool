@@ -1,0 +1,38 @@
+﻿@model SourceWrestlingSchool.Models.TicketViewModel
+@{
+    ViewBag.Title = "Booking";
+    Layout = "~/Views/Shared/_LayoutNonAdmin.cshtml";
+}
+
+<h2>Booking</h2>
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">Event Details</div>
+                <div class="panel-body" style="color:black">
+                    <ul>
+                        <li>@Html.DisplayNameFor(model => model.Event.EventName) : @Html.DisplayFor(model => model.Event.EventName)</li>
+                        <li>@Html.DisplayNameFor(model => model.Event.EventDate) : @Html.DisplayFor(model => model.Event.EventDate)</li>
+                        <li>@Html.DisplayNameFor(model => model.Event.EventTime) : @Html.DisplayFor(model => model.Event.EventTime)</li>
+                        <li>@Html.DisplayNameFor(model => model.Event.Venue.VenueName) : @Html.DisplayFor(model => model.Event.Venue.VenueName)</li>
+                        <li>@Html.DisplayNameFor(model => model.Seats.ElementAt(0).SeatNumber) : 
+                            @foreach (var item in Model.Seats)
+                            {
+                                @Html.DisplayFor(model => item.SeatNumber)
+                                <p>,</p>
+                            }
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="btn btn-group">
+
+        </div>
+    </div>
+</div>
+

@@ -11,6 +11,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using SourceWrestlingSchool.Models;
+using System.Net.Mail;
 
 namespace SourceWrestlingSchool
 {
@@ -18,8 +19,22 @@ namespace SourceWrestlingSchool
     {
         public Task SendAsync(IdentityMessage message)
         {
+            SmtpClient smtp = new SmtpClient();
+            MailMessage mail = new MailMessage();
+
+            mail.IsBodyHtml = true;
+            mail.From = new MailAddress("lowlander_glen@yahoo.co.uk", "Source Admin");
+            mail.To.Add(message.Destination);
+            mail.Subject = message.Subject;
+            mail.Body = message.Body;
+
+            smtp.Timeout = 1000;
+
+            var t = Task.Run(() => smtp.SendAsync(mail, null));
+
+            return t;
             // Plug in your email service here to send an email.
-            return Task.FromResult(0);
+            //return Task.FromResult(0);
         }
     }
 

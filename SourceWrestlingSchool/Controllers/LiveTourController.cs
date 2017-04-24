@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Data.Entity;
 
 namespace SourceWrestlingSchool.Controllers
 {
@@ -48,9 +49,40 @@ namespace SourceWrestlingSchool.Controllers
         }
 
         [HttpPost]
-        public ActionResult Booking(int id,string seatNo)
+        public ActionResult Booking(FormCollection form)
         {
-            return View();
+            TicketViewModel model = new TicketViewModel();
+            List<Seat> Seats = new List<Seat>();
+            var eventID = form["eventID"];
+            int eID = int.Parse(eventID);
+            var seatList = form["seatList"].Split(',');
+            
+            using (db)
+            {
+                LiveEvent newEvent = db.LiveEvents
+                                      .Where(ev => ev.EventID == eID)
+                                      .Include(ev => ev.Venue)
+                                      .Include(ev => ev.Seats)
+                                      .FirstOrDefault();
+                model.Event = newEvent;
+
+                foreach (string seatNo in seatList)
+                {
+                    Seat seat = (from s in newEvent.Seats
+                                 where s.SeatNumber == seatNo
+                                 select s).First();
+
+                    Seats.Add(seat);
+                    seat.Events.Add(newEvent);
+                    seat.Status = Seat.SeatBookingStatus.Reserved;
+                    //db.Entry(seat).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
+            }
+            
+            model.Seats = Seats;
+            
+            return View(model);
         }
     }
 }

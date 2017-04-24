@@ -4,6 +4,7 @@ using SourceWrestlingSchool.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mail;
 using System.Web;
 using System.Web.Mvc;
 
@@ -63,6 +64,7 @@ namespace SourceWrestlingSchool.Controllers
                 db.Lessons.Add(lesson);
                 //Save the changes to lessons and privates
                 db.SaveChanges();
+                sendEmail(user.UserName, "accept");                
             }
             return RedirectToAction("Index","PrivateRequests");
         }
@@ -78,8 +80,28 @@ namespace SourceWrestlingSchool.Controllers
                                select p).FirstOrDefault();
                 request.Status = PrivateSession.RequestStatus.Refused;
                 db.SaveChanges();
+                sendEmail(request.StudentName, "refuse");
             }
             return RedirectToAction("Index", "PrivateRequests");
+        }
+
+        public void sendEmail(string user,string reason)
+        {
+            MailMessage message = new MailMessage("lowlander_glen@yahoo.co.uk", user);
+            if (reason.Equals("accept"))
+            {
+                message.Subject = "Private Session Request Accepted";
+                message.Body = "You have successfully booked in for a class. We look forward to seeing you there!";
+
+            }
+            else if (reason.Equals("refuse"))
+            {
+                message.Subject = "Private Session Request Refused";
+                message.Body = "Your requested instructor has refused the session.";
+            }
+            
+            SmtpClient smtpClient = new SmtpClient();
+            smtpClient.Send(message);
         }
     }
 }
