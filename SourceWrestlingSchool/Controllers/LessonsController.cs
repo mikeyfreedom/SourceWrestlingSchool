@@ -19,7 +19,8 @@ namespace SourceWrestlingSchool.Controllers
         // GET: Lessons
         public ActionResult Index()
         {
-            return View(db.Lessons.ToList());
+            var model = db.Lessons.Include(l => l.Students).ToList();
+            return View(model);
         }
 
         // GET: Lessons/Details/5
@@ -29,7 +30,10 @@ namespace SourceWrestlingSchool.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Lesson lesson = db.Lessons.Find(id);
+            Lesson lesson = db.Lessons
+                            .Where(l => l.LessonID == id)
+                            .Include(l => l.Students)
+                            .Single();
             if (lesson == null)
             {
                 return HttpNotFound();
@@ -76,7 +80,10 @@ namespace SourceWrestlingSchool.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Lesson lesson = db.Lessons.Find(id);
+            Lesson lesson = db.Lessons
+                            .Where(l => l.LessonID == id)
+                            .Include(l => l.Students)
+                            .Single(); 
             if (lesson == null)
             {
                 return HttpNotFound();
@@ -117,7 +124,10 @@ namespace SourceWrestlingSchool.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Lesson lesson = db.Lessons.Find(id);
+            Lesson lesson = db.Lessons
+                            .Where(l => l.LessonID == id)
+                            .Include(l => l.Students)
+                            .Single();
             if (lesson == null)
             {
                 return HttpNotFound();
@@ -130,7 +140,10 @@ namespace SourceWrestlingSchool.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Lesson lesson = db.Lessons.Find(id);
+            Lesson lesson = db.Lessons
+                            .Where(l => l.LessonID == id)
+                            .Include(l => l.Students)
+                            .Single();
             db.Lessons.Remove(lesson);
             db.SaveChanges();
             return RedirectToAction("Index");
