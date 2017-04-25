@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNet.Identity;
+﻿using FizzWare.NBuilder;
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System;
 using System.Collections.Generic;
@@ -22,7 +23,8 @@ namespace SourceWrestlingSchool.Models
         public DbSet<Seat> Seats { get; set; }
         public DbSet<ApplyViewModel> Applications { get; set; }
         public DbSet<Venue> Venues { get; set; }
-        
+        public DbSet<PrivateSession> PrivateSessions { get; set; }
+
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
         {
@@ -34,7 +36,7 @@ namespace SourceWrestlingSchool.Models
             return new ApplicationDbContext();
         }
 
-        public System.Data.Entity.DbSet<SourceWrestlingSchool.Models.PrivateSession> PrivateSessions { get; set; }
+        
     }
 
     public class ApplicationDbInitializer : DropCreateDatabaseAlways<ApplicationDbContext>
@@ -44,9 +46,13 @@ namespace SourceWrestlingSchool.Models
             if (!context.Users.Any())
             {
                 var roleStore = new RoleStore<IdentityRole>(context);
-                var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
+                var roleManager = new RoleManager<IdentityRole>(roleStore);
                 var userStore = new UserStore<ApplicationUser>(context);
-                var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
+                var userManager = new UserManager<ApplicationUser>(userStore);
+                userManager.UserValidator = new UserValidator<ApplicationUser>(userManager)
+                {
+                    AllowOnlyAlphanumericUserNames = false                    
+                };
 
                 //Populate Role Table
                 if (!roleManager.RoleExists(RoleNames.ROLE_ADMINISTRATOR))
@@ -102,6 +108,7 @@ namespace SourceWrestlingSchool.Models
                     userManager.Create(newUser, password);
                     userManager.AddToRole(newUser.Id, RoleNames.ROLE_ADMINISTRATOR);
 
+                    //Create standard user for testing purposes
                     password = "freedom78";
                     var newStandardUser = new ApplicationUser()
                     {
@@ -120,6 +127,7 @@ namespace SourceWrestlingSchool.Models
                     userManager.Create(newStandardUser, password);
                     userManager.AddToRole(newStandardUser.Id, RoleNames.ROLE_STANDARDUSER);
 
+                    //Create instructor for testing purposes
                     password = "123456";
                     var newInstructor = new ApplicationUser()
                     {
@@ -134,16 +142,54 @@ namespace SourceWrestlingSchool.Models
                         Email = "test@test.com",
                         EmailConfirmed = true,
                         ClassLevel = ClassLevel.Open
-
                     };
 
                     userManager.Create(newInstructor, password);
                     userManager.AddToRole(newInstructor.Id, RoleNames.ROLE_INSTRUCTOR);
                 }
 
+                //Seed Student Users - 150 as per requirements
+                password = "123456";
+                for (int i = 0;i < 150; i++)
+                {
+                    Random r = new Random();
+                    ClassLevel level = (ClassLevel)r.Next(0, 3);
+
+                    var newStudent = new ApplicationUser()
+                    {
+                        FirstName = Faker.Name.First(),
+                        LastName = Faker.Name.Last(),
+                        PhoneNumber = "01389999999",
+                        MobileNumber = "07595543816",
+                        Address = Faker.Address.StreetAddress(),
+                        Town = Faker.Address.City(),
+                        Postcode = Faker.Address.UkPostCode(),
+                        Age = Faker.RandomNumber.Next(16, 40),
+                        Height = Faker.RandomNumber.Next(150, 210),
+                        Weight = Faker.RandomNumber.Next(40, 140),
+                        ClassLevel = level,
+                        EmailConfirmed = true                    
+                    };
+
+                    if (!(context.Users.Any(u => u.UserName == newStudent.UserName)))
+                    {
+                        newStudent.UserName = "" + newStudent.FirstName + "." + newStudent.LastName + "@example.com";
+                        newStudent.Email = newStudent.UserName;
+                        try
+                        {
+                            userManager.Create(newStudent, password);
+                            userManager.AddToRole(newStudent.Id, RoleNames.ROLE_STUDENTUSER);
+                        }
+                        catch
+                        {
+
+                        }
+                    }                    
+                }  
+                
                 //Seed Lessons
-                DateTime startDate = new DateTime(2017, 3, 25);
-                DateTime endDate = new DateTime(2017, 4, 30);
+                DateTime startDate = new DateTime(2017, 4, 24);
+                DateTime endDate = new DateTime(2017, 5, 28);
 
                 for (DateTime date = startDate; date.Date <= endDate.Date; date = date.AddDays(1))
                 {

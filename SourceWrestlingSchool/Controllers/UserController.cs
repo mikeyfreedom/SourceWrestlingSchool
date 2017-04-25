@@ -1,4 +1,6 @@
-﻿using SourceWrestlingSchool.Models;
+﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using SourceWrestlingSchool.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,6 +21,22 @@ namespace SourceWrestlingSchool.Controllers
             userView.Users = users;
             userView.Roles = roles;
             return View(userView);
+        }
+
+        public ActionResult AdjustClassLevel()
+        {
+            var users = db.Users.ToList();
+            List<ApplicationUser> students = new List<ApplicationUser>();
+            var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+            foreach (ApplicationUser user in users)
+            {
+                if (userManager.IsInRole(user.Id,RoleNames.ROLE_STUDENTUSER))
+                {
+                    students.Add(user);
+                }
+            }
+            
+            return View(students);
         }
     }
 }
