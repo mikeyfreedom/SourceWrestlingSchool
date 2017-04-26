@@ -53,8 +53,14 @@ namespace SourceWrestlingSchool.Controllers
             int appID = int.Parse(aID);
             using (db)
             {
-                var app = db.Applications.Where(a => a.ApplicationID == appID).Include(a => a.User).Single();
-                user = app.User.UserName;
+                var app = db.Applications
+                            .Where(a => a.ApplicationID == appID)
+                            .Include(a => a.User)
+                            .Single();
+                app.User.Age = app.Age;
+                app.User.Height = app.Height;
+                app.User.Weight = app.Weight;
+                app.User.ClassLevel = ClassLevel.Beginner;
                 app.Status = ApplyViewModel.ApplicationStatus.Accepted;
                 db.SaveChanges();
             }
@@ -75,7 +81,6 @@ namespace SourceWrestlingSchool.Controllers
                             .Where(a => a.ApplicationID == appID)
                             .Include(a => a.User)
                             .Single(); 
-                user = app.User.UserName;
                 app.Status = ApplyViewModel.ApplicationStatus.Declined;
                 db.SaveChanges();
             }

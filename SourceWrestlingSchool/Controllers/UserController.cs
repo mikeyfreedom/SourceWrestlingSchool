@@ -3,7 +3,9 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using SourceWrestlingSchool.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
 
@@ -37,6 +39,34 @@ namespace SourceWrestlingSchool.Controllers
             }
             
             return View(students);
+        }
+
+        [HttpGet]
+        public ActionResult EditClass(string id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            ApplicationUser model = db.Users.Where(u => u.Id == id).First();
+            if (model == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult EditClass([Bind(Include = "ClassLevel")] ApplicationUser user)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Entry(user).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("AdjustClassLevel");
+            }
+            return View(user);
         }
     }
 }

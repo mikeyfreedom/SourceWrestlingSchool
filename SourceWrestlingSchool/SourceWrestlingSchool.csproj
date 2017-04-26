@@ -1352,6 +1352,7 @@
     <Content Include="Views\Seats\Index.cshtml" />
     <Content Include="Views\LiveTour\Booking.cshtml" />
     <Content Include="Views\User\AdjustClassLevel.cshtml" />
+    <Content Include="Views\User\EditClass.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
