@@ -10,6 +10,15 @@
 <h2>Tickets</h2>
 
 <div class="container">
+    @if (ViewBag.Message != null)
+    {
+        <div class="row">
+            <div class="alert alert-info alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <strong>ViewBag.Message</strong>
+            </div>
+        </div>
+    }
     <div class="row">
         <div class="col-lg-6">
             <div id="seat-map"></div>
@@ -21,7 +30,7 @@
                 <h3> Selected Seats (<span id="counter">0</span>):</h3>
                 <ul id="selected-seats"></ul>
 
-                Total: <b>$<span id="total">0</span></b>
+                Total: <b>£<span id="total">0</span></b>
                 
                 @using (Html.BeginForm("Booking", "LiveTour", FormMethod.Post))
                 {
@@ -108,7 +117,6 @@ $(document).ready(function() {
 
                 seats.pop(this.settings.label);
                 $("#seatList").val(seats.join(','));
-                console.log(seats.join(','));
                 //update the counter
                 $counter.text(sc.find('selected').length - 1);
                 //and total
@@ -138,15 +146,17 @@ $(document).ready(function() {
         sc.status(seatNo, 'unavailable');
     });
 
+    //Checks the seat map every 10 seconds to make sure no one else has booked seats while on the page.
     setInterval(function() {
         $.ajax({
             type     : 'get',
             url      : '/LiveTour/UpdateStatus',
-            data     : { id : @Model.EventID },
+            data     : { id: @Model.EventID },
+            contentType: "application/json; charset=utf-8",
             dataType : 'json',
             success  : function(response) {
                 //iterate through all bookings for our event
-                $.each(response.bookings, function(index, seatNo) {
+                $.each(JSON.parse(response), function(index, seatNo) {
                     //find seat by id and set its status to unavailable
                     sc.status(seatNo, 'unavailable');
                 });

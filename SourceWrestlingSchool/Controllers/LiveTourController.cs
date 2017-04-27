@@ -8,6 +8,7 @@ using System.Data.Entity;
 using Braintree;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using System.Web.Script.Serialization;
 
 namespace SourceWrestlingSchool.Controllers
 {
@@ -137,6 +138,8 @@ namespace SourceWrestlingSchool.Controllers
                         UserID = user.Id
                     };
 
+                    ViewBag.Message = "Payment Successful, enjoy the event!";
+                    db.SaveChanges();
                     return RedirectToAction("/Tickets/" + currentEvent.EventID);
                 }
                 else
@@ -158,8 +161,8 @@ namespace SourceWrestlingSchool.Controllers
                     Console.WriteLine(result.Message);
                 }
             }
-            
-            return RedirectToAction("/LiveTour/Tickets");
+            db.SaveChanges();
+            return RedirectToAction("Tickets","LiveTour");
         }
 
         public JsonResult UpdateStatus(int id)
@@ -172,10 +175,18 @@ namespace SourceWrestlingSchool.Controllers
 
             var bookings = model.Seats
                            .Where(s => s.Status == Seat.SeatBookingStatus.Reserved || s.Status == Seat.SeatBookingStatus.Booked)
-                           .Select(s => s.SeatNumber)
-                           .ToArray();
+                           .Select(s => s.SeatNumber);
 
-            return Json(bookings, JsonRequestBehavior.AllowGet);
+            Dictionary<string, string> seatList = new Dictionary<string, string>();
+            int i = 1;
+            foreach (string seatNo in bookings)
+            {
+                seatList.Add(i.ToString(), seatNo);
+                i++;
+            }
+            string response = (new JavaScriptSerializer()).Serialize(seatList);
+
+            return Json(response, JsonRequestBehavior.AllowGet);
         }
 
         
