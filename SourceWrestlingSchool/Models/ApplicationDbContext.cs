@@ -35,8 +35,6 @@ namespace SourceWrestlingSchool.Models
         {
             return new ApplicationDbContext();
         }
-
-        public System.Data.Entity.DbSet<SourceWrestlingSchool.Models.ApplicationUser> ApplicationUsers { get; set; }
     }
 
     public class ApplicationDbInitializer : DropCreateDatabaseAlways<ApplicationDbContext>

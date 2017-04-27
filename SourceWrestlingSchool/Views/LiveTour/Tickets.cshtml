@@ -1,9 +1,8 @@
 ﻿@model SourceWrestlingSchool.Models.LiveEvent
-@using SourceWrestlingSchool.Models
+
 @{
     ViewBag.Title = "Tickets";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    var seatInfo = ViewBag.seatInfo as Seat[][];
 }
 <link rel="stylesheet" type="text/css" href="~/Content/jquery.seat-charts.css">
 <script src="~/Scripts/SeatChart/jquery.seat-charts.js"></script>
@@ -43,6 +42,7 @@
 
 <script>
     var firstSeatLabel = 1;
+    var unavailableSeats = @Html.Raw(Json.Encode(ViewBag.Unavailable));
 $(document).ready(function() {
     var seats = new Array();
     var $cart = $('#selected-seats'),
@@ -57,7 +57,7 @@ $(document).ready(function() {
             'aaaaaaaa',
             'aaaaaaaa',
             'aaaaaaaa',
-            'aaaaaaaa'            
+            'aaaaaaaa'
         ],
         seats: {
             a: {
@@ -79,7 +79,7 @@ $(document).ready(function() {
             node: $('#legend'),
             items: [
                 ['a', 'available', 'General Seating'],
-                ['u', 'unavailable', 'Already Booked']
+                ['u', 'unavailable', 'Already Booked/Reserved']
                 ]
         },
         click: function () {
@@ -104,8 +104,8 @@ $(document).ready(function() {
                 $total.text(recalculateTotal(sc) + this.data().price);
 
                 return 'selected';
-            } else if (this.status() == 'selected'){ 
-                
+            } else if (this.status() == 'selected'){
+
                 seats.pop(this.settings.label);
                 $("#seatList").val(seats.join(','));
                 console.log(seats.join(','));
@@ -133,9 +133,29 @@ $(document).ready(function() {
         sc.get($(this).parents('li:first').data('seatId')).click();
     });
 
+    $.each(unavailableSeats, function(index, seatNo) {
+        //find seat by id and set its status to unavailable
+        sc.status(seatNo, 'unavailable');
+    });
+
+    setInterval(function() {
+        $.ajax({
+            type     : 'get',
+            url      : '/LiveTour/UpdateStatus',
+            data     : { id : @Model.EventID },
+            dataType : 'json',
+            success  : function(response) {
+                //iterate through all bookings for our event
+                $.each(response.bookings, function(index, seatNo) {
+                    //find seat by id and set its status to unavailable
+                    sc.status(seatNo, 'unavailable');
+                });
+            }
+        });
+    }, 10000); //every 10 seconds
+
     //Make all available 'u' seats unavailable
     sc.find('u.available').status('unavailable');
-
 });
 
 function recalculateTotal(sc) {

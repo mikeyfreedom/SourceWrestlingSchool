@@ -2,6 +2,7 @@
 
 @{
     ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h2>Index</h2>
@@ -12,10 +13,19 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.PaymentMethod.PaymentMethodDescription)
+            @Html.DisplayNameFor(model => model.User.FirstName)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.User.Address)
+            @Html.DisplayNameFor(model => model.TransactionID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PaymentDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PaymentAmount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PaymentDescription)
         </th>
         <th></th>
     </tr>
@@ -23,10 +33,19 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.PaymentMethod.PaymentMethodDescription)
+            @Html.DisplayFor(modelItem => item.User.FirstName)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.User.Address)
+            @Html.DisplayFor(modelItem => item.TransactionID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PaymentDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PaymentAmount)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PaymentDescription)
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.PaymentID }) |

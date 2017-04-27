@@ -6,6 +6,8 @@ using System.Web;
 using System.Web.Mvc;
 using System.Data.Entity;
 using Braintree;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace SourceWrestlingSchool.Controllers
 {
@@ -23,27 +25,18 @@ namespace SourceWrestlingSchool.Controllers
 
         public ActionResult Tickets(int id)
         {
-            var model = db.LiveEvents.Where(ev => ev.EventID == id).Include(ev => ev.Venue).Include(ev => ev.Seats).Single();
+            var model = db.LiveEvents
+                        .Where(ev => ev.EventID == id)
+                        .Include(ev => ev.Venue)
+                        .Include(ev => ev.Seats)
+                        .Single();
 
-            Seat[][] seatModel = new Seat[8][];
-            int j = 0;
-            for (int i = 0; i<8; i++)
-            {
-                seatModel[i] = new Seat[]
-                        {
-                        model.Seats.ElementAt(j),
-                        model.Seats.ElementAt(j+1),
-                        model.Seats.ElementAt(j+2),
-                        model.Seats.ElementAt(j+3),
-                        model.Seats.ElementAt(j+4),
-                        model.Seats.ElementAt(j+5),
-                        model.Seats.ElementAt(j+6),
-                        model.Seats.ElementAt(j+7),
-                        };
-                j = j + 8;
-            }
+            var bookings = model.Seats
+                           .Where(s => s.Status == Seat.SeatBookingStatus.Reserved || s.Status == Seat.SeatBookingStatus.Booked)
+                           .Select(s => s.SeatNumber)
+                           .ToArray();
 
-            ViewBag.seatInfo = seatModel;
+            ViewBag.Unavailable = bookings;
             return View(model);
         }
 
@@ -90,30 +83,40 @@ namespace SourceWrestlingSchool.Controllers
         [HttpPost]
         public ActionResult Checkout(FormCollection collection)
         {
-            string nonceFromTheClient = collection["payment_method_nonce"];
-
-            var request = new TransactionRequest
+            LiveEvent currentEvent = (LiveEvent)TempData["Event"];
+            string[] seatlist = (string[])TempData["seatList"];
+            
+            using (db)
             {
-                Amount = 10.00M,
-                PaymentMethodNonce = nonceFromTheClient,
-                Options = new TransactionOptionsRequest
+                var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+                string nonceFromTheClient = collection["payment_method_nonce"];
+
+                var request = new TransactionRequest
                 {
-                    SubmitForSettlement = true                    
-                }
-            };
+                    Amount = 10.00M,
+                    PaymentMethodNonce = nonceFromTheClient,
+                    CustomFields = new Dictionary<string, string>
+                {
+                    { "description", "Booking of " + seatlist.Count() + " seats for "+ currentEvent.EventName + "." },
+                },
+                    Options = new TransactionOptionsRequest
+                    {
+                        SubmitForSettlement = true
+                    }
+                };
 
-            Result<Transaction> result = PaymentGateways.Gateway.Transaction.Sale(request);
-            if (result.IsSuccess())
-            {
-                string[] seatlist = (string[]) TempData["seatList"];
-                LiveEvent currentEvent = (LiveEvent) TempData["Event"];
-                using (db)
+                Result<Transaction> result = PaymentGateways.Gateway.Transaction.Sale(request);
+
+
+
+                if (result.IsSuccess())
                 {
                     LiveEvent newEvent = db.LiveEvents
-                                      .Where(ev => ev.EventID == currentEvent.EventID)
-                                      .Include(ev => ev.Venue)
-                                      .Include(ev => ev.Seats)
-                                      .FirstOrDefault();
+                                        .Where(ev => ev.EventID == currentEvent.EventID)
+                                        .Include(ev => ev.Venue)
+                                        .Include(ev => ev.Seats)
+                                        .FirstOrDefault();
+
                     foreach (var seatNo in seatlist)
                     {
                         Seat seat = newEvent.Seats
@@ -121,15 +124,58 @@ namespace SourceWrestlingSchool.Controllers
                                     .FirstOrDefault();
                         seat.Status = Seat.SeatBookingStatus.Booked;
                     }
-                }
-                return RedirectToAction("/Tickets/" + currentEvent.EventID);
-            }
-            else
-            {
-                Console.WriteLine(result.Message);
-            }
 
-            return RedirectToAction("/LiveTour/Index");
+                    var user = userManager.FindByEmail(User.Identity.Name);
+
+                    Payment newPayment = new Payment
+                    {
+                        PaymentAmount = (float) result.Target.Amount,
+                        PaymentDate = result.Target.CreatedAt.Value,
+                        PaymentDescription = result.Target.CustomFields["description"],
+                        TransactionID = result.Target.Id,
+                        User = user,
+                        UserID = user.Id
+                    };
+
+                    return RedirectToAction("/Tickets/" + currentEvent.EventID);
+                }
+                else
+                {
+                    LiveEvent newEvent = db.LiveEvents
+                                       .Where(ev => ev.EventID == currentEvent.EventID)
+                                       .Include(ev => ev.Venue)
+                                       .Include(ev => ev.Seats)
+                                       .FirstOrDefault();
+
+                    foreach (var seatNo in seatlist)
+                    {
+                        Seat seat = newEvent.Seats
+                                    .Where(s => s.SeatNumber == seatNo)
+                                    .FirstOrDefault();
+                        seat.Status = Seat.SeatBookingStatus.Free;
+                    }
+                    ViewBag.Message = result.Message;
+                    Console.WriteLine(result.Message);
+                }
+            }
+            
+            return RedirectToAction("/LiveTour/Tickets");
+        }
+
+        public JsonResult UpdateStatus(int id)
+        {
+            var model = db.LiveEvents
+                        .Where(ev => ev.EventID == id)
+                        .Include(ev => ev.Venue)
+                        .Include(ev => ev.Seats)
+                        .Single();
+
+            var bookings = model.Seats
+                           .Where(s => s.Status == Seat.SeatBookingStatus.Reserved || s.Status == Seat.SeatBookingStatus.Booked)
+                           .Select(s => s.SeatNumber)
+                           .ToArray();
+
+            return Json(bookings, JsonRequestBehavior.AllowGet);
         }
 
         

@@ -3,6 +3,8 @@
     ViewBag.Title = "Booking";
     Layout = "~/Views/Shared/_Layout.cshtml";
     int i = 1;
+    float amount = Model.Seats.Count * 5;
+    string buttonValue = "Pay £" + amount; 
 }
 <script src="https://js.braintreegateway.com/js/braintree-2.31.0.min.js"></script>
 <h2>Booking</h2>
@@ -37,7 +39,7 @@
             </div>
         </div>
     </div>
-    <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>
+    <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Proceed To Payment</button>
 
     <!-- Modal -->
     <div id="myModal" class="modal fade" role="dialog">
@@ -47,12 +49,12 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Modal Header</h4>
+                    <h4 class="modal-title">Amount Due: £@amount</h4>
                 </div>
                 <div class="modal-body">
                     <form id="checkout" method="post" action="/LiveTour/Checkout">
                         <div id="payment-form"></div>
-                        <input style="color:black" type="submit" value="Pay $10">
+                        <input class="btn btn-success" type="submit" value=@buttonValue>
                     </form>
                     <script>
                     // We generated a client token for you so you can test out this code
@@ -67,7 +69,7 @@
                                                 type: 'checkout'
                                                     },
                                             singleUse: true,
-                                            amount: 10.00,
+                                            amount: @amount,
                                             currency: 'GBP'
                                         }
                                         });
