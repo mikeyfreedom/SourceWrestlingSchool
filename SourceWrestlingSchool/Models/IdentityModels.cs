@@ -6,6 +6,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System;
 
 namespace SourceWrestlingSchool.Models
 {
@@ -37,8 +38,15 @@ namespace SourceWrestlingSchool.Models
         [MaxLength(8)]
         public string Postcode { get; set; }
         public int? Weight { get; set; }
+        public string BioContent { get; set; }
+        public DateTime DateJoinedSchool { get; set; }
+        public string FacebookURL { get; set; }
+        public string InstagramURL { get; set; }
+        public string TwitterURL { get; set; }
+        public string YoutubeEmbedLink { get; set; }
+        public string ProfileImageFileName { get; set; }
         public virtual ICollection<Lesson> Lessons { get; set; }
-
+        public ICollection<string> SlideshowImageFileNames { get; set; }
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {
             // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType

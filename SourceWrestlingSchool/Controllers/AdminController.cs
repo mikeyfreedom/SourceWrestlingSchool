@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SourceWrestlingSchool.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,6 +9,8 @@ namespace SourceWrestlingSchool.Controllers
 {
     public class AdminController : Controller
     {
+        private ApplicationDbContext db = new ApplicationDbContext();
+
         // GET: Admin
         public ActionResult DashboardV1()
         {
@@ -21,9 +24,33 @@ namespace SourceWrestlingSchool.Controllers
         {
             return View();
         }
-        public ActionResult StudentProfile()
+        public ActionResult StudentProfile(string id)
         {
-            return View();
+            ApplicationUser student;
+
+            using (db)
+            {
+                student = db.Users
+                          .Where(s => s.Id == id)
+                          .Single(); 
+            };
+
+            ProfileViewModel model = new ProfileViewModel();
+            model.BioContent = student.BioContent;
+            model.ClassLevel = (ClassLevel) student.ClassLevel;
+            model.DateJoinedSchool = student.DateJoinedSchool;
+            model.EmailAddress = student.Email;
+            model.FacebookURL = student.FacebookURL;
+            model.Height = (int) student.Height;
+            model.InstagramURL = student.InstagramURL;
+            model.Name = student.FirstName + " " + student.LastName;
+            model.ProfileImageFileName = student.ProfileImageFileName;
+            model.SlideshowImageFileNames = student.SlideshowImageFileNames.ToArray();
+            model.TwitterURL = student.TwitterURL;
+            model.Weight = (int) student.Weight;
+            model.YoutubeEmbedLink = student.YoutubeEmbedLink;
+            
+            return View(model);
         }
         public ActionResult InstructorProfile()
         {

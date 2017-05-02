@@ -1,4 +1,5 @@
-﻿@{
+﻿@model SourceWrestlingSchool.Models.ProfileViewModel
+@{
     ViewBag.Title = "Dashboard v1";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -17,16 +18,16 @@
                 <!-- SIDEBAR USER TITLE -->
                 <div class="profile-usertitle">
                     <div class="profile-usertitle-name">
-                        Marcus Doe
+                        @Html.DisplayFor(model => model.Name);
                     </div>
                     <div class="profile-usertitle-job">
-                        Developer
+                        @Html.DisplayFor(model => model.ClassLevel);
                     </div>
                 </div>
                 <!-- END SIDEBAR USER TITLE -->
                 <!-- SIDEBAR BUTTONS -->
                 <div class="profile-userbuttons">
-                    <button type="button" class="btn btn-success btn-sm">Follow</button>
+                    <button type="button" class="btn btn-success btn-sm">Email</button>
                     <button type="button" class="btn btn-danger btn-sm">Message</button>
                 </div>
                 <!-- END SIDEBAR BUTTONS -->
