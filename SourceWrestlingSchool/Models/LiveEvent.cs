@@ -19,7 +19,7 @@ namespace SourceWrestlingSchool.Models
         public DateTime EventDate { get; set; }
         [DisplayName("Event Time")]
         public TimeSpan EventTime { get; set; }
-
+        public float EventRevenue { get; set; }
         public virtual Venue Venue { get; set; }
         
         public LiveEvent()

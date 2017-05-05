@@ -1271,11 +1271,6 @@
     <Content Include="Views\Bookings\Details.cshtml" />
     <Content Include="Views\Bookings\Edit.cshtml" />
     <Content Include="Views\Bookings\Index.cshtml" />
-    <Content Include="Views\LiveEvents\Create.cshtml" />
-    <Content Include="Views\LiveEvents\Delete.cshtml" />
-    <Content Include="Views\LiveEvents\Details.cshtml" />
-    <Content Include="Views\LiveEvents\Edit.cshtml" />
-    <Content Include="Views\LiveEvents\Index.cshtml" />
     <Content Include="Views\Orders\Create.cshtml" />
     <Content Include="Views\Orders\Delete.cshtml" />
     <Content Include="Views\Orders\Details.cshtml" />
@@ -1362,6 +1357,11 @@
     <Content Include="Views\Payments\Index.cshtml" />
     <Content Include="Views\Subscription\Index.cshtml" />
     <Content Include="Views\Subscription\CreateCustomer.cshtml" />
+    <Content Include="Views\LiveEvents\Create.cshtml" />
+    <Content Include="Views\LiveEvents\Delete.cshtml" />
+    <Content Include="Views\LiveEvents\Details.cshtml" />
+    <Content Include="Views\LiveEvents\Edit.cshtml" />
+    <Content Include="Views\LiveEvents\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

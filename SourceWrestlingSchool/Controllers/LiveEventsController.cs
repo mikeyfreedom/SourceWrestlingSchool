@@ -4,9 +4,12 @@ using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
+using System.Web.UI.WebControls;
 using System.Web;
 using System.Web.Mvc;
 using SourceWrestlingSchool.Models;
+using System.IO;
+using System.Web.UI;
 
 namespace SourceWrestlingSchool.Controllers
 {
@@ -17,8 +20,10 @@ namespace SourceWrestlingSchool.Controllers
         // GET: LiveEvents
         public ActionResult Index()
         {
-            var model = db.LiveEvents.Include(ev => ev.Venue).Include(ev => ev.Seats).ToList();
-            return View(model);
+            return View(db.LiveEvents
+                        .Include(v => v.Venue)
+                        .Include(s => s.Seats)                        
+                        .ToList());
         }
 
         // GET: LiveEvents/Details/5
@@ -28,7 +33,12 @@ namespace SourceWrestlingSchool.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            LiveEvent liveEvent = db.LiveEvents.Where(ev => ev.EventID == id).Include(ev => ev.Venue).Include(ev => ev.Seats).Single();
+            LiveEvent liveEvent = db.LiveEvents
+                                  .Where(e => e.EventID == id)
+                                  .Include(v => v.Venue)
+                                  .Include(s => s.Seats)
+                                  .First();
+                                  
             if (liveEvent == null)
             {
                 return HttpNotFound();
@@ -47,7 +57,7 @@ namespace SourceWrestlingSchool.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "EventID,EventName,EventDate,EventTime,Location")] LiveEvent liveEvent)
+        public ActionResult Create([Bind(Include = "EventID,EventName,EventDate,EventTime,EventRevenue")] LiveEvent liveEvent)
         {
             if (ModelState.IsValid)
             {
@@ -66,7 +76,7 @@ namespace SourceWrestlingSchool.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            LiveEvent liveEvent = db.LiveEvents.Where(ev => ev.EventID == id).Include(ev => ev.Venue).Include(ev => ev.Seats).Single();
+            LiveEvent liveEvent = db.LiveEvents.Find(id);
             if (liveEvent == null)
             {
                 return HttpNotFound();
@@ -79,7 +89,7 @@ namespace SourceWrestlingSchool.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "EventID,EventName,EventDate,EventTime,Location")] LiveEvent liveEvent)
+        public ActionResult Edit([Bind(Include = "EventID,EventName,EventDate,EventTime,EventRevenue")] LiveEvent liveEvent)
         {
             if (ModelState.IsValid)
             {
@@ -97,7 +107,7 @@ namespace SourceWrestlingSchool.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            LiveEvent liveEvent = db.LiveEvents.Where(ev => ev.EventID == id).Include(ev => ev.Venue).Include(ev => ev.Seats).Single();
+            LiveEvent liveEvent = db.LiveEvents.Find(id);
             if (liveEvent == null)
             {
                 return HttpNotFound();
@@ -110,10 +120,30 @@ namespace SourceWrestlingSchool.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            LiveEvent liveEvent = db.LiveEvents.Where(ev => ev.EventID == id).Include(ev => ev.Venue).Include(ev => ev.Seats).Single();
+            LiveEvent liveEvent = db.LiveEvents.Find(id);
             db.LiveEvents.Remove(liveEvent);
             db.SaveChanges();
             return RedirectToAction("Index");
+        }
+
+        public void ExportEventListToExcel()
+        {
+            GridView grid = new GridView();
+            var eventQuery = from e in db.LiveEvents
+                             select new { e.EventID, e.EventName, e.EventDate, e.EventRevenue };
+            grid.DataSource = eventQuery.ToList();
+            grid.DataBind();
+
+            Response.ClearContent();
+            Response.AddHeader("content-disposition", "attachment; filename=EventRevenue.xls");
+            Response.ContentType = "application/excel";
+            StringWriter sw = new StringWriter();
+            HtmlTextWriter htw = new HtmlTextWriter(sw);
+
+            grid.RenderControl(htw);
+
+            Response.Write(sw.ToString());
+            Response.End();
         }
 
         protected override void Dispose(bool disposing)

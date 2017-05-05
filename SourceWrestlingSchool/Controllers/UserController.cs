@@ -56,7 +56,9 @@ namespace SourceWrestlingSchool.Controllers
                     students.Add(user);
                 }
             }
-            grid.DataSource = students;
+            var studentQuery = from s in students
+                               select new { s.FirstName, s.LastName, s.ClassLevel, s.Age, s.Email, s.DateJoinedSchool };
+            grid.DataSource = studentQuery.ToList();                              
             grid.DataBind();
 
             Response.ClearContent();

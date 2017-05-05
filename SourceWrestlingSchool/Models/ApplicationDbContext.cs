@@ -282,7 +282,8 @@ namespace SourceWrestlingSchool.Models
                     EventDate = newDate.Date,
                     EventTime = new DateTime(newDate.Year, newDate.Month, newDate.Day, 18, 30, 00).TimeOfDay,
                     EventName = "Source Wrestling Showcase",
-                    Venue = school
+                    Venue = school,
+                    EventRevenue = 0
                 };
                 List<Seat> seats = sampleEvent.CreateSeatMap();
                 foreach (Seat seat in seats)
