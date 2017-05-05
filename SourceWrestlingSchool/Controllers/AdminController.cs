@@ -38,7 +38,7 @@ namespace SourceWrestlingSchool.Controllers
             ProfileViewModel model = new ProfileViewModel();
             model.BioContent = student.BioContent;
             model.ClassLevel = (ClassLevel) student.ClassLevel;
-            model.DateJoinedSchool = student.DateJoinedSchool;
+            model.DateJoinedSchool = (DateTime) student.DateJoinedSchool;
             model.EmailAddress = student.Email;
             model.FacebookURL = student.FacebookURL;
             model.Height = (int) student.Height;

@@ -235,6 +235,7 @@
     <Compile Include="Controllers\PrivateSessionsController.cs" />
     <Compile Include="Controllers\ScheduleController.cs" />
     <Compile Include="Controllers\SeatsController.cs" />
+    <Compile Include="Controllers\SubscriptionController.cs" />
     <Compile Include="Controllers\TablesController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\ViewAppsController.cs" />
@@ -248,6 +249,7 @@
     <Compile Include="Models\ApplyViewModel.cs" />
     <Compile Include="Models\Booking.cs" />
     <Compile Include="Models\ClassLevel.cs" />
+    <Compile Include="Models\CreateCustomerViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ImageHelper.cs" />
     <Compile Include="Models\Lesson.cs" />
@@ -263,6 +265,7 @@
     <Compile Include="Models\ProfileViewModel.cs" />
     <Compile Include="Models\RoleNames.cs" />
     <Compile Include="Models\Seat.cs" />
+    <Compile Include="Models\SubscriptionViewModel.cs" />
     <Compile Include="Models\TicketViewModel.cs" />
     <Compile Include="Models\UserViewModel.cs" />
     <Compile Include="Models\Venue.cs" />
@@ -1070,6 +1073,8 @@
     <Content Include="Content\css\font-awesome.min.css" />
     <Content Include="Content\fonts\fontawesome-webfont.svg" />
     <Content Include="Content\jquery.seat-charts.css" />
+    <Content Include="Content\MemberPlans.css" />
+    <Content Include="Content\newSub.css" />
     <Content Include="Content\sidebar.css" />
     <Content Include="Content\source_wrestling_school.css" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
@@ -1355,6 +1360,8 @@
     <Content Include="Views\Payments\Details.cshtml" />
     <Content Include="Views\Payments\Edit.cshtml" />
     <Content Include="Views\Payments\Index.cshtml" />
+    <Content Include="Views\Subscription\Index.cshtml" />
+    <Content Include="Views\Subscription\CreateCustomer.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

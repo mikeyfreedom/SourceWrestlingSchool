@@ -13,8 +13,8 @@
     @Styles.Render("~/AdminLTE/bootstrap/css")
     @Styles.Render("~/AdminLTE/dist/css")
     @Styles.Render("~/AdminLTE/dist/css/skins")
-    <link rel="stylesheet" href="~/Content/source_wrestling_school.css">  
-    <link rel="stylesheet" href="~/Content/TourIndex.css">  
+     
+   
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
     <div class="wrapper">
@@ -357,7 +357,13 @@
                         </li>
                         <li id="left-sidebar-menu-schedule">
                             <a href="@Url.Action("Index", "Schedule")">
-                                <i class="fa fa-table"></i>
+                                <i class="fa fa-calendar"></i>
+                                <span>Class Schedule</span>
+                            </a>
+                        </li>
+                        <li id="left-sidebar-menu-subscription">
+                            <a href="@Url.Action("Index", "Subscription",new { username = User.Identity.Name })">
+                                <i class="fa fa-money"></i>
                                 <span>Class Schedule</span>
                             </a>
                         </li>
@@ -429,6 +435,12 @@
                         </li>
                         <li id="left-sidebar-menu-profile">
                             <a href="@Url.Action("Profile", "Admin")">
+                                <i class="fa fa-book"></i>
+                                <span>Profile</span>
+                            </a>
+                        </li>
+                        <li id="left-sidebar-menu-reports">
+                            <a href="@Url.Action("Index", "Reports")">
                                 <i class="fa fa-book"></i>
                                 <span>Profile</span>
                             </a>

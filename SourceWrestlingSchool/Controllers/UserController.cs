@@ -4,10 +4,12 @@ using SourceWrestlingSchool.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.UI;
 
 namespace SourceWrestlingSchool.Controllers
 {
@@ -39,6 +41,34 @@ namespace SourceWrestlingSchool.Controllers
             }
             
             return View(students);
+        }
+
+        public void ExportStudentListToExcel()
+        {
+            var users = db.Users.ToList();
+            var students = new List<ApplicationUser>();
+            var grid = new System.Web.UI.WebControls.GridView();
+            var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+            foreach (ApplicationUser user in users)
+            {
+                if (userManager.IsInRole(user.Id, RoleNames.ROLE_STUDENTUSER))
+                {
+                    students.Add(user);
+                }
+            }
+            grid.DataSource = students;
+            grid.DataBind();
+
+            Response.ClearContent();
+            Response.AddHeader("content-disposition", "attachment; filename=StudentRoster.xls");
+            Response.ContentType = "application/excel";
+            StringWriter sw = new StringWriter();
+            HtmlTextWriter htw = new HtmlTextWriter(sw);
+
+            grid.RenderControl(htw);
+
+            Response.Write(sw.ToString());
+            Response.End();
         }
 
         [HttpGet]

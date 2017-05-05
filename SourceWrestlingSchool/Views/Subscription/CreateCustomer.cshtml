@@ -1,0 +1,180 @@
+﻿@model SourceWrestlingSchool.Models.CreateCustomerViewModel
+@{
+    ViewBag.Title = "CreateCustomer";
+    Layout = "~/Views/Shared/_Layout.cshtml";    
+}
+<link href="~/Content/newSub.css" rel="stylesheet" />
+
+<script src="https://js.braintreegateway.com/web/3.14.0/js/client.min.js"></script>
+<script src="https://js.braintreegateway.com/web/3.14.0/js/hosted-fields.min.js"></script>
+
+<h2>New Membership Agreement</h2>
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">Confirm Your Details</div>
+                <div class="panel-body" style="color:black">
+                    <ul>
+                        <li>@Html.DisplayNameFor(model => model.User.FirstName) : @Html.DisplayFor(model => model.User.FirstName)</li>
+                        <li>@Html.DisplayNameFor(model => model.User.LastName) : @Html.DisplayFor(model => model.User.LastName)</li>
+                        <li>@Html.DisplayNameFor(model => model.User.Email) : @Html.DisplayFor(model => model.User.Email)</li>
+                        <li>@Html.DisplayNameFor(model => model.User.PhoneNumber) : @Html.DisplayFor(model => model.User.PhoneNumber)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="panel panel-default bootstrap-basic">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Enter Card Details</h3>
+                </div>
+                <form class="panel-body">
+                    <div class="row">
+                        <div class="form-group col-xs-8">
+                            <label class="control-label">Card Number</label>
+                            <!--  Hosted Fields div container -->
+                            <div class="form-control" id="card-number"></div>
+                            <span class="helper-text"></span>
+                        </div>
+                        <div class="form-group col-xs-4">
+                            <div class="row">
+                                <label class="control-label col-xs-12">Expiration Date</label>
+                                <div class="col-xs-6">
+                                    <!--  Hosted Fields div container -->
+                                    <div class="form-control" id="expiration-month"></div>
+                                </div>
+                                <div class="col-xs-6">
+                                    <!--  Hosted Fields div container -->
+                                    <div class="form-control" id="expiration-year"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-xs-6">
+                            <label class="control-label">Security Code</label>
+                            <!--  Hosted Fields div container -->
+                            <div class="form-control" id="cvv"></div>
+                        </div>
+                        <div class="form-group col-xs-6">
+                            <label class="control-label">Post code</label>
+                            <!--  Hosted Fields div container -->
+                            <div class="form-control" id="postal-code"></div>
+                        </div>
+                    </div>
+                        
+                    <button value="submit" id="submit" class="btn btn-success btn-lg center-block">Create Subscription with <span id="card-type">Card</span></button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var clientToken = @ViewBag.ClientToken
+
+braintree.client.create({
+  authorization: clientToken
+}, function (err, clientInstance) {
+  if (err) {
+    console.error(err);
+    return;
+  }
+
+  braintree.hostedFields.create({
+    client: clientInstance,
+    styles: {
+      'input': {
+        'font-size': '14px',
+        'font-family': 'helvetica, tahoma, calibri, sans-serif',
+        'color': '#3a3a3a'
+      },
+      ':focus': {
+        'color': 'black'
+      }
+    },
+    fields: {
+      number: {
+        selector: '#card-number',
+        placeholder: 'Card No.'
+      },
+      cvv: {
+        selector: '#cvv',
+        placeholder: 'CVV'
+      },
+      expirationMonth: {
+        selector: '#expiration-month',
+        placeholder: 'MM'
+      },
+      expirationYear: {
+        selector: '#expiration-year',
+        placeholder: 'YY'
+      },
+      postalCode: {
+        selector: '#postal-code',
+        placeholder: 'PostCode'
+      }
+    }
+  }, function (err, hostedFieldsInstance) {
+    if (err) {
+      console.error(err);
+      return;
+    }
+
+    hostedFieldsInstance.on('validityChange', function (event) {
+      var field = event.fields[event.emittedBy];
+
+      if (field.isValid) {
+        if (event.emittedBy === 'expirationMonth' || event.emittedBy === 'expirationYear') {
+          if (!event.fields.expirationMonth.isValid || !event.fields.expirationYear.isValid) {
+            return;
+          }
+        } else if (event.emittedBy === 'number') {
+          $('#card-number').next('span').text('');
+        }
+
+        // Apply styling for a valid field
+        $(field.container).parents('.form-group').addClass('has-success');
+      } else if (field.isPotentiallyValid) {
+        // Remove styling  from potentially valid fields
+        $(field.container).parents('.form-group').removeClass('has-warning');
+        $(field.container).parents('.form-group').removeClass('has-success');
+        if (event.emittedBy === 'number') {
+          $('#card-number').next('span').text('');
+        }
+      } else {
+        // Add styling to invalid fields
+        $(field.container).parents('.form-group').addClass('has-warning');
+        // Add helper text for an invalid card number
+        if (event.emittedBy === 'number') {
+          $('#card-number').next('span').text('Looks like this card number has an error.');
+        }
+      }
+    });
+
+    hostedFieldsInstance.on('cardTypeChange', function (event) {
+      // Handle a field's change, such as a change in validity or credit card type
+      if (event.cards.length === 1) {
+        $('#card-type').text(event.cards[0].niceType);
+      } else {
+        $('#card-type').text('Card');
+      }
+    });
+
+    $('.panel-body').submit(function (event) {
+      event.preventDefault();
+      hostedFieldsInstance.tokenize(function (err, payload) {
+        if (err) {
+          console.error(err);
+          return;
+        }
+
+        // This is where you would submit payload.nonce to your server
+        alert('Submit your nonce to your server here!');
+      });
+    });
+  });
+});
+
+</script>

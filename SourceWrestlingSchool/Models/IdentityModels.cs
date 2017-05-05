@@ -39,7 +39,7 @@ namespace SourceWrestlingSchool.Models
         public string Postcode { get; set; }
         public int? Weight { get; set; }
         public string BioContent { get; set; }
-        public DateTime DateJoinedSchool { get; set; }
+        public DateTime? DateJoinedSchool { get; set; }
         public string FacebookURL { get; set; }
         public string InstagramURL { get; set; }
         public string TwitterURL { get; set; }

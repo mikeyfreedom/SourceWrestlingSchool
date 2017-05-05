@@ -35,6 +35,8 @@ namespace SourceWrestlingSchool.Models
         {
             return new ApplicationDbContext();
         }
+
+        public System.Data.Entity.DbSet<SourceWrestlingSchool.Models.SubscriptionViewModel> SubscriptionViewModels { get; set; }
     }
 
     public class ApplicationDbInitializer : DropCreateDatabaseAlways<ApplicationDbContext>
@@ -165,6 +167,7 @@ namespace SourceWrestlingSchool.Models
                         Age = Faker.RandomNumber.Next(16, 40),
                         Height = Faker.RandomNumber.Next(150, 210),
                         Weight = Faker.RandomNumber.Next(40, 140),
+                        DateJoinedSchool = DateTime.Now,
                         ClassLevel = level,
                         EmailConfirmed = true                    
                     };
