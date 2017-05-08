@@ -152,18 +152,16 @@ namespace SourceWrestlingSchool.Controllers
             smtpClient.Send(message);
         }
 
+        [Authorize(Roles ="Instructor")]
         public ActionResult PersonalSchedule()
         {
             using (db)
             {
-                var firstName = (from u in db.Users
-                                 where u.Email == User.Identity.Name
-                                 select u.FirstName).FirstOrDefault();
-
                 var model = db.Lessons
-                        .Where(ev => ev.InstructorName == firstName)
-                        .Include(ev => ev.Students)
-                        .ToList();
+                            .Where(ev => ev.InstructorName == User.Identity.Name)
+                            .Where(ev => ev.ClassStartDate > DateTime.Now)
+                            .Include(ev => ev.Students)
+                            .ToList();
 
                 return View(model);
             }

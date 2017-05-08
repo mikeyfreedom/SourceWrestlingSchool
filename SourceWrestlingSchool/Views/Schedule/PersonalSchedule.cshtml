@@ -19,7 +19,7 @@
     <div class="col-xs-12">
         <div class="box">
             <div class="box-header">
-                <h3 class="box-title">Data Table With Full Features</h3>
+                <h3 class="box-title">Upcoming Classes</h3>
             </div>
             <div class="box-body">
                 <table id="example1" class="table table-bordered table-striped">
@@ -36,9 +36,6 @@
                             </th>
                             <th>
                                 @Html.DisplayNameFor(model => model.ClassEndDate)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.ClassCost)
                             </th>
                             <th>
                                 @Html.DisplayNameFor(model => model.InstructorName)
@@ -63,15 +60,10 @@
                                     @Html.DisplayFor(modelItem => item.ClassEndDate)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.ClassCost)
-                                </td>
-                                <td>
                                     @Html.DisplayFor(modelItem => item.InstructorName)
                                 </td>
                                 <td>
-                                    @Html.ActionLink("Edit", "Edit", new { id = item.LessonID }) |
-                                    @Html.ActionLink("Details", "Details", new { id = item.LessonID }) |
-                                    @Html.ActionLink("Delete", "Delete", new { id = item.LessonID })
+                                    @Html.ActionLink("Details", "Details", "Lessons", new { id = item.LessonID },"")
                                 </td>
                             </tr>
                         }
@@ -89,9 +81,6 @@
                             </th>
                             <th>
                                 @Html.DisplayNameFor(model => model.ClassEndDate)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.ClassCost)
                             </th>
                             <th>
                                 @Html.DisplayNameFor(model => model.InstructorName)

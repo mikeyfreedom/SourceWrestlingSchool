@@ -3,65 +3,59 @@
 @{
     ViewBag.Title = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    int i = 0;
 }
-
-<h2>Details</h2>
-
-<div>
-    <h4>Lesson</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.ClassType)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ClassType)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.ClassLevel)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ClassLevel)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.ClassStartDate)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ClassStartDate)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.ClassEndDate)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ClassEndDate)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.ClassCost)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ClassCost)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.InstructorName)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.InstructorName)
-        </dd>
-
-    </dl>
+<div class="container">
+    <div class="row" id="printableSection">
+        <div class="col-lg-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">Class Details</div>
+                <div class="panel-body" style="color:black">
+                    <ul>
+                        <li>@Html.DisplayNameFor(model => model.ClassType) : @Html.DisplayFor(model => model.ClassType)</li>
+                        <li>@Html.DisplayNameFor(model => model.ClassLevel) : @Html.DisplayFor(model => model.ClassLevel)</li>
+                        <li>@Html.DisplayNameFor(model => model.ClassStartDate) : @Html.DisplayFor(model => model.ClassStartDate)</li>
+                        <li>@Html.DisplayNameFor(model => model.ClassEndDate) : @Html.DisplayFor(model => model.ClassEndDate)</li>
+                        <li>@Html.DisplayNameFor(model => model.ClassCost) : @Html.DisplayFor(model => model.ClassCost)</li>
+                        <li>@Html.DisplayNameFor(model => model.InstructorName) : @Html.DisplayFor(model => model.InstructorName)</li>
+                        <li>
+                            @Html.DisplayNameFor(model => model.Students) :
+                        @foreach (var item in Model.Students)
+                        {
+                            if (i != Model.Students.Count)
+                            {
+                                @Html.DisplayFor(modelItem => item.FirstName)<text>,</text>
+                            }
+                            else
+                            {
+                                @Html.DisplayFor(model => item.FirstName)
+                            }
+                            i++;
+                        }
+                    </li>
+                </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <button class="btn btn-success" onclick="PrintPartOfPage('printableSection')">
+            <span class="fa fa-print">Print Off Class Details</span>
+        </button>
+    </div>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.LessonID }) |
-    @Html.ActionLink("Back to List", "Index")
+   @Html.ActionLink("Back to List", "Index")
 </p>
+<script>
+    function PrintPartOfPage(dvprintid) {
+        var prtContent = document.getElementById(dvprintid);
+        var WinPrint = window.open('', '', 'letf=100,top=100,width=600,height=600');
+        WinPrint.document.open();
+        WinPrint.document.write("<!DOCTYPE html>" + "<html>" + prtContent.innerHTML + "</html>");
+        WinPrint.document.close();
+        WinPrint.focus();
+        WinPrint.print();
+        //WinPrint.close()   
+    }  
+</script>

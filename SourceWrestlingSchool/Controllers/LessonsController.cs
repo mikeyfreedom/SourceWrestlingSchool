@@ -40,7 +40,7 @@ namespace SourceWrestlingSchool.Controllers
             }
             return View(lesson);
         }
-
+        
         // GET: Lessons/Create
         public ActionResult Create()
         {
@@ -147,6 +147,12 @@ namespace SourceWrestlingSchool.Controllers
             db.Lessons.Remove(lesson);
             db.SaveChanges();
             return RedirectToAction("Index");
+        }
+
+        public ActionResult PrintClassAttendanceSheet()
+        {
+           
+            return View("Index");
         }
 
         protected override void Dispose(bool disposing)
