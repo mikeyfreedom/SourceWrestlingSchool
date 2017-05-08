@@ -43,6 +43,9 @@
                             <th>
                                 @Html.DisplayNameFor(model => model.InstructorName)
                             </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Students)
+                            </th>
                             <th></th>
                         </tr>
                     </thead>
@@ -67,6 +70,9 @@
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.InstructorName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Students.Count)
                             </td>
                             <td>
                                 @Html.ActionLink("Edit", "Edit", new { id = item.LessonID }) |
@@ -96,6 +102,9 @@
                             <th>
                                 @Html.DisplayNameFor(model => model.InstructorName)
                             </th>
+                            <td>
+                                @Html.DisplayNameFor(model => model.Students)
+                            </td>
                             <th></th>
                         </tr>
                     </tfoot>

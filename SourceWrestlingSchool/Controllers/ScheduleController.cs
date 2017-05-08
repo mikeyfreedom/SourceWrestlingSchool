@@ -248,7 +248,10 @@ namespace SourceWrestlingSchool.Controllers
                     //Loop though all the day's classes and check if the start or end overlaps with the request time
                     foreach (var lesson in lessons)
                     {
-                        if ((lesson.ClassStartDate.TimeOfDay < e.End.TimeOfDay) || (lesson.ClassEndDate.TimeOfDay < e.Start.TimeOfDay))
+                        bool startCondition = (e.Start.TimeOfDay > lesson.ClassStartDate.TimeOfDay) && (e.Start.TimeOfDay < lesson.ClassEndDate.TimeOfDay);
+                        bool endCondition = (e.End.TimeOfDay > lesson.ClassStartDate.TimeOfDay) && (e.End.TimeOfDay < lesson.ClassEndDate.TimeOfDay);
+
+                        if (startCondition || endCondition)
                         {
                             //Break out the loop if a match is found
                             overlapExists = true;
