@@ -2,6 +2,7 @@
 using SourceWrestlingSchool.Models;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -11,28 +12,39 @@ namespace SourceWrestlingSchool.Controllers
     public class SubscriptionController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
-        private BraintreeGateway gateway = new BraintreeGateway();
         // GET: Subscription
-        public ActionResult Index(string username)
+        public ActionResult Index()
         {
             SubscriptionViewModel model = new SubscriptionViewModel();
-            var request = new CustomerSearchRequest().Email.Is(username);
-            ResourceCollection<Customer> collection = gateway.Customer.Search(request);
-            foreach (Customer person in collection)
-            {
-                foreach (var method in person.PaymentMethods)
-                {
-                                        
-                }
-            }
             
-
             using (db)
             {
                 ApplicationUser user = db.Users
-                                       .Where(u => u.UserName.Equals(username))
+                                       .Where(u => u.UserName.Equals(User.Identity.Name))
                                        .First();
+
+                //Ternary operator to evaluate if a user has a subscription
+                model.IsSubscribed = (user.MemberLevel != null) ? true : false;
+                model.Username = user.FirstName + " " + user.LastName;
+                var request = new CustomerSearchRequest().Email.Is(User.Identity.Name);
+                ResourceCollection<Customer> collection = PaymentGateways.Gateway.Customer.Search(request);
+                if (collection.Ids.Count != 0)
+                {
+                    foreach (var entry in collection.FirstItem.CreditCards)
+                    {
+                        foreach (var sub in entry.Subscriptions)
+                        {
+                            if (sub.Status == SubscriptionStatus.ACTIVE)
+                            {
+                                model.LastPaymentDate = sub.PaidThroughDate.Value.Date;
+                                model.NextDueDate = sub.NextBillingDate.Value.Date;
+                                model.SubscriptionID = sub.Id;
+                            }                                                        
+                        }
+                    }
+                }
             };
+            
 
             return View(model);
         }
@@ -40,8 +52,8 @@ namespace SourceWrestlingSchool.Controllers
         [HttpGet]
         public ActionResult CreateSubscription(int id)
         {
-            //Create a customer
-            //Create a subscription
+            //check for customer, if exists, generate a token off them
+            //if not, generate a generic and create the customer on post
             CreateCustomerViewModel model = new CreateCustomerViewModel();
             model.PlanID = id;
             
@@ -53,12 +65,12 @@ namespace SourceWrestlingSchool.Controllers
             };
 
             var customerRequest = new CustomerSearchRequest().Email.Is(User.Identity.Name);
-            ResourceCollection<Customer> collection = gateway.Customer.Search(customerRequest);
+            ResourceCollection<Customer> collection = PaymentGateways.Gateway.Customer.Search(customerRequest);
             var clientToken = "";
-            if (collection != null)
+            if (collection.Ids.Count != 0)
             {
                 string custID = collection.FirstItem.Id;
-                clientToken = gateway.ClientToken.generate(
+                clientToken = PaymentGateways.Gateway.ClientToken.generate(
                     new ClientTokenRequest
                     {
                         CustomerId = custID
@@ -67,7 +79,7 @@ namespace SourceWrestlingSchool.Controllers
             }
             else
             {
-                clientToken = gateway.ClientToken.generate();
+                clientToken = PaymentGateways.Gateway.ClientToken.generate();
             }
             ViewBag.ClientToken = clientToken;
             ViewBag.PlanID = model.PlanID;
@@ -78,46 +90,141 @@ namespace SourceWrestlingSchool.Controllers
         [HttpPost]
         public ActionResult CreateSubscription(FormCollection collection)
         {
-            string nonceFromTheClient = collection["payment_method_nonce"];
-            var request = new CustomerRequest
+            using (db)
             {
-                FirstName = "",
-                LastName = "",
-                Email = "",
-                Phone = "",
-                PaymentMethodNonce = nonceFromTheClient,
-            };
-            
-            Result<Customer> result = gateway.Customer.Create(request);
+                string nonceFromTheClient = collection["payment_method_nonce"];
+                string planid = collection["planid"];
+                var customerRequest = new CustomerSearchRequest().Email.Is(User.Identity.Name);
+                ResourceCollection<Customer> results = PaymentGateways.Gateway.Customer.Search(customerRequest);
+                if (results.Ids.Count == 0)
+                {
+                    var user = db.Users.Where(u => u.Email == User.Identity.Name).Single();
+                    var request = new CustomerRequest
+                    {
+                        FirstName = user.FirstName,
+                        LastName = user.LastName,
+                        Email = User.Identity.Name,
+                        Phone = "",
+                        CreditCard = new CreditCardRequest
+                        {
+                            PaymentMethodNonce = nonceFromTheClient,
+                            Options = new CreditCardOptionsRequest
+                            {
+                                VerifyCard = true
+                            }
+                        }
+                    };
 
-            bool success = result.IsSuccess();
-            // true
+                    Result<Customer> result = PaymentGateways.Gateway.Customer.Create(request);
+                    if (!result.IsSuccess())
+                    {
+                        Debug.WriteLine(result.Message);
+                        foreach (var error in result.Errors.All())
+                        {
+                            Debug.WriteLine(error.Message);
+                        }
+                        return View();
+                    }
+                    else
+                    {
+                        Customer customer = result.Target;
+                        string customerId = customer.Id;
+                        string cardToken = customer.PaymentMethods[0].Token;
 
-            Customer customer = result.Target;
-            string customerId = customer.Id;
-            // e.g. 160923
+                        var newSub = new SubscriptionRequest
+                        {
+                            PaymentMethodToken = cardToken,
+                            PlanId = planid,
+                            NeverExpires = true,
+                            Options = new SubscriptionOptionsRequest
+                            {
+                                StartImmediately = true
+                            }
+                        };
 
-            string cardToken = customer.PaymentMethods[0].Token;
-            // e.g. f28w
+                        Result<Subscription> subResult = PaymentGateways.Gateway.Subscription.Create(newSub);
+                        if (!subResult.IsSuccess())
+                        {
+                            Debug.WriteLine(subResult.Message);
+                            foreach (var error in subResult.Errors.All())
+                            {
+                                Debug.WriteLine(error.Message);
+                            }
+                            return View();
+                        }
+                        else
+                        {
+                            switch (int.Parse(planid))
+                            {
+                                case 1:
+                                    user.MemberLevel = MemberLevel.Bronze;
+                                    break;
+                                case 2:
+                                    user.MemberLevel = MemberLevel.Silver;
+                                    break;
+                                case 3:
+                                    user.MemberLevel = MemberLevel.Gold;
+                                    break;
+                                default:
+                                    Debug.WriteLine("Invalid Plan Number");
+                                    break;
+                            }
 
-            var newSub = new SubscriptionRequest
-            {
-                PaymentMethodToken = cardToken,
-                PlanId = ViewBag.PlanID
-            };
+                            db.SaveChanges();
+                            return View("Success");
+                        }
+                    }
+                }
+                else
+                {
+                    ApplicationUser user = db.Users.Where(u => u.Email == User.Identity.Name).Single();
+                    Customer customer = results.FirstItem;
+                    string customerId = customer.Id;
+                    string cardToken = customer.PaymentMethods[0].Token;
 
-            Result<Subscription> subResult = gateway.Subscription.Create(newSub);
+                    var newSub = new SubscriptionRequest
+                    {
+                        PaymentMethodToken = cardToken,
+                        PlanId = planid,
+                        NeverExpires = true,
+                        Options = new SubscriptionOptionsRequest
+                        {
+                            StartImmediately = true
+                        }
+                    };
 
-            if (subResult.IsSuccess())
-            {
-                
+                    Result<Subscription> subResult = PaymentGateways.Gateway.Subscription.Create(newSub);
+                    if (!subResult.IsSuccess())
+                    {
+                        Debug.WriteLine(subResult.Message);
+                        foreach (var error in subResult.Errors.All())
+                        {
+                            Debug.WriteLine(error.Message);
+                        }
+                        return View();
+                    }
+                    else
+                    {
+                        switch (int.Parse(planid))
+                        {
+                            case 1:
+                                user.MemberLevel = MemberLevel.Bronze;
+                                break;
+                            case 2:
+                                user.MemberLevel = MemberLevel.Silver;
+                                break;
+                            case 3:
+                                user.MemberLevel = MemberLevel.Gold;
+                                break;
+                            default:
+                                Debug.WriteLine("Invalid Plan Number");
+                                break;
+                        }
+                        db.SaveChanges();
+                        return View("Index");
+                    }
+                }
             }
-            else
-            {
-                Console.WriteLine(subResult.Message);
-            }
-            
-            return View();
         }
     }
 }

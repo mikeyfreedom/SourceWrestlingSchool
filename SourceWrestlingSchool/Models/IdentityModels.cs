@@ -14,6 +14,7 @@ namespace SourceWrestlingSchool.Models
     public class ApplicationUser : IdentityUser
     {
         public int? Age { get; set; }
+        public MemberLevel? MemberLevel { get; set; }
         public ClassLevel? ClassLevel { get; set; }
         [Required]
         [MaxLength(20)]

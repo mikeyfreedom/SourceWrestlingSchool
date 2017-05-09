@@ -18,7 +18,6 @@ namespace SourceWrestlingSchool.Models
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderItem> OrderItems { get; set; }
         public DbSet<Payment> Payments { get; set; }
-        public DbSet<PaymentMethod> PaymentMethods { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<Seat> Seats { get; set; }
         public DbSet<ApplyViewModel> Applications { get; set; }
@@ -108,7 +107,7 @@ namespace SourceWrestlingSchool.Models
                     userManager.Create(newUser, password);
                     userManager.AddToRole(newUser.Id, RoleNames.ROLE_ADMINISTRATOR);
 
-                    //Create standard user for testing purposes
+                    //Create student user for testing purposes
                     password = "freedom78";
                     var newStandardUser = new ApplicationUser()
                     {
@@ -121,11 +120,15 @@ namespace SourceWrestlingSchool.Models
                         Postcode = "G82 2LQ",
                         UserName = "lowlander_glen@yahoo.co.uk",
                         Email = "lowlander_glen@yahoo.co.uk",
-                        EmailConfirmed = true
-
+                        EmailConfirmed = true,
+                        Age = 39,
+                        ClassLevel = ClassLevel.Beginner,
+                        DateJoinedSchool = DateTime.Now,
+                        Height = 174,
+                        Weight = 85
                     };
                     userManager.Create(newStandardUser, password);
-                    userManager.AddToRole(newStandardUser.Id, RoleNames.ROLE_STANDARDUSER);
+                    userManager.AddToRole(newStandardUser.Id, RoleNames.ROLE_STUDENTUSER);
 
                     //Create instructor for testing purposes
                     password = "123456";

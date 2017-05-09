@@ -1,0 +1,76 @@
+﻿
+@{
+    ViewBag.Title = "Revenue";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Source Wrestling School Revenue</h2>
+<div class="container">
+    <div class="row">
+        <!-- SUMMARY VIEW -->
+        <div class="col-lg-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">Revenue Summary</div>
+                <div class="panel-body" style="color:black">
+                    <ul>
+                        <li>Live Event Revenue :</li>
+                        <li>Membership Revenue :</li>
+                        <li>Other Revenue : </li>
+                        <li>----------------------------</li>
+                        <li>Total Revenue : </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <!-- COLLAPSED DETAILED VIEWS -->
+        <div id="accordion" role="tablist" aria-multiselectable="true">
+            <div class="card">
+                <div class="card-header" role="tab" id="headingOne">
+                    <h5 class="mb-0">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            Live Event Revenues
+                        </a>
+                    </h5>
+                </div>
+
+                <div id="collapseOne" class="collapse" role="tabpanel" aria-labelledby="headingOne">
+                    <div class="card-block">
+                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid.
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header" role="tab" id="headingTwo">
+                    <h5 class="mb-0">
+                        <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                            Membership Revenues
+                        </a>
+                    </h5>
+                </div>
+                <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo">
+                    <div class="card-block">
+                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid.
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header" role="tab" id="headingThree">
+                    <h5 class="mb-0">
+                        <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseTwo">
+                            Other Revenue
+                        </a>
+                    </h5>
+                </div>
+                <div id="collapseThree" class="collapse" role="tabpanel" aria-labelledby="headingThree">
+                    <div class="card-block">
+                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

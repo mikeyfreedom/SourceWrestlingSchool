@@ -10,6 +10,8 @@ using System.Net;
 using System.Net.Mail;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace SourceWrestlingSchool.Controllers
 {
@@ -49,7 +51,8 @@ namespace SourceWrestlingSchool.Controllers
         public ActionResult Accept()
         {
             string aID = Request.Form["appID"];
-            string user = "";
+            string userMail = "";
+            var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
             int appID = int.Parse(aID);
             using (db)
             {
@@ -62,18 +65,21 @@ namespace SourceWrestlingSchool.Controllers
                 app.User.Weight = app.Weight;
                 app.User.ClassLevel = ClassLevel.Beginner;
                 app.Status = ApplyViewModel.ApplicationStatus.Accepted;
+                userManager.RemoveFromRole(app.User.Id, RoleNames.ROLE_STANDARDUSER);
+                userManager.AddToRole(app.User.Id, RoleNames.ROLE_STUDENTUSER);
+                userMail = app.User.Email;
                 db.SaveChanges();
             }
 
-            sendEmail("accept", user);    
-            return View();
+            sendEmail("accept", userMail);    
+            return View("Index");
         }
 
         [HttpPost]
         public ActionResult Refuse()
         {
             string aID = Request.Form["appID"];
-            string user = "";
+            string userMail = "";
             int appID = int.Parse(aID);
             using (db)
             {
@@ -82,11 +88,12 @@ namespace SourceWrestlingSchool.Controllers
                             .Include(a => a.User)
                             .Single(); 
                 app.Status = ApplyViewModel.ApplicationStatus.Declined;
+                userMail = app.User.Email;
                 db.SaveChanges();
             }
                 
-            sendEmail("refuse",user);
-            return View();
+            sendEmail("refuse",userMail);
+            return View("Index");
         }
 
         public void sendEmail(string reason, string userMail)

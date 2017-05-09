@@ -364,7 +364,7 @@
                         <li id="left-sidebar-menu-subscription">
                             <a href="@Url.Action("Index", "Subscription",new { username = User.Identity.Name })">
                                 <i class="fa fa-money"></i>
-                                <span>Class Schedule</span>
+                                <span>Subscription</span>
                             </a>
                         </li>
                         <li id="left-sidebar-menu-profile">
@@ -445,10 +445,16 @@
                                 <span>Profile</span>
                             </a>
                         </li>
+                        <li id="left-sidebar-menu-revenue">
+                            <a href="@Url.Action("Revenue", "Reports")">
+                                <i class="fa fa-money"></i>
+                                <span>Reports</span>
+                            </a>
+                        </li>
                         <li id="left-sidebar-menu-reports">
                             <a href="@Url.Action("Index", "Reports")">
                                 <i class="fa fa-book"></i>
-                                <span>Profile</span>
+                                <span>Reports</span>
                             </a>
                         </li>
                     }

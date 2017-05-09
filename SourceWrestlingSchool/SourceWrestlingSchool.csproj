@@ -233,6 +233,7 @@
     <Compile Include="Controllers\PaymentsController.cs" />
     <Compile Include="Controllers\PrivateRequestsController.cs" />
     <Compile Include="Controllers\PrivateSessionsController.cs" />
+    <Compile Include="Controllers\ReportsController.cs" />
     <Compile Include="Controllers\ScheduleController.cs" />
     <Compile Include="Controllers\SeatsController.cs" />
     <Compile Include="Controllers\SubscriptionController.cs" />
@@ -248,6 +249,7 @@
     <Compile Include="Models\ApplicationDbContext.cs" />
     <Compile Include="Models\ApplyViewModel.cs" />
     <Compile Include="Models\Booking.cs" />
+    <Compile Include="Models\MemberLevel.cs" />
     <Compile Include="Models\ClassLevel.cs" />
     <Compile Include="Models\CreateCustomerViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -259,7 +261,6 @@
     <Compile Include="Models\OrderItem.cs" />
     <Compile Include="Models\Payment.cs" />
     <Compile Include="Models\PaymentGateways.cs" />
-    <Compile Include="Models\PaymentMethod.cs" />
     <Compile Include="Models\PrivateSession.cs" />
     <Compile Include="Models\Product.cs" />
     <Compile Include="Models\ProfileViewModel.cs" />
@@ -1356,12 +1357,13 @@
     <Content Include="Views\Payments\Edit.cshtml" />
     <Content Include="Views\Payments\Index.cshtml" />
     <Content Include="Views\Subscription\Index.cshtml" />
-    <Content Include="Views\Subscription\CreateCustomer.cshtml" />
+    <Content Include="Views\Subscription\CreateSubscription.cshtml" />
     <Content Include="Views\LiveEvents\Create.cshtml" />
     <Content Include="Views\LiveEvents\Delete.cshtml" />
     <Content Include="Views\LiveEvents\Details.cshtml" />
     <Content Include="Views\LiveEvents\Edit.cshtml" />
     <Content Include="Views\LiveEvents\Index.cshtml" />
+    <Content Include="Views\Reports\Revenue.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
