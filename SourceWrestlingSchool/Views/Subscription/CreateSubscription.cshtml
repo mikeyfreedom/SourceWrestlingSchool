@@ -1,0 +1,50 @@
+﻿@model SourceWrestlingSchool.Models.CreateCustomerViewModel
+@{
+    ViewBag.Title = "CreateCustomer";
+    Layout = "~/Views/Shared/_Layout.cshtml";    
+}
+<link href="~/Content/newSub.css" rel="stylesheet" />
+<script src="https://js.braintreegateway.com/js/braintree-2.31.0.min.js"></script>
+
+<h2>New Membership Agreement</h2>
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-5">
+            <div class="panel panel-default">
+                <div class="panel-heading">Confirm Your Details</div>
+                <div class="panel-body" style="color:black">
+                    <ul>
+                        <li>@Html.DisplayNameFor(model => model.User.FirstName) : @Html.DisplayFor(model => model.User.FirstName)</li>
+                        <li>@Html.DisplayNameFor(model => model.User.LastName) : @Html.DisplayFor(model => model.User.LastName)</li>
+                        <li>@Html.DisplayNameFor(model => model.User.Email) : @Html.DisplayFor(model => model.User.Email)</li>
+                        <li>@Html.DisplayNameFor(model => model.User.PhoneNumber) : @Html.DisplayFor(model => model.User.PhoneNumber)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-5">
+            <div class="panel panel-default bootstrap-basic">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Enter Card Details</h3>
+                </div>
+                <div class="panel-body">
+                    <form id="checkout" method="post" action="/Subscription/CreateSubscription">
+                        <div id="payment-form"></div>
+                        <input class="btn btn-success" type="submit" value="Create Plan">
+                        <input type="hidden" name="planid" value="@Html.Raw(ViewBag.PlanID)" />
+                    </form>
+                    <script>
+                    
+                        var clientToken = "@Html.Raw(ViewBag.ClientToken)";
+
+                        braintree.setup(clientToken, "dropin", {
+                                        container: "payment-form",
+                                        });
+                    </script>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
