@@ -128,16 +128,6 @@ namespace SourceWrestlingSchool.Controllers
 
                     var user = userManager.FindByEmail(User.Identity.Name);
 
-                    Payment newPayment = new Payment
-                    {
-                        PaymentAmount = (float) result.Target.Amount,
-                        PaymentDate = result.Target.CreatedAt.Value,
-                        PaymentDescription = result.Target.CustomFields["description"],
-                        TransactionID = result.Target.Id,
-                        User = user,
-                        UserID = user.Id
-                    };
-
                     ViewBag.Message = "Payment Successful, enjoy the event!";
                     db.SaveChanges();
                     return RedirectToAction("/Tickets/" + currentEvent.EventID);
@@ -160,8 +150,9 @@ namespace SourceWrestlingSchool.Controllers
                     ViewBag.Message = result.Message;
                     Console.WriteLine(result.Message);
                 }
+                db.SaveChanges();
             }
-            db.SaveChanges();
+            
             return RedirectToAction("Tickets","LiveTour");
         }
 

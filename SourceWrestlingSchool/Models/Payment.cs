@@ -9,9 +9,8 @@ namespace SourceWrestlingSchool.Models
     public class Payment
     {
         public int PaymentID { get; set; }
-        public string TransactionID { get; set; }
         public DateTime PaymentDate { get; set; }
-        public float PaymentAmount { get; set; }
+        public decimal PaymentAmount { get; set; }
         public string PaymentDescription { get; set; }
         
         //navigational Properties

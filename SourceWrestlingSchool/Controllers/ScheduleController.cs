@@ -119,11 +119,34 @@ namespace SourceWrestlingSchool.Controllers
             {
                 ApplicationUser user = db.Users.First(i => i.UserName == User.Identity.Name);
                 int classID = int.Parse(Request.Form["classID"]);
-                db.Lessons.Find(classID).Students.Remove(user);
+                Lesson lesson = db.Lessons
+                                .Where(l => l.LessonID == classID)
+                                .Include(l => l.Students)
+                                .Single();
+                lesson.Students.Remove(user);
+                TimeSpan difference = lesson.ClassStartDate - DateTime.Now;
+                if(difference.TotalHours < 12)
+                {
+                    errormessage = "CancelSuccessFine";
+                    double cancelfine = lesson.ClassCost * 0.15;
+                    Payment fine = new Payment
+                    {
+                        PaymentAmount = Math.Round((decimal) cancelfine, 2),
+                        PaymentDate = DateTime.Today,
+                        PaymentDescription = "Class Cancellation Fine",
+                        User = user,
+                        UserID = user.Id
+                    };
+                    db.Payments.Add(fine);
+                }
+                else
+                {
+                    errormessage = "CancelSuccess";
+                }
+                                
                 db.SaveChanges();
             }
             
-            errormessage = "CancelSuccess";
             sendEmail(currentUser.UserName, "cancel");
 
             return RedirectToAction("Index", "Schedule"); 

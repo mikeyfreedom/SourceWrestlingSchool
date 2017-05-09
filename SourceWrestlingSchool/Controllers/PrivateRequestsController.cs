@@ -45,7 +45,7 @@ namespace SourceWrestlingSchool.Controllers
                     ClassStartDate = session.SessionStart,
                     ClassEndDate = session.SessionEnd,
                     ClassLevel = ClassLevel.Private,
-                    ClassCost = 10,
+                    ClassCost = 30,
                     InstructorName = (from i in db.Users
                                       where i.Id == session.InstructorID
                                       select i.FirstName).FirstOrDefault(),
@@ -59,10 +59,18 @@ namespace SourceWrestlingSchool.Controllers
 
                 //Add the student to the new lesson
                 lesson.Students.Add(user);
-
                 //Add the new lesson to the db
                 db.Lessons.Add(lesson);
                 //Save the changes to lessons and privates
+                Payment privateFee = new Payment
+                {
+                    PaymentAmount = 30,
+                    PaymentDescription = "Private Session Booking Fee",
+                    PaymentDate = DateTime.Today,
+                    User = user,
+                    UserID = user.Id
+                };
+                db.Payments.Add(privateFee);
                 db.SaveChanges();
                 sendEmail(user.UserName, "accept");                
             }

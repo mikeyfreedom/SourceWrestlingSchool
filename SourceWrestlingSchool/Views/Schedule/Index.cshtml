@@ -35,6 +35,13 @@ else if (Model.Equals("CancelSuccess"))
         <strong>Sorry!</strong> You have cancelled your participation in the class.
     </div>
 }
+else if (Model.Equals("CancelSuccessFine"))
+{
+    <div class="alert alert-info alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <strong>Sorry!</strong> You have cancelled your booking, but too close to the class starting. A fine has been levied.
+    </div>
+}
 
 <div class="container">
     @Html.DayPilotCalendar("Dpc", new DayPilotCalendarConfig
