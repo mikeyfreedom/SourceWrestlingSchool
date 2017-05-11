@@ -1,5 +1,4 @@
-﻿@using SourceWrestlingSchool.Extensions
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html style="height: auto">
 <head>
     <meta charset="utf-8">
@@ -367,6 +366,12 @@
                                 <span>Subscription</span>
                             </a>
                         </li>
+                        <li id="left-sidebar-menu-duepayments">
+                            <a href="@Url.Action("Outstanding", "Payments")">
+                                <i class="fa fa-money"></i>
+                                <span>Outstanding Payments</span>
+                            </a>
+                        </li>
                         <li id="left-sidebar-menu-profile">
                             <a href="@Url.Action("StudentProfile", "Admin")">
                                 <i class="fa fa-book"></i>
@@ -443,6 +448,12 @@
                             <a href="@Url.Action("Profile", "Admin")">
                                 <i class="fa fa-book"></i>
                                 <span>Profile</span>
+                            </a>
+                        </li>
+                        <li id="left-sidebar-menu-payments">
+                            <a href="@Url.Action("Index", "Payments")">
+                                <i class="fa fa-money"></i>
+                                <span>Payments Due</span>
                             </a>
                         </li>
                         <li id="left-sidebar-menu-revenue">

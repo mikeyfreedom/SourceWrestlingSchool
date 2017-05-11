@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using System.Data.Entity;
 using Braintree;
@@ -63,13 +62,16 @@ namespace SourceWrestlingSchool.Controllers
 
                 foreach (string seatNo in seatList)
                 {
-                    Seat seat = (from s in newEvent.Seats
-                                 where s.SeatNumber == seatNo
-                                 select s).First();
+                    if (newEvent != null)
+                    {
+                        Seat seat = (from s in newEvent.Seats
+                            where s.SeatNumber == seatNo
+                            select s).First();
 
-                    Seats.Add(seat);
-                    seat.Events.Add(newEvent);
-                    seat.Status = Seat.SeatBookingStatus.Reserved;
+                        Seats.Add(seat);
+                        seat.Events.Add(newEvent);
+                        seat.Status = Seat.SeatBookingStatus.Reserved;
+                    }
                     db.SaveChanges();
                 }
             }
@@ -91,14 +93,15 @@ namespace SourceWrestlingSchool.Controllers
             {
                 var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
                 string nonceFromTheClient = collection["payment_method_nonce"];
+                decimal amount = decimal.Parse(collection["amount"]);
 
                 var request = new TransactionRequest
                 {
-                    Amount = 10.00M,
+                    Amount = amount,
                     PaymentMethodNonce = nonceFromTheClient,
                     CustomFields = new Dictionary<string, string>
                 {
-                    { "description", "Booking of " + seatlist.Count() + " seats for "+ currentEvent.EventName + "." },
+                    { "description", "Booking of " + seatlist.Length + " seats for "+ currentEvent.EventName + "." },
                 },
                     Options = new TransactionOptionsRequest
                     {
@@ -107,8 +110,6 @@ namespace SourceWrestlingSchool.Controllers
                 };
 
                 Result<Transaction> result = PaymentGateways.Gateway.Transaction.Sale(request);
-
-
 
                 if (result.IsSuccess())
                 {
@@ -120,13 +121,13 @@ namespace SourceWrestlingSchool.Controllers
 
                     foreach (var seatNo in seatlist)
                     {
-                        Seat seat = newEvent.Seats
-                                    .Where(s => s.SeatNumber == seatNo)
-                                    .FirstOrDefault();
-                        seat.Status = Seat.SeatBookingStatus.Booked;
+                        //Checks newEvent is not null before searching for a seat
+                        Seat seat = newEvent?.Seats.FirstOrDefault(s => s.SeatNumber == seatNo);
+                        if (seat != null)
+                        {
+                            seat.Status = Seat.SeatBookingStatus.Booked;
+                        }
                     }
-
-                    var user = userManager.FindByEmail(User.Identity.Name);
 
                     ViewBag.Message = "Payment Successful, enjoy the event!";
                     db.SaveChanges();
@@ -142,10 +143,11 @@ namespace SourceWrestlingSchool.Controllers
 
                     foreach (var seatNo in seatlist)
                     {
-                        Seat seat = newEvent.Seats
-                                    .Where(s => s.SeatNumber == seatNo)
-                                    .FirstOrDefault();
-                        seat.Status = Seat.SeatBookingStatus.Free;
+                        Seat seat = newEvent?.Seats.FirstOrDefault(s => s.SeatNumber == seatNo);
+                        if (seat != null)
+                        {
+                            seat.Status = Seat.SeatBookingStatus.Free;
+                        }
                     }
                     ViewBag.Message = result.Message;
                     Console.WriteLine(result.Message);

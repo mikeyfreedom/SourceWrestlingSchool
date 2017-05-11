@@ -1,0 +1,96 @@
+﻿@model IEnumerable<SourceWrestlingSchool.Models.Payment>
+
+@{
+    ViewBag.Title = "Outstanding";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Outstanding Payments</h2>
+
+@section Menu {
+    @Scripts.Render("~/Scripts/Tables/Data/menu")
+}
+
+@Styles.Render("~/AdminLTE/plugins/datatables/css")
+
+@if (ViewBag.Message != null)
+{
+    <div class="alert alert-success alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+        <h4><i class="icon fa fa-thumbs-up"></i> Thank You!</h4>
+        @Html.Raw(ViewBag.Message)
+    </div>
+}
+
+<div class="row">
+    <div class="col-xs-12">
+        <div class="box">
+            <div class="box-header">
+                <h3 class="box-title">Outstanding Payments</h3>
+            </div>
+            <div class="box-body">
+                <table id="example1" class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.PaymentDate)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.PaymentAmount)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.PaymentDescription)
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.User.FirstName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.PaymentDate)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.PaymentAmount)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.PaymentDescription)
+                                </td>
+                                <td>
+                                    @using (Html.BeginForm("SendPayment", "Payments", FormMethod.Post))
+                                    {
+                                        <input type="hidden" name="paymentID" value=@item.PaymentID />
+                                        <input class="btn btn-success" type="submit" value="Send Payment" />
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.PaymentDate)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.PaymentAmount)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.PaymentDescription)
+                            </th>
+                            <th></th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/AdminLTE/plugins/datatables/js")
+    @Scripts.Render("~/Scripts/Tables/Data")
+}

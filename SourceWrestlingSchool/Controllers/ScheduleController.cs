@@ -9,12 +9,8 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Diagnostics;
 using System.Linq;
-using System.Net;
 using System.Net.Mail;
-using System.Web;
 using System.Web.Mvc;
-using System.Web.Security;
-using System.Web.UI.WebControls;
 
 namespace SourceWrestlingSchool.Controllers
 {
@@ -192,7 +188,7 @@ namespace SourceWrestlingSchool.Controllers
 
         class Dpc : DayPilotCalendar
         {
-            ApplicationDbContext db = new ApplicationDbContext();
+            private ApplicationDbContext db = new ApplicationDbContext();
                         
             protected override void OnInit(InitArgs e)
             {
@@ -253,15 +249,13 @@ namespace SourceWrestlingSchool.Controllers
             {
                 //Set a LINQ query to get all lessons that take place the same day as the requested session
                 DateTime startDate = e.Start.Date;
-                int startDay = e.Start.Day;
-                int startMonth = e.Start.Month;
-
+                
                 var lessons = from l in db.Lessons
-                              where (l.ClassStartDate.Day == startDay && l.ClassStartDate.Month == startMonth)
+                              where (l.ClassStartDate.Date == startDate)
                               select l;
 
                 //If there is are any other classes that day, loop through them to check for a time conflict
-                if (lessons != null)
+                if (lessons.Count() != 0)
                 {
                     //Set a flag to denote if an overlap exists
                     bool overlapExists = false;
@@ -291,10 +285,12 @@ namespace SourceWrestlingSchool.Controllers
                     {
                         //If no overlap occurs:
                         //Create new session
-                        request = new PrivateSession();
+                        request = new PrivateSession
+                        {
+                            SessionStart = e.Start,
+                            SessionEnd = e.End
+                        };
                         //Set the start and end times
-                        request.SessionStart = e.Start;
-                        request.SessionEnd = e.End;
                         //Send the model to the request form
                         Redirect("/Schedule/RequestPrivate");
                     }

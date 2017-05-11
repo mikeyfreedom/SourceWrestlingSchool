@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using SourceWrestlingSchool.Models;
+using Braintree;
 
 namespace SourceWrestlingSchool.Controllers
 {
@@ -34,6 +33,110 @@ namespace SourceWrestlingSchool.Controllers
                 return HttpNotFound();
             }
             return View(payment);
+        }
+
+        public ActionResult Outstanding()
+        { 
+            using (db)
+            {
+                var user = db.Users.Single(u => u.Email == User.Identity.Name);
+                var model = db.Payments
+                        .Where(p => p.UserID == user.Id)
+                        .Include(p => p.User)
+                        .ToList();
+                return View(model);
+            }
+        }
+
+        [HttpPost]
+        public ActionResult SendPayment(int? paymentID)
+        {
+            if (paymentID == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Payment payment = db.Payments
+                              .Where(p => p.PaymentID == paymentID)
+                              .Include(u =>u.User)
+                              .Single();
+            if (payment == null)
+            {
+                return HttpNotFound();
+            }
+
+            var customerRequest = new CustomerSearchRequest().Email.Is(User.Identity.Name);
+            ResourceCollection<Customer> collection = PaymentGateways.Gateway.Customer.Search(customerRequest);
+            var clientToken = "";
+            if (collection.Ids.Count != 0)
+            {
+                string custID = collection.FirstItem.Id;
+                clientToken = PaymentGateways.Gateway.ClientToken.generate(
+                    new ClientTokenRequest
+                    {
+                        CustomerId = custID
+                    }
+                );
+            }
+            else
+            {
+                clientToken = PaymentGateways.Gateway.ClientToken.generate();
+            }
+            ViewBag.ClientToken = clientToken;
+
+            return View(payment);
+        }
+
+        [HttpPost]
+        public ActionResult SendPayment(FormCollection collection)
+        {
+             using (db)
+            {
+                string nonceFromTheClient = collection["payment_method_nonce"];
+                decimal amount = decimal.Parse(collection["amount"]);
+
+                var request = new TransactionRequest
+                {
+                    Amount = amount,
+                    PaymentMethodNonce = nonceFromTheClient,
+                    CustomFields = new Dictionary<string, string>
+                {
+                    { "description",  collection["description"]},
+                },
+                    Options = new TransactionOptionsRequest
+                    {
+                        SubmitForSettlement = true
+                    }
+                };
+
+                Result<Transaction> result = PaymentGateways.Gateway.Transaction.Sale(request);
+
+                if (result.IsSuccess())
+                {
+                    int pID = int.Parse(collection["payID"]);
+                    Payment payment = db.Payments
+                                      .Where(p => p.PaymentID == pID)
+                                      .Include(p => p.User)
+                                      .Single();
+
+                    db.Payments.Remove(payment);
+                    
+                    ViewBag.Message = "Payment Successful.";
+                    db.SaveChanges();
+                    return RedirectToAction("/Payments/Outstanding");
+                }
+                else
+                {
+                    ViewBag.Message = "";
+                    foreach (var error in result.Errors.All())
+                    {
+                        ViewBag.Message = ViewBag.Message + error.Message + " ";
+                    }
+                    Console.WriteLine(result.Message);
+                }
+                db.SaveChanges();
+            }
+
+            return RedirectToAction("/Payments/SendPayments/" + collection["payID"]);
         }
 
         //// GET: Payments/Create

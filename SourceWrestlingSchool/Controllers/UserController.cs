@@ -1,13 +1,11 @@
 ﻿using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using SourceWrestlingSchool.Models;
-using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using System.Web.UI;
 
@@ -21,9 +19,11 @@ namespace SourceWrestlingSchool.Controllers
         {
             var users = db.Users.ToList();
             var roles = db.Roles.ToList();
-            UserViewModel userView = new UserViewModel();
-            userView.Users = users;
-            userView.Roles = roles;
+            UserViewModel userView = new UserViewModel
+            {
+                Users = users,
+                Roles = roles
+            };
             return View(userView);
         }
 
@@ -80,7 +80,7 @@ namespace SourceWrestlingSchool.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ApplicationUser model = db.Users.Where(u => u.Id == id).First();
+            ApplicationUser model = db.Users.First(u => u.Id == id);
             if (model == null)
             {
                 return HttpNotFound();

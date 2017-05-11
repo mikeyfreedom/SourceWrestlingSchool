@@ -1,0 +1,67 @@
+﻿@using System.Globalization
+@model SourceWrestlingSchool.Models.Payment
+
+@{
+    ViewBag.Title = "SendPayment";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string fullname = Model.User.FirstName + " " + Model.User.LastName;
+    string buttonText = "Pay " + Model.PaymentAmount.ToString(CultureInfo.CurrentCulture); 
+}
+<script src="https://js.braintreegateway.com/js/braintree-2.31.0.min.js"></script>
+<h2>SendPayment</h2>
+
+@if (ViewBag.Message != null)
+{
+    <div class="alert alert-danger alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+        <h4><i class="icon fa fa-ban"></i> Alert!</h4>
+        Payment Failed. Reasons : @Html.Raw(ViewBag.Message)
+    </div>
+}
+<div class="container">
+    <div class="row">
+        <div class="col-lg-5">
+            <div class="panel panel-default">
+                <div class="panel-heading">Confirm Your Details</div>
+                <div class="panel-body" style="color:black">
+                    <ul>
+                        <li>Full Name : @fullname</li>
+                        <li>@Html.DisplayNameFor(model => model.PaymentDescription) : @Html.DisplayFor(model => model.PaymentDescription)</li>
+                        <li>@Html.DisplayNameFor(model => model.PaymentAmount) : @Html.DisplayFor(model => model.PaymentAmount)</li>
+                        <li>@Html.DisplayNameFor(model => model.PaymentDate) : @Html.DisplayFor(model => model.PaymentDate)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-5">
+            <div class="panel panel-default bootstrap-basic">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Enter Card Details</h3>
+                </div>
+                <div class="panel-body">
+                    <form id="checkout" method="post" action="/Payments/SendPayment">
+                        <div id="payment-form"></div>
+                        <input type="hidden" name="amount" value=@Model.PaymentAmount>
+                        <input type="hidden" name="description" value=@Model.PaymentDescription>
+                        <input type="hidden" name="payID" value=@Model.PaymentID>
+                        <input class="btn btn-success" type="submit" value=@buttonText>
+                    </form>
+                    <script>
+                        var cliantToken = "@Html.Raw(ViewBag.ClientToken)";
+                        braintree.setup(clientToken, "dropin", {
+                                        container: "payment-form",
+                                        paypal: {
+                                            button:{
+                                                type: 'checkout'
+                                                    },
+                                            singleUse: true,
+                                            amount: @Model.PaymentAmount,
+                                            currency: 'GBP'
+                                        }
+                                        });
+                    </script>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

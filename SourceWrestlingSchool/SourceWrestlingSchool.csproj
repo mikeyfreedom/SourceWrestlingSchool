@@ -229,7 +229,6 @@
     <Compile Include="Controllers\LiveTourController.cs" />
     <Compile Include="Controllers\MailboxController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
-    <Compile Include="Controllers\OrdersController.cs" />
     <Compile Include="Controllers\PaymentsController.cs" />
     <Compile Include="Controllers\PrivateRequestsController.cs" />
     <Compile Include="Controllers\PrivateSessionsController.cs" />
@@ -257,12 +256,9 @@
     <Compile Include="Models\Lesson.cs" />
     <Compile Include="Models\LiveEvent.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
-    <Compile Include="Models\Order.cs" />
-    <Compile Include="Models\OrderItem.cs" />
     <Compile Include="Models\Payment.cs" />
     <Compile Include="Models\PaymentGateways.cs" />
     <Compile Include="Models\PrivateSession.cs" />
-    <Compile Include="Models\Product.cs" />
     <Compile Include="Models\ProfileViewModel.cs" />
     <Compile Include="Models\RoleNames.cs" />
     <Compile Include="Models\Seat.cs" />
@@ -1272,11 +1268,6 @@
     <Content Include="Views\Bookings\Details.cshtml" />
     <Content Include="Views\Bookings\Edit.cshtml" />
     <Content Include="Views\Bookings\Index.cshtml" />
-    <Content Include="Views\Orders\Create.cshtml" />
-    <Content Include="Views\Orders\Delete.cshtml" />
-    <Content Include="Views\Orders\Details.cshtml" />
-    <Content Include="Views\Orders\Edit.cshtml" />
-    <Content Include="Views\Orders\Index.cshtml" />
     <Content Include="Views\User\Index.cshtml" />
     <Content Include="Views\Apply\ApplyForm.cshtml" />
     <Content Include="Views\Apply\Success.cshtml" />
@@ -1364,6 +1355,9 @@
     <Content Include="Views\LiveEvents\Edit.cshtml" />
     <Content Include="Views\LiveEvents\Index.cshtml" />
     <Content Include="Views\Reports\Revenue.cshtml" />
+    <Content Include="Views\Payments\Outstanding.cshtml" />
+    <Content Include="Views\Payments\SendPayment.cshtml" />
+    <Content Include="Views\Reports\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

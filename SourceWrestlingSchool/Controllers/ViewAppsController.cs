@@ -1,14 +1,10 @@
 ﻿using SourceWrestlingSchool.Models;
 using System.Data.Entity;
-using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
-using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
@@ -34,8 +30,7 @@ namespace SourceWrestlingSchool.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             ApplyViewModel application = db.Applications.Where(a => a.ApplicationID == id).Include(a => a.User).Single(); 
-            //application.User = db.Users.Find(application.UserID);
-            Image source = Bitmap.FromFile(Server.MapPath("/images/") + application.FileName);
+            Image source = Image.FromFile(Server.MapPath("/images/") + application.FileName);
             ImageFormat format = source.RawFormat;
             source.Dispose();
             ImageHelper.RotateImageByExifOrientationData(Server.MapPath("/images/") + application.FileName, Server.MapPath("/images/") + application.FileName,format);
@@ -51,7 +46,7 @@ namespace SourceWrestlingSchool.Controllers
         public ActionResult Accept()
         {
             string aID = Request.Form["appID"];
-            string userMail = "";
+            string userMail;
             var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
             int appID = int.Parse(aID);
             using (db)
@@ -67,7 +62,7 @@ namespace SourceWrestlingSchool.Controllers
                 app.Status = ApplyViewModel.ApplicationStatus.Accepted;
                 userManager.RemoveFromRole(app.User.Id, RoleNames.ROLE_STANDARDUSER);
                 userManager.AddToRole(app.User.Id, RoleNames.ROLE_STUDENTUSER);
-                userMail = app.User.Email;
+                userMail = "" + app.User.Email;
                 db.SaveChanges();
             }
 
@@ -79,7 +74,7 @@ namespace SourceWrestlingSchool.Controllers
         public ActionResult Refuse()
         {
             string aID = Request.Form["appID"];
-            string userMail = "";
+            string userMail;
             int appID = int.Parse(aID);
             using (db)
             {
@@ -88,7 +83,7 @@ namespace SourceWrestlingSchool.Controllers
                             .Include(a => a.User)
                             .Single(); 
                 app.Status = ApplyViewModel.ApplicationStatus.Declined;
-                userMail = app.User.Email;
+                userMail = "" + app.User.Email;
                 db.SaveChanges();
             }
                 

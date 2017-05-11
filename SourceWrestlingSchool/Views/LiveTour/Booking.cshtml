@@ -54,6 +54,7 @@
                 <div class="modal-body">
                     <form id="checkout" method="post" action="/LiveTour/Checkout">
                         <div id="payment-form"></div>
+                        <input type="hidden" name="amount" value=@amount>
                         <input class="btn btn-success" type="submit" value=@buttonValue>
                     </form>
                     <script>

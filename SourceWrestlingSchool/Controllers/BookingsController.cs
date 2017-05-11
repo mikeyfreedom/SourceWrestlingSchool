@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using SourceWrestlingSchool.Models;
 
@@ -115,7 +111,10 @@ namespace SourceWrestlingSchool.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Booking booking = db.Bookings.Find(id);
-            db.Bookings.Remove(booking);
+            if (booking != null)
+            {
+                db.Bookings.Remove(booking);
+            }
             db.SaveChanges();
             return RedirectToAction("Index");
         }

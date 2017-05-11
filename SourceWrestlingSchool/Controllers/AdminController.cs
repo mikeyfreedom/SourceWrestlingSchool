@@ -1,8 +1,6 @@
 ﻿using SourceWrestlingSchool.Models;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace SourceWrestlingSchool.Controllers
@@ -31,25 +29,26 @@ namespace SourceWrestlingSchool.Controllers
             using (db)
             {
                 student = db.Users
-                          .Where(s => s.Id == id)
-                          .Single(); 
+                          .Single(s => s.Id == id); 
             };
 
-            ProfileViewModel model = new ProfileViewModel();
-            model.BioContent = student.BioContent;
-            model.ClassLevel = (ClassLevel) student.ClassLevel;
-            model.DateJoinedSchool = (DateTime) student.DateJoinedSchool;
-            model.EmailAddress = student.Email;
-            model.FacebookURL = student.FacebookURL;
-            model.Height = (int) student.Height;
-            model.InstagramURL = student.InstagramURL;
-            model.Name = student.FirstName + " " + student.LastName;
-            model.ProfileImageFileName = student.ProfileImageFileName;
-            model.SlideshowImageFileNames = student.SlideshowImageFileNames.ToArray();
-            model.TwitterURL = student.TwitterURL;
-            model.Weight = (int) student.Weight;
-            model.YoutubeEmbedLink = student.YoutubeEmbedLink;
-            
+            ProfileViewModel model = new ProfileViewModel
+            {
+                BioContent = student.BioContent,
+                ClassLevel = (ClassLevel) student.ClassLevel,
+                DateJoinedSchool = (DateTime) student.DateJoinedSchool,
+                EmailAddress = student.Email,
+                FacebookURL = student.FacebookURL,
+                Height = (int) student.Height,
+                InstagramURL = student.InstagramURL,
+                Name = student.FirstName + " " + student.LastName,
+                ProfileImageFileName = student.ProfileImageFileName,
+                SlideshowImageFileNames = student.SlideshowImageFileNames.ToArray(),
+                TwitterURL = student.TwitterURL,
+                Weight = (int) student.Weight,
+                YoutubeEmbedLink = student.YoutubeEmbedLink
+            };
+
             return View(model);
         }
         public ActionResult InstructorProfile()

@@ -1,5 +1,4 @@
 ﻿@model SourceWrestlingSchool.Models.ApplyViewModel
-@using Microsoft.AspNet.Identity;
 @{
     ViewBag.Title = "Apply To Become a Student";
 }
@@ -49,7 +48,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.FileName, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                <input type="file" name="uploadFile" class="form-control-file">
+                <input type="file" name="uploadFile">
             </div>
         </div>
         @Html.Hidden("UserID")

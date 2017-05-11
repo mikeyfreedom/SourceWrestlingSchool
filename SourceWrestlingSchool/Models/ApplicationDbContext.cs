@@ -1,12 +1,9 @@
-﻿using FizzWare.NBuilder;
-using Microsoft.AspNet.Identity;
+﻿using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SourceWrestlingSchool.Models
 {
@@ -15,10 +12,7 @@ namespace SourceWrestlingSchool.Models
         public DbSet<Booking> Bookings { get; set; }
         public DbSet<Lesson> Lessons { get; set; }
         public DbSet<LiveEvent> LiveEvents { get; set; }
-        public DbSet<Order> Orders { get; set; }
-        public DbSet<OrderItem> OrderItems { get; set; }
         public DbSet<Payment> Payments { get; set; }
-        public DbSet<Product> Products { get; set; }
         public DbSet<Seat> Seats { get; set; }
         public DbSet<ApplyViewModel> Applications { get; set; }
         public DbSet<Venue> Venues { get; set; }
@@ -27,15 +21,14 @@ namespace SourceWrestlingSchool.Models
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
         {
-            Database.SetInitializer<ApplicationDbContext>(new ApplicationDbInitializer());
+            Database.SetInitializer(new ApplicationDbInitializer());
         }
         
         public static ApplicationDbContext Create()
         {
             return new ApplicationDbContext();
         }
-
-        public System.Data.Entity.DbSet<SourceWrestlingSchool.Models.SubscriptionViewModel> SubscriptionViewModels { get; set; }
+        
     }
 
     public class ApplicationDbInitializer : DropCreateDatabaseAlways<ApplicationDbContext>

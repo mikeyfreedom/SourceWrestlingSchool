@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using SourceWrestlingSchool.Models;
 
@@ -109,8 +105,11 @@ namespace SourceWrestlingSchool.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Seat seat = db.Seats.Find(id);
-            db.Seats.Remove(seat);
+            Seat seat = db.Seats.Single(s => s.SeatID == id);
+            if (seat != null)
+            {
+                db.Seats.Remove(seat);
+            }
             db.SaveChanges();
             return RedirectToAction("Index");
         }

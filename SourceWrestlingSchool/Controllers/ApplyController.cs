@@ -1,13 +1,9 @@
 ﻿using SourceWrestlingSchool.Models;
-using Microsoft.AspNet.Identity;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.IO;
-using System.Drawing;
-using System.Drawing.Imaging;
 using System.Net.Mail;
 
 namespace SourceWrestlingSchool.Controllers
@@ -53,7 +49,7 @@ namespace SourceWrestlingSchool.Controllers
                 }
                 catch (Exception ex)
                 {
-                    Console.Write("ERROR:" + ex.Message.ToString());
+                    Console.Write("ERROR:" + ex.Message);
                 }
                 model.FileName = imagePath;
 
@@ -73,9 +69,12 @@ namespace SourceWrestlingSchool.Controllers
 
         private void sendAppliedConfirmation(ApplicationUser user)
         {
-            MailMessage message = new MailMessage("lowlander_glen@yahoo.co.uk",user.UserName);
-            message.Subject = "School Application Received";
-            message.Body = "We have received your application to join the school on a student member basis.";
+            MailMessage message =
+                new MailMessage("lowlander_glen@yahoo.co.uk", user.UserName)
+                {
+                    Subject = "School Application Received",
+                    Body = "We have received your application to join the school on a student member basis."
+                };
             SmtpClient smtpClient = new SmtpClient();
             smtpClient.Send(message);
         }

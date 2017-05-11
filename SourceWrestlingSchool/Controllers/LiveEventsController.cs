@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web.UI.WebControls;
-using System.Web;
 using System.Web.Mvc;
 using SourceWrestlingSchool.Models;
 using System.IO;
@@ -121,7 +117,10 @@ namespace SourceWrestlingSchool.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             LiveEvent liveEvent = db.LiveEvents.Find(id);
-            db.LiveEvents.Remove(liveEvent);
+            if (liveEvent != null)
+            {
+                db.LiveEvents.Remove(liveEvent);
+            }
             db.SaveChanges();
             return RedirectToAction("Index");
         }

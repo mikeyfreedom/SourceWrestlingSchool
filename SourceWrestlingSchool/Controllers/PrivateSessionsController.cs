@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using SourceWrestlingSchool.Models;
 
@@ -110,7 +106,10 @@ namespace SourceWrestlingSchool.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             PrivateSession privateSession = db.PrivateSessions.Find(id);
-            db.PrivateSessions.Remove(privateSession);
+            if (privateSession != null)
+            {
+                db.PrivateSessions.Remove(privateSession);
+            }
             db.SaveChanges();
             return RedirectToAction("Index");
         }

@@ -1,10 +1,7 @@
 ﻿using Braintree;
 using SourceWrestlingSchool.Models;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace SourceWrestlingSchool.Controllers
@@ -19,9 +16,7 @@ namespace SourceWrestlingSchool.Controllers
             
             using (db)
             {
-                ApplicationUser user = db.Users
-                                       .Where(u => u.UserName.Equals(User.Identity.Name))
-                                       .First();
+                ApplicationUser user = db.Users.First(u => u.UserName.Equals(User.Identity.Name));
 
                 //Ternary operator to evaluate if a user has a subscription
                 model.IsSubscribed = (user.MemberLevel != null) ? true : false;
@@ -54,14 +49,11 @@ namespace SourceWrestlingSchool.Controllers
         {
             //check for customer, if exists, generate a token off them
             //if not, generate a generic and create the customer on post
-            CreateCustomerViewModel model = new CreateCustomerViewModel();
-            model.PlanID = id;
-            
+            CreateCustomerViewModel model = new CreateCustomerViewModel {PlanID = id};
+
             using (db)
             {
-                model.User = db.Users
-                             .Where(u => u.UserName.Equals(User.Identity.Name))
-                             .First();
+                model.User = db.Users.First(u => u.UserName.Equals(User.Identity.Name));
             };
 
             var customerRequest = new CustomerSearchRequest().Email.Is(User.Identity.Name);
@@ -98,7 +90,7 @@ namespace SourceWrestlingSchool.Controllers
                 ResourceCollection<Customer> results = PaymentGateways.Gateway.Customer.Search(customerRequest);
                 if (results.Ids.Count == 0)
                 {
-                    var user = db.Users.Where(u => u.Email == User.Identity.Name).Single();
+                    var user = db.Users.Single(u => u.Email == User.Identity.Name);
                     var request = new CustomerRequest
                     {
                         FirstName = user.FirstName,
@@ -177,9 +169,8 @@ namespace SourceWrestlingSchool.Controllers
                 }
                 else
                 {
-                    ApplicationUser user = db.Users.Where(u => u.Email == User.Identity.Name).Single();
+                    ApplicationUser user = db.Users.Single(u => u.Email == User.Identity.Name);
                     Customer customer = results.FirstItem;
-                    string customerId = customer.Id;
                     string cardToken = customer.PaymentMethods[0].Token;
 
                     var newSub = new SubscriptionRequest
