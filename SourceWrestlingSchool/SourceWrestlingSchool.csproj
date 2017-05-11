@@ -260,6 +260,7 @@
     <Compile Include="Models\PaymentGateways.cs" />
     <Compile Include="Models\PrivateSession.cs" />
     <Compile Include="Models\ProfileViewModel.cs" />
+    <Compile Include="Models\RevenueReportModel.cs" />
     <Compile Include="Models\RoleNames.cs" />
     <Compile Include="Models\Seat.cs" />
     <Compile Include="Models\SubscriptionViewModel.cs" />

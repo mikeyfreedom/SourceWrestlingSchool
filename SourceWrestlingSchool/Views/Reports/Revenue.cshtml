@@ -1,4 +1,4 @@
-﻿
+﻿@model SourceWrestlingSchool.Models.RevenueReportModel
 @{
     ViewBag.Title = "Revenue";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -10,14 +10,14 @@
         <!-- SUMMARY VIEW -->
         <div class="col-lg-6">
             <div class="panel panel-default">
-                <div class="panel-heading">Revenue Summary</div>
+                <div class="panel-heading">Revenue Summary for @Html.DisplayFor(model => model.CurrentDate)</div>
                 <div class="panel-body" style="color:black">
                     <ul>
-                        <li>Live Event Revenue :</li>
-                        <li>Membership Revenue :</li>
-                        <li>Other Revenue : </li>
+                        <li>Live Event Revenue : £@Html.DisplayFor(model => model.TotalEventRevenue)</li>
+                        <li>Membership Revenue : £@Html.DisplayFor(model => model.TotalMembershipRevenue)</li>
+                        <li>Other Revenue : £@Html.DisplayFor(model => model.TotalOtherRevenue)</li>
                         <li>----------------------------</li>
-                        <li>Total Revenue : </li>
+                        <li>Total Revenue : £@Html.DisplayFor(model => model.TotalMonthRevenue)</li>
                     </ul>
                 </div>
             </div>
@@ -36,9 +36,12 @@
                 </div>
 
                 <div id="collapseOne" class="collapse" role="tabpanel" aria-labelledby="headingOne">
-                    <div class="card-block">
-                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid.
-                    </div>
+                    @foreach (var item in Model.Events)
+                    {
+                        <div class="card-block">
+                            @Html.DisplayFor(modelItem => item.EventName) : £@Html.DisplayFor(modelItem => item.EventRevenue)
+                        </div>
+                    }
                 </div>
             </div>
             <div class="card">
@@ -51,7 +54,14 @@
                 </div>
                 <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo">
                     <div class="card-block">
-                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid.
+                        Bronze Membership Fees Paid  : @Model.NoBronzeMemberships
+                        Total Bronze Fees This Month : £@Model.BronzeFeesCollected
+                        
+                        Silver Membership Fees Paid  : @Model.NoSilverMemberships
+                        Total Silver Fees This Month : £@Model.SilverFeesCollected
+                        
+                          Gold Membership Fees Paid  : @Model.NoGoldMemberships
+                          Total Gold Fees This Month : £@Model.GoldFeesCollected
                     </div>
                 </div>
             </div>
@@ -65,7 +75,11 @@
                 </div>
                 <div id="collapseThree" class="collapse" role="tabpanel" aria-labelledby="headingThree">
                     <div class="card-block">
-                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid.
+                          Number of Private Sessions : @Model.NoPrivateSessions
+                        Total Private Fees Collected : £@Model.PrivateFeesCollected
+                        
+                           Cancellation Fines Levied : @Model.NoCancellationFines
+                               Total Fines Collected : £@Model.FinesCollected
                     </div>
                 </div>
             </div>

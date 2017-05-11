@@ -1,8 +1,44 @@
-﻿
+﻿@model List<SelectListItem>
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h2>Index</h2>
+<!-- User Reports -->
+<!-- Business Reports -->
 
+<p>Date: <input type="text" id="datepicker"></p>
+<br/>
+<form id="monthPicker" action="/Reports/Revenue" method="post">
+    Please Select (month and year) to view Revenue Report:
+    <input type="month" name="selectedMonth">
+    <input type="submit" value="View Revenue Sheet">
+</form>
+
+<script>
+    $(document).ready(function() {
+        $('#datepicker').datepicker({
+            changeMonth: true,
+            changeYear: true,
+            dateFormat: 'MM yy',
+
+            onClose: function() {
+                var iMonth = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
+                var iYear = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
+                $(this).datepicker('setDate', new Date(iYear, iMonth, 1));
+            },
+            
+            beforeShow: function() {
+                if ((selDate = $(this).val()).length > 0)
+                {
+                    iYear = selDate.substring(selDate.length - 4, selDate.length);
+                    iMonth = jQuery.inArray(selDate.substring(0, selDate.length - 5),
+                    $(this).datepicker('option', 'monthNames'));
+                    $(this).datepicker('option', 'defaultDate', new Date(iYear, iMonth, 1));
+                    $(this).datepicker('setDate', new Date(iYear, iMonth, 1));
+                }
+            }
+        });
+    });
+</script>
