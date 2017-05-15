@@ -152,6 +152,7 @@ namespace SourceWrestlingSchool.Controllers
                         if (seat != null)
                         {
                             seat.Status = Seat.SeatBookingStatus.Booked;
+                            payment.Seats.Add(seat);
                         }
                     }
 
@@ -173,6 +174,7 @@ namespace SourceWrestlingSchool.Controllers
                         if (seat != null)
                         {
                             seat.Status = Seat.SeatBookingStatus.Free;
+                            
                         }
                     }
                     ViewBag.Message = result.Message;

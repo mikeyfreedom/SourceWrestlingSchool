@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace SourceWrestlingSchool.Models
 {
@@ -10,6 +11,7 @@ namespace SourceWrestlingSchool.Models
         public string PaymentDescription { get; set; }
         public bool PaymentSettled { get; set; }
         public string TransactionId  { get; set; }
+        public virtual ICollection<Seat> Seats  { get; set; }
         
         //navigational Properties
         public string UserID { get; set; }

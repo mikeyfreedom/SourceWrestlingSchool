@@ -3,13 +3,13 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Diagnostics;
 using System.Linq;
 
 namespace SourceWrestlingSchool.Models
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
-        public DbSet<Booking> Bookings { get; set; }
         public DbSet<Lesson> Lessons { get; set; }
         public DbSet<LiveEvent> LiveEvents { get; set; }
         public DbSet<Payment> Payments { get; set; }
@@ -50,26 +50,46 @@ namespace SourceWrestlingSchool.Models
                 if (!roleManager.RoleExists(RoleNames.ROLE_ADMINISTRATOR))
                 {
                     var roleResult = roleManager.Create(new IdentityRole(RoleNames.ROLE_ADMINISTRATOR));
+                    if (!roleResult.Succeeded)
+                    {
+                        Debug.Write(roleResult.Errors.ToString());
+                    }
                 }
 
                 if (!roleManager.RoleExists(RoleNames.ROLE_STAFFMEMBER))
                 {
                     var roleResult = roleManager.Create(new IdentityRole(RoleNames.ROLE_STAFFMEMBER));
+                    if (!roleResult.Succeeded)
+                    {
+                        Debug.Write(roleResult.Errors.ToString());
+                    }
                 }
 
                 if (!roleManager.RoleExists(RoleNames.ROLE_STUDENTUSER))
                 {
                     var roleResult = roleManager.Create(new IdentityRole(RoleNames.ROLE_STUDENTUSER));
+                    if (!roleResult.Succeeded)
+                    {
+                        Debug.Write(roleResult.Errors.ToString());
+                    }
                 }
 
                 if (!roleManager.RoleExists(RoleNames.ROLE_INSTRUCTOR))
                 {
                     var roleResult = roleManager.Create(new IdentityRole(RoleNames.ROLE_INSTRUCTOR));
+                    if (!roleResult.Succeeded)
+                    {
+                        Debug.Write(roleResult.Errors.ToString());
+                    }
                 }
 
                 if (!roleManager.RoleExists(RoleNames.ROLE_STANDARDUSER))
                 {
                     var roleResult = roleManager.Create(new IdentityRole(RoleNames.ROLE_STANDARDUSER));
+                    if (!roleResult.Succeeded)
+                    {
+                        Debug.Write(roleResult.Errors.ToString());
+                    }
                 }
 
                 string userName = "admin@admin.com";

@@ -165,6 +165,15 @@ namespace SourceWrestlingSchool.Controllers
             if (result.IsSuccess())
             {
                 ViewBag.Message = "Refund of Transaction " + transId + " Successful";
+                Payment payment = db.Payments.Single(p => p.TransactionId.Equals(transId));
+                if (payment.Seats.Count != 0)
+                {
+                    foreach (Seat seat in payment.Seats)
+                    {
+                        seat.Status = Seat.SeatBookingStatus.Free;
+                    }
+                }
+                db.SaveChanges();
                 return View("RefundSuccess");
             }
             else
