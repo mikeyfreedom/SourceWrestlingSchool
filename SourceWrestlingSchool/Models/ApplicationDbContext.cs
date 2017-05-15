@@ -17,7 +17,8 @@ namespace SourceWrestlingSchool.Models
         public DbSet<ApplyViewModel> Applications { get; set; }
         public DbSet<Venue> Venues { get; set; }
         public DbSet<PrivateSession> PrivateSessions { get; set; }
-
+        public DbSet<ProfileViewModel> Profiles { get; set; }
+        
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
         {
@@ -31,7 +32,7 @@ namespace SourceWrestlingSchool.Models
         
     }
 
-    public class ApplicationDbInitializer : DropCreateDatabaseIfModelChanges<ApplicationDbContext>
+    public class ApplicationDbInitializer : DropCreateDatabaseAlways<ApplicationDbContext>
     {
         protected override void Seed(ApplicationDbContext context)
         {

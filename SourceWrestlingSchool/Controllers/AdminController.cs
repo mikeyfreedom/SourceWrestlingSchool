@@ -1,5 +1,6 @@
 ﻿using SourceWrestlingSchool.Models;
 using System;
+using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -22,35 +23,85 @@ namespace SourceWrestlingSchool.Controllers
         {
             return View();
         }
-        public ActionResult StudentProfile(string id)
+        public ActionResult StudentProfile()
         {
-            ApplicationUser student;
-
             using (db)
             {
-                student = db.Users
-                          .Single(s => s.Id == id); 
-            };
+                var model = db.Profiles.FirstOrDefault(p => p.EmailAddress.Equals(User.Identity.Name));
+                if (model == null)
+                {
+                    ApplicationUser student = db.Users.Single(s => s.Email.Equals(User.Identity.Name));
+                    model = new ProfileViewModel
+                    {
+                        BioContent = student.BioContent,
+                        ClassLevel = (ClassLevel) student.ClassLevel,
+                        DateJoinedSchool = (DateTime) student.DateJoinedSchool,
+                        EmailAddress = student.Email,
+                        FacebookURL = student.FacebookURL,
+                        Height = (int) student.Height,
+                        InstagramURL = student.InstagramURL,
+                        Name = student.FirstName + " " + student.LastName,
+                        ProfileImageFileName = student.ProfileImageFileName,
+                        TwitterURL = student.TwitterURL,
+                        Weight = (int) student.Weight,
+                        YoutubeEmbedLink = student.YoutubeEmbedLink
+                    };
+                    db.Profiles.Add(model);
+                    db.SaveChanges();
+                }
+                
+                return View(model);
+            }
+        }
 
-            ProfileViewModel model = new ProfileViewModel
-            {
-                BioContent = student.BioContent,
-                ClassLevel = (ClassLevel) student.ClassLevel,
-                DateJoinedSchool = (DateTime) student.DateJoinedSchool,
-                EmailAddress = student.Email,
-                FacebookURL = student.FacebookURL,
-                Height = (int) student.Height,
-                InstagramURL = student.InstagramURL,
-                Name = student.FirstName + " " + student.LastName,
-                ProfileImageFileName = student.ProfileImageFileName,
-                SlideshowImageFileNames = student.SlideshowImageFileNames.ToArray(),
-                TwitterURL = student.TwitterURL,
-                Weight = (int) student.Weight,
-                YoutubeEmbedLink = student.YoutubeEmbedLink
-            };
-
+        public ActionResult EditProfile(int id)
+        {
+            var model = db.Profiles.Single(p => p.ProfileId == id);
+            
             return View(model);
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditProfile([Bind(Include = "ProfileId,ProfileImageFileName,Name,Height,Weight,DateJoinedSchool,ClassLevel,FacebookURL,TwitterURL,InstagramURL,EmailAddress,BioContent,YoutubeEmbedLink")] ProfileViewModel profile)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Entry(profile).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("StudentProfile");
+            }
+            return View(profile);
+        }
+
+        public ActionResult EditBio(int id)
+        {
+            var bio = db.Profiles
+                      .Where(p => p.ProfileId == id)
+                      .Select(p => p.BioContent)
+                      .Single();
+
+            ViewBag.Id = id;
+
+            return View(model : bio);
+        }
+
+        [HttpPost]
+        public ActionResult EditBio(FormCollection collection)
+        {
+            using (db)
+            {
+                int profileId = int.Parse(Request.Form["profileID"]);
+                ProfileViewModel profile = db.Profiles.Single(p => p.ProfileId == profileId);
+                string bioText = Request.Form["bioText"];
+                profile.BioContent = bioText;
+                db.SaveChanges();
+            }
+
+            return RedirectToAction("StudentProfile");
+        }
+
+
         public ActionResult InstructorProfile()
         {
             return View();

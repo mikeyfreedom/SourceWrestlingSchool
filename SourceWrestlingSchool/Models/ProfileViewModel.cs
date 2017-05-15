@@ -1,9 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace SourceWrestlingSchool.Models
 {
     public class ProfileViewModel
     {
+        [Key]
+        public int ProfileId { get; set; }
         public string ProfileImageFileName { get; set; }
         public string Name { get; set; }
         public int Height { get; set; }
@@ -16,6 +20,6 @@ namespace SourceWrestlingSchool.Models
         public string EmailAddress { get; set; }
         public string BioContent { get; set; }
         public string YoutubeEmbedLink { get; set; }
-        public string[] SlideshowImageFileNames { get; set; }
+        public List<string> SlideshowImageFileNames { get; set; }
     }
 }

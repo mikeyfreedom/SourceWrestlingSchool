@@ -1071,7 +1071,7 @@
     <Content Include="Content\jquery.seat-charts.css" />
     <Content Include="Content\MemberPlans.css" />
     <Content Include="Content\newSub.css" />
-    <Content Include="Content\sidebar.css" />
+    <Content Include="Content\slider.css" />
     <Content Include="Content\source_wrestling_school.css" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
@@ -1109,6 +1109,8 @@
     <Content Include="images\bookedSeat.png" />
     <Content Include="images\Dunbar1.jpg" />
     <Content Include="images\freeSeat.png" />
+    <Content Include="images\noire1.jpg" />
+    <Content Include="images\Polos1.jpg" />
     <Content Include="images\reserveSeat.png" />
     <Content Include="images\SourceLogo.png" />
     <Content Include="Scripts\Account\Login.js" />
@@ -1220,6 +1222,7 @@
     <Content Include="Scripts\SeatChart\jquery.seat-charts.js" />
     <Content Include="Scripts\SeatChart\jquery.seat-charts.min.js" />
     <Content Include="Scripts\Shared\_Layout.js" />
+    <Content Include="Scripts\slick.js" />
     <Content Include="Scripts\Tables\Data-menu.js" />
     <Content Include="Scripts\Tables\Data.js" />
     <Content Include="Scripts\Tables\Simple-menu.js" />
@@ -1269,11 +1272,6 @@
     <Content Include="Views\ViewApps\Details.cshtml" />
     <Content Include="Views\Schedule\Index.cshtml" />
     <Content Include="Views\Schedule\Booking.cshtml" />
-    <Content Include="Views\Attendees\Create.cshtml" />
-    <Content Include="Views\Attendees\Delete.cshtml" />
-    <Content Include="Views\Attendees\Details.cshtml" />
-    <Content Include="Views\Attendees\Edit.cshtml" />
-    <Content Include="Views\Attendees\Index.cshtml" />
     <Content Include="Views\Lessons\Create.cshtml" />
     <Content Include="Views\Lessons\Delete.cshtml" />
     <Content Include="Views\Lessons\Details.cshtml" />
@@ -1354,6 +1352,8 @@
     <Content Include="Views\Reports\Index.cshtml" />
     <Content Include="Views\Payments\PaymentHistory.cshtml" />
     <Content Include="Views\Payments\RefundSuccess.cshtml" />
+    <Content Include="Views\Admin\EditProfile.cshtml" />
+    <Content Include="Views\Admin\EditBio.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

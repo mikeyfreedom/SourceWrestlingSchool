@@ -5,8 +5,6 @@ using System.Linq;
 using System.Web.Mvc;
 using System.Data.Entity;
 using Braintree;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
 using System.Web.Script.Serialization;
 
 namespace SourceWrestlingSchool.Controllers

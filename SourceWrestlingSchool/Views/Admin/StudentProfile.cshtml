@@ -3,70 +3,137 @@
     ViewBag.Title = "Dashboard v1";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-<link href="~/Content/sidebar.css" rel="stylesheet" />
-
+<link href="~/Content/slider.css" rel="stylesheet" />
+<script src="~/Scripts/slick.js"></script>
+<hr class="">
 <div class="container">
-    <div class="row profile">
-        <div class="col-md-3">
-            <div class="profile-sidebar">
-                <!-- SIDEBAR USERPIC -->
-                <div class="profile-userpic">
-                    <img src="http://keenthemes.com/preview/metronic/theme/assets/admin/pages/media/profile/profile_user.jpg" class="img-responsive" alt="">
+    <div class="row">
+        <div class="col-sm-9">
+            <h1 class="">@Model.Name</h1>
+         
+            <button type="button" class="btn btn-success">Book me!</button>  <button type="button" class="btn btn-info">Send me a message</button>
+            <br>
+        </div>
+        <div class="col-sm-2"><img title="profile image" class="img-circle img-responsive" src="@Html.Raw(Model.ProfileImageFileName)" onerror="this.onerror=null;this.src='/images/SourceLogo.png';" /></div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-sm-3">
+            <!--left col-->
+            <ul class="list-group">
+                <li class="list-group-item text-muted" contenteditable="false">Profile</li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong class="">Joined</strong></span> @Model.DateJoinedSchool.Date</li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong class="">Level</strong></span> @Model.ClassLevel</li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong class="">Height</strong></span> @Model.Height</li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong class="">Weight </strong></span> @Model.Weight</li>
+            </ul>
+        
+            <div class="panel panel-default">
+                <div class="panel-heading">Website <i class="fa fa-link"></i></div>
+                <div class="panel-body"><a href="http://sourcewrestling.com" class="">Source Wrestling</a></div>
+            </div>
+        
+            <div class="panel panel-default">
+                <div class="panel-heading">Social Media</div>
+                <div class="panel-body">	
+                    <a href="@Html.Raw(Model.FacebookURL)"><i class="fa fa-facebook-square fa-2x"></i></a>
+                    <a href="@Html.Raw(Model.TwitterURL)"><i class="fa fa-twitter-square fa-2x"></i></a>
+                    <a href="@Html.Raw(Model.InstagramURL)"><i class="fa fa-instagram fa-2x"></i></a> 
                 </div>
-                <!-- END SIDEBAR USERPIC -->
-                <!-- SIDEBAR USER TITLE -->
-                <div class="profile-usertitle">
-                    <div class="profile-usertitle-name">
-                        @Html.DisplayFor(model => model.Name);
-                    </div>
-                    <div class="profile-usertitle-job">
-                        @Html.DisplayFor(model => model.ClassLevel);
-                    </div>
-                </div>
-                <!-- END SIDEBAR USER TITLE -->
-                <!-- SIDEBAR BUTTONS -->
-                <div class="profile-userbuttons">
-                    <button type="button" class="btn btn-success btn-sm">Email</button>
-                    <button type="button" class="btn btn-danger btn-sm">Message</button>
-                </div>
-                <!-- END SIDEBAR BUTTONS -->
-                <!-- SIDEBAR MENU -->
-                <div class="profile-usermenu">
-                    <ul class="nav">
-                        <li class="active">
-                            <a href="#">
-                                <i class="glyphicon glyphicon-home"></i>
-                                Overview
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <i class="glyphicon glyphicon-user"></i>
-                                Account Settings
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" target="_blank">
-                                <i class="glyphicon glyphicon-ok"></i>
-                                Tasks
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <i class="glyphicon glyphicon-flag"></i>
-                                Help
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-                <!-- END MENU -->
             </div>
         </div>
-        <div class="col-md-9">
-            <div class="profile-content">
-                
+        <!--/col-3-->
+        <div class="col-sm-8" style="" contenteditable="false">
+            <div class="panel panel-default">
+                <div class="panel-heading">@Model.Name - Bio</div>
+                <div class="panel-body">
+                    @if (Model.BioContent != null) 
+                    {
+                        @Html.Raw(Model.BioContent)<br/>
+                        if (User.Identity.IsAuthenticated && Model.EmailAddress == User.Identity.Name)
+                        {
+                            @Html.ActionLink("Edit Bio", "EditBio", new { id = Model.ProfileId })
+                        }
+                    }
+                    else if (User.Identity.IsAuthenticated && Model.EmailAddress == User.Identity.Name)
+                    {
+                        @Html.ActionLink("Add Your Bio Now", "EditBio", new { id = Model.ProfileId })
+                    }
+                    else
+                    {
+                        <p>This student has not entered their biography yet.</p>
+                    }
+                </div>
             </div>
+            <div class="panel panel-default">
+                <div class="panel-heading" contenteditable="false">Media</div>
+                <div class="panel-body">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <section class="regular slider">
+                                    @if (Model.SlideshowImageFileNames == null)
+                                    {
+                                        <button>Add Images to the carousel</button>
+                                    }
+                                    else
+                                    {
+                                        foreach (string filename in Model.SlideshowImageFileNames)
+                                        {
+                                            <div>
+                                                <img src="@Html.Raw(filename)" alt="http://placehold.it/350x300">
+                                            </div>
+                                        }
+                                    }
+                                </section>
+                            </div>
+                            <div class="col-md-4">
+                                @if (Model.YoutubeEmbedLink == null)
+                                {
+                                    <p>No Video Link has been established.</p>
+                                }
+                                else
+                                {
+                                    <iframe width="300" height="300" src="@Html.Raw(Model.YoutubeEmbedLink)" frameborder="0" allowfullscreen></iframe>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @if (User.Identity.IsAuthenticated && Model.EmailAddress == User.Identity.Name)
+            {
+                <div>
+                    <button class="btn btn-info" type="button" id="addressSearch"   
+                            onclick="location.href='@Url.Action("EditProfile", "Admin",new {id = Model.ProfileId})'">Edit Your Profile Information</button>
+                </div>
+            }
         </div>
     </div>
 </div>
+
+<script>
+    jQuery.fn.shake = function(intShakes, intDistance, intDuration, foreColor) {
+        this.each(function() {
+            if (foreColor && foreColor!="null") {
+                $(this).css("color",foreColor); 
+            }
+            $(this).css("position","relative"); 
+            for (var x=1; x<=intShakes; x++) {
+                $(this).animate({left:(intDistance*-1)}, (((intDuration/intShakes)/4)))
+                    .animate({left:intDistance}, ((intDuration/intShakes)/2))
+                    .animate({left:0}, (((intDuration/intShakes)/4)));
+                $(this).css("color",""); 
+            }
+        });
+        return this;
+    };
+</script>
+<script>
+    $(document).ready(function() {
+        
+        $('.tw-btn').fadeIn(3000);
+        $('.alert').delay(5000).fadeOut(1500);})
+</script>
+            
+        
