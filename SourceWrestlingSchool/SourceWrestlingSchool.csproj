@@ -1359,6 +1359,8 @@
     <Content Include="Views\Payments\Outstanding.cshtml" />
     <Content Include="Views\Payments\SendPayment.cshtml" />
     <Content Include="Views\Reports\Index.cshtml" />
+    <Content Include="Views\Payments\PaymentHistory.cshtml" />
+    <Content Include="Views\Payments\RefundSuccess.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

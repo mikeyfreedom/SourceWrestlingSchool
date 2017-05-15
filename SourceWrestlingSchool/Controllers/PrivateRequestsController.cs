@@ -70,6 +70,7 @@ namespace SourceWrestlingSchool.Controllers
                             PaymentAmount = 30,
                             PaymentDescription = "Private Session Booking Fee",
                             PaymentDate = DateTime.Today,
+                            PaymentSettled = false,
                             User = user,
                             UserID = user.Id
                         };

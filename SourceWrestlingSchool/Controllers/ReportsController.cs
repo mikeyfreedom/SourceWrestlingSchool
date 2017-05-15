@@ -1,7 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web.Mvc;
+using System.Web.UI;
 using Braintree;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using SourceWrestlingSchool.Models;
 
 namespace SourceWrestlingSchool.Controllers
@@ -90,6 +95,26 @@ namespace SourceWrestlingSchool.Controllers
             }
 
             return View(model);
+        }
+
+        public void ExportYearlyRevenueToPDF()
+        {
+            //var grid = new System.Web.UI.WebControls.GridView();
+            //var studentQuery = from s in students
+            //    select new { s.FirstName, s.LastName, s.ClassLevel, s.Age, s.Email, s.DateJoinedSchool };
+            //grid.DataSource = studentQuery.ToList();
+            //grid.DataBind();
+
+            Response.ClearContent();
+            Response.AddHeader("content-disposition", "attachment; filename=StudentRoster.xls");
+            Response.ContentType = "application/excel";
+            StringWriter sw = new StringWriter();
+            HtmlTextWriter htw = new HtmlTextWriter(sw);
+
+            //grid.RenderControl(htw);
+
+            Response.Write(sw.ToString());
+            Response.End();
         }
     }
 }

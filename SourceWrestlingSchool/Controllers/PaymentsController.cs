@@ -41,9 +41,9 @@ namespace SourceWrestlingSchool.Controllers
             {
                 var user = db.Users.Single(u => u.Email == User.Identity.Name);
                 var model = db.Payments
-                        .Where(p => p.UserID == user.Id)
-                        .Include(p => p.User)
-                        .ToList();
+                            .Where(p => p.UserID == user.Id && p.PaymentSettled == false)
+                            .Include(p => p.User)
+                            .ToList();
                 return View(model);
             }
         }
@@ -114,11 +114,11 @@ namespace SourceWrestlingSchool.Controllers
                 {
                     int pID = int.Parse(collection["payID"]);
                     Payment payment = db.Payments
-                                      .Where(p => p.PaymentID == pID)
+                                      .Where(p => p.PaymentID == pID && p.PaymentSettled == false)
                                       .Include(p => p.User)
                                       .Single();
 
-                    db.Payments.Remove(payment);
+                    payment.PaymentSettled = true;
                     
                     ViewBag.Message = "Payment Successful.";
                     db.SaveChanges();
@@ -137,6 +137,52 @@ namespace SourceWrestlingSchool.Controllers
             }
 
             return RedirectToAction("/Payments/SendPayments/" + collection["payID"]);
+        }
+
+        public ActionResult PaymentHistory()
+        {
+            var model = db.Payments
+                        .Where(p => p.User.Email == User.Identity.Name && p.PaymentSettled)
+                        .ToList();
+            foreach (Payment payment in model)
+            {
+                Transaction transaction = PaymentGateways.Gateway.Transaction.Find(payment.TransactionId);
+                if (transaction.RefundedTransactionId != null)
+                {
+                    model.Remove(payment);
+                }
+            }
+
+            //Get all payments from db associated with user
+            //display to user
+
+            return View(model);
+        }
+
+        public ActionResult Refund(string transId)
+        {
+            Result<Transaction> result = PaymentGateways.Gateway.Transaction.Refund(transId);
+            if (result.IsSuccess())
+            {
+                ViewBag.Message = "Refund of Transaction " + transId + " Successful";
+                return View("RefundSuccess");
+            }
+            else
+            {
+                ViewBag.Message = "";
+                List<ValidationError> errors = result.Errors.DeepAll();
+                foreach (var error in errors)
+                {
+                    ViewBag.Message = ViewBag.Message + error.Message + " ";
+                }
+                return RedirectToAction("PaymentHistory");
+            }
+        }
+
+        public ActionResult RefundSuccess()
+        {
+            var model = ViewBag.Message;
+            return View(model: model);
         }
 
         //// GET: Payments/Create

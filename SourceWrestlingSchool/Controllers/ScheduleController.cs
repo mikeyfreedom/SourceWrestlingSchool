@@ -130,6 +130,7 @@ namespace SourceWrestlingSchool.Controllers
                         PaymentAmount = Math.Round((decimal) cancelfine, 2),
                         PaymentDate = DateTime.Today,
                         PaymentDescription = "Class Cancellation Fine",
+                        PaymentSettled = false,
                         User = user,
                         UserID = user.Id
                     };

@@ -6,7 +6,7 @@
     float amount = Model.Seats.Count * 5;
     string buttonValue = "Pay £" + amount; 
 }
-<script src="https://js.braintreegateway.com/js/braintree-2.31.0.min.js"></script>
+<script> src="https://js.braintreegateway.com/web/dropin/1.0.2/js/dropin.min.js"</script>
 <h2>Booking</h2>
 
 <div class="container">
@@ -58,9 +58,6 @@
                         <input class="btn btn-success" type="submit" value=@buttonValue>
                     </form>
                     <script>
-                    // We generated a client token for you so you can test out this code
-                    // immediately. In a production-ready integration, you will need to
-                    // generate a client token on your server (see section below).
                         var clientToken = "@Html.Raw(ViewBag.ClientToken)";
 
                         braintree.setup(clientToken, "dropin", {

@@ -1,0 +1,49 @@
+﻿@model IEnumerable<SourceWrestlingSchool.Models.Payment>
+
+@{
+    ViewBag.Title = "PaymentHistory";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>PaymentHistory</h2>
+@if (ViewBag.Message != null)
+{
+    <div class="alert alert-danger alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+        <h4><i class="icon fa fa-ban"></i> Alert!</h4>
+        Your attempted refund failed for the following reasons : @Html.Raw(ViewBag.Message)
+    </div>
+}
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.PaymentDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PaymentAmount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PaymentDescription)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.PaymentDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PaymentAmount)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PaymentDescription)
+        </td>
+        <td>
+            @Html.ActionLink("Refund", "Refund", new { id=item.TransactionId })
+        </td>
+    </tr>
+}
+
+</table>

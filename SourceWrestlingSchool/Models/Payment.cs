@@ -8,6 +8,8 @@ namespace SourceWrestlingSchool.Models
         public DateTime PaymentDate { get; set; }
         public decimal PaymentAmount { get; set; }
         public string PaymentDescription { get; set; }
+        public bool PaymentSettled { get; set; }
+        public string TransactionId  { get; set; }
         
         //navigational Properties
         public string UserID { get; set; }

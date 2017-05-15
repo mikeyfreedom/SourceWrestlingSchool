@@ -77,9 +77,25 @@ namespace SourceWrestlingSchool.Controllers
             }
             
             model.Seats = Seats;
-            var clientToken = PaymentGateways.Gateway.ClientToken.generate();
+            var customerRequest = new CustomerSearchRequest().Email.Is(User.Identity.Name);
+            ResourceCollection<Customer> collection = PaymentGateways.Gateway.Customer.Search(customerRequest);
+            var clientToken = "";
+            if (collection.Ids.Count != 0)
+            {
+                string custID = collection.FirstItem.Id;
+                clientToken = PaymentGateways.Gateway.ClientToken.generate(
+                    new ClientTokenRequest
+                    {
+                        CustomerId = custID
+                    }
+                );
+            }
+            else
+            {
+                clientToken = PaymentGateways.Gateway.ClientToken.generate();
+            }
             ViewBag.ClientToken = clientToken;
-
+            
             return View(model);
         }
 
@@ -91,7 +107,6 @@ namespace SourceWrestlingSchool.Controllers
             
             using (db)
             {
-                var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
                 string nonceFromTheClient = collection["payment_method_nonce"];
                 decimal amount = decimal.Parse(collection["amount"]);
 
@@ -118,6 +133,17 @@ namespace SourceWrestlingSchool.Controllers
                                         .Include(ev => ev.Venue)
                                         .Include(ev => ev.Seats)
                                         .FirstOrDefault();
+
+                    Payment payment = new Payment
+                    {
+                        PaymentSettled = true,
+                        PaymentAmount = amount,
+                        PaymentDate = DateTime.Now.Date,
+                        PaymentDescription = "Booking of " + seatlist.Length + " seats for " + currentEvent.EventName + ".",
+                        User = db.Users.Single(u => u.Email == User.Identity.Name),
+                        TransactionId = result.Transaction.Id
+                    };
+                    payment.UserID = payment.User.Id;
 
                     foreach (var seatNo in seatlist)
                     {
