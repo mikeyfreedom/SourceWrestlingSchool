@@ -24,8 +24,8 @@
                 <li class="list-group-item text-muted" contenteditable="false">Profile</li>
                 <li class="list-group-item text-right"><span class="pull-left"><strong class="">Joined</strong></span> @Model.DateJoinedSchool.Date</li>
                 <li class="list-group-item text-right"><span class="pull-left"><strong class="">Level</strong></span> @Model.ClassLevel</li>
-                <li class="list-group-item text-right"><span class="pull-left"><strong class="">Height</strong></span> @Model.Height</li>
-                <li class="list-group-item text-right"><span class="pull-left"><strong class="">Weight </strong></span> @Model.Weight</li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong class="">Height</strong></span> @Model.Height cm</li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong class="">Weight </strong></span> @Model.Weight kg</li>
             </ul>
         
             <div class="panel panel-default">
@@ -36,9 +36,9 @@
             <div class="panel panel-default">
                 <div class="panel-heading">Social Media</div>
                 <div class="panel-body">	
-                    <a href="@Html.Raw(Model.FacebookURL)"><i class="fa fa-facebook-square fa-2x"></i></a>
-                    <a href="@Html.Raw(Model.TwitterURL)"><i class="fa fa-twitter-square fa-2x"></i></a>
-                    <a href="@Html.Raw(Model.InstagramURL)"><i class="fa fa-instagram fa-2x"></i></a> 
+                    <a href="@Html.Raw(Model.FacebookUrl)"><i class="fa fa-facebook-square fa-2x"></i></a>
+                    <a href="@Html.Raw(Model.TwitterUrl)"><i class="fa fa-twitter-square fa-2x"></i></a>
+                    <a href="@Html.Raw(Model.InstagramUrl)"><i class="fa fa-instagram fa-2x"></i></a> 
                 </div>
             </div>
         </div>
