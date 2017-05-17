@@ -7,16 +7,10 @@
 
 <h2>Index</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
 <table class="table">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.User.FirstName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.TransactionID)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.PaymentDate)
@@ -34,9 +28,6 @@
     <tr>
         <td>
             @Html.DisplayFor(modelItem => item.User.FirstName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.TransactionID)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.PaymentDate)

@@ -42,16 +42,16 @@ namespace SourceWrestlingSchool.Controllers
         public ActionResult Booking(FormCollection form)
         {
             TicketViewModel model = new TicketViewModel();
-            List<Seat> Seats = new List<Seat>();
-            var eventID = form["eventID"];
-            int eID = int.Parse(eventID);
+            List<Seat> seats = new List<Seat>();
+            var eventId = form["eventID"];
+            int eId = int.Parse(eventId);
             var seatList = form["seatList"].Split(',');
             TempData["seatList"] = seatList;
                         
             using (db)
             {
                 LiveEvent newEvent = db.LiveEvents
-                                      .Where(ev => ev.EventID == eID)
+                                      .Where(ev => ev.EventID == eId)
                                       .Include(ev => ev.Venue)
                                       .Include(ev => ev.Seats)
                                       .FirstOrDefault();
@@ -66,7 +66,7 @@ namespace SourceWrestlingSchool.Controllers
                             where s.SeatNumber == seatNo
                             select s).First();
 
-                        Seats.Add(seat);
+                        seats.Add(seat);
                         seat.Events.Add(newEvent);
                         seat.Status = Seat.SeatBookingStatus.Reserved;
                     }
@@ -74,17 +74,17 @@ namespace SourceWrestlingSchool.Controllers
                 }
             }
             
-            model.Seats = Seats;
+            model.Seats = seats;
             var customerRequest = new CustomerSearchRequest().Email.Is(User.Identity.Name);
             ResourceCollection<Customer> collection = PaymentGateways.Gateway.Customer.Search(customerRequest);
-            var clientToken = "";
+            string clientToken;
             if (collection.Ids.Count != 0)
             {
-                string custID = collection.FirstItem.Id;
+                string custId = collection.FirstItem.Id;
                 clientToken = PaymentGateways.Gateway.ClientToken.generate(
                     new ClientTokenRequest
                     {
-                        CustomerId = custID
+                        CustomerId = custId
                     }
                 );
             }
@@ -139,9 +139,10 @@ namespace SourceWrestlingSchool.Controllers
                         PaymentDate = DateTime.Now.Date,
                         PaymentDescription = "Booking of " + seatlist.Length + " seats for " + currentEvent.EventName + ".",
                         User = db.Users.Single(u => u.Email == User.Identity.Name),
-                        TransactionId = result.Transaction.Id
+                        TransactionId = result.Target.Id
                     };
                     payment.UserID = payment.User.Id;
+                    payment.Seats = new List<Seat>();
 
                     foreach (var seatNo in seatlist)
                     {

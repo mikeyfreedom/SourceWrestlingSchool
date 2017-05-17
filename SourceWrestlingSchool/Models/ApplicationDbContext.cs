@@ -121,9 +121,27 @@ namespace SourceWrestlingSchool.Models
                     userManager.Create(newUser, password);
                     userManager.AddToRole(newUser.Id, RoleNames.ROLE_ADMINISTRATOR);
 
+                    //Create standard user for testing purposes
+                    var newStandardUser = new ApplicationUser()
+                    {
+                        FirstName = "Standard",
+                        LastName = "User",
+                        PhoneNumber = "01389999999",
+                        MobileNumber = "07595543816",
+                        Address = "187 Crosslet Road",
+                        Town = "Dumbarton",
+                        Postcode = "G82 2LQ",
+                        UserName = "standardUser@gmail.com",
+                        Email = "standardUser@gmail.com",
+                        EmailConfirmed = true
+                    };
+                    userManager.Create(newStandardUser, password);
+                    userManager.AddToRole(newStandardUser.Id, RoleNames.ROLE_STANDARDUSER);
+
+
                     //Create student user for testing purposes
                     password = "freedom78";
-                    var newStandardUser = new ApplicationUser()
+                    var newStudentUser = new ApplicationUser()
                     {
                         FirstName = "Michael",
                         LastName = "Devlin",
@@ -141,8 +159,8 @@ namespace SourceWrestlingSchool.Models
                         Height = 174,
                         Weight = 85
                     };
-                    userManager.Create(newStandardUser, password);
-                    userManager.AddToRole(newStandardUser.Id, RoleNames.ROLE_STUDENTUSER);
+                    userManager.Create(newStudentUser, password);
+                    userManager.AddToRole(newStudentUser.Id, RoleNames.ROLE_STUDENTUSER);
 
                     //Create instructor for testing purposes
                     password = "123456";
