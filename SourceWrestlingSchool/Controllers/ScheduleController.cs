@@ -73,7 +73,8 @@ namespace SourceWrestlingSchool.Controllers
             {
                 db.PrivateSessions.Add(model);
                 db.SaveChanges();
-                sendEmail(currentUser.UserName,"private");
+                sendEmail(User.Identity.Name,"private");
+                errormessage = "Private";
                 return RedirectToAction("Index");
             }
 
@@ -144,7 +145,7 @@ namespace SourceWrestlingSchool.Controllers
                 db.SaveChanges();
             }
             
-            sendEmail(currentUser.UserName, "cancel");
+            //sendEmail(User.Identity.Name, "cancel");
 
             return RedirectToAction("Index", "Schedule"); 
         }
@@ -249,11 +250,12 @@ namespace SourceWrestlingSchool.Controllers
             protected override void OnTimeRangeSelected(TimeRangeSelectedArgs e)
             {
                 //Set a LINQ query to get all lessons that take place the same day as the requested session
-                DateTime startDate = e.Start.Date;
-                
-                var lessons = from l in db.Lessons
-                              where (l.ClassStartDate.Date == startDate)
-                              select l;
+                //DateTime startDate = e.Start;
+
+                var lessons = db.Lessons
+                              .Where(l => DbFunctions.TruncateTime(l.ClassStartDate) == e.Start.Date)
+                              .ToList();
+                              
 
                 //If there is are any other classes that day, loop through them to check for a time conflict
                 if (lessons.Count() != 0)

@@ -21,6 +21,13 @@ else if (Model.Equals("Overlap"))
         <strong>Sorry!</strong> You cannot select a time slot which contains another class.
     </div>
 }
+else if (Model.Equals("Private"))
+{
+    <div class="alert alert-success alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <strong>Thanks!</strong> You have requested a private session. Your instructor will respond soon.
+    </div>
+}
 else if (Model.Equals("BookSuccess"))
 {
     <div class="alert alert-success alert-dismissible" role="alert">

@@ -6,6 +6,16 @@
 }
 <link href="~/Content/MemberPlans.css" rel="stylesheet" />
 
+@if (TempData["message"] != null)
+{
+    <div class="alert alert-success alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+        <h4><i class="icon fa fa-ban"></i> Congratulations!</h4>
+        Your membership request has been accepted and a new subscription has been created.<br/>
+        The details of the agreement are listed below.
+    </div>
+}
+
 <h2>Index</h2>
 @if (Model.IsSubscribed == true)
 {

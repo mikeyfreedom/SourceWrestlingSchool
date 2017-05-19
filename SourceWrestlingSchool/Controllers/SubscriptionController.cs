@@ -19,7 +19,7 @@ namespace SourceWrestlingSchool.Controllers
                 ApplicationUser user = db.Users.First(u => u.UserName.Equals(User.Identity.Name));
 
                 //Ternary operator to evaluate if a user has a subscription
-                model.IsSubscribed = (user.MemberLevel != null) ? true : false;
+                model.IsSubscribed = (user.MemberLevel != null);
                 model.Username = user.FirstName + " " + user.LastName;
                 var request = new CustomerSearchRequest().Email.Is(User.Identity.Name);
                 ResourceCollection<Customer> collection = PaymentGateways.Gateway.Customer.Search(request);
@@ -40,10 +40,9 @@ namespace SourceWrestlingSchool.Controllers
                 }
             };
             
-
             return View(model);
         }
-
+        
         [HttpGet]
         public ActionResult CreateSubscription(int id)
         {
@@ -86,6 +85,7 @@ namespace SourceWrestlingSchool.Controllers
             {
                 string nonceFromTheClient = collection["payment_method_nonce"];
                 string planid = collection["planid"];
+
                 var customerRequest = new CustomerSearchRequest().Email.Is(User.Identity.Name);
                 ResourceCollection<Customer> results = PaymentGateways.Gateway.Customer.Search(customerRequest);
                 if (results.Ids.Count == 0)
@@ -110,17 +110,12 @@ namespace SourceWrestlingSchool.Controllers
                     Result<Customer> result = PaymentGateways.Gateway.Customer.Create(request);
                     if (!result.IsSuccess())
                     {
-                        Debug.WriteLine(result.Message);
-                        foreach (var error in result.Errors.All())
-                        {
-                            Debug.WriteLine(error.Message);
-                        }
-                        return View();
+                        TempData["message"] = result.Message;
+                        return Redirect(HttpContext.Request.UrlReferrer.AbsoluteUri);
                     }
                     else
                     {
                         Customer customer = result.Target;
-                        string customerId = customer.Id;
                         string cardToken = customer.PaymentMethods[0].Token;
 
                         var newSub = new SubscriptionRequest
@@ -137,16 +132,14 @@ namespace SourceWrestlingSchool.Controllers
                         Result<Subscription> subResult = PaymentGateways.Gateway.Subscription.Create(newSub);
                         if (!subResult.IsSuccess())
                         {
-                            Debug.WriteLine(subResult.Message);
-                            foreach (var error in subResult.Errors.All())
-                            {
-                                Debug.WriteLine(error.Message);
-                            }
-                            return View();
+                            TempData["message"] = subResult.Message;
+
+                            return Redirect(HttpContext.Request.UrlReferrer.AbsoluteUri);
                         }
                         else
                         {
-                            switch (int.Parse(planid))
+                            int pId = int.Parse(planid);
+                            switch (pId)
                             {
                                 case 1:
                                     user.MemberLevel = MemberLevel.Bronze;
@@ -161,21 +154,18 @@ namespace SourceWrestlingSchool.Controllers
                                     Debug.WriteLine("Invalid Plan Number");
                                     break;
                             }
-
+                            
                             db.SaveChanges();
-                            return View("Success");
+                            TempData["message"] = "success";
+                            return View("Index");
                         }
                     }
                 }
                 else
                 {
-                    ApplicationUser user = db.Users.Single(u => u.Email == User.Identity.Name);
-                    Customer customer = results.FirstItem;
-                    string cardToken = customer.PaymentMethods[0].Token;
-
                     var newSub = new SubscriptionRequest
                     {
-                        PaymentMethodToken = cardToken,
+                        PaymentMethodNonce = nonceFromTheClient,
                         PlanId = planid,
                         NeverExpires = true,
                         Options = new SubscriptionOptionsRequest
@@ -187,15 +177,13 @@ namespace SourceWrestlingSchool.Controllers
                     Result<Subscription> subResult = PaymentGateways.Gateway.Subscription.Create(newSub);
                     if (!subResult.IsSuccess())
                     {
-                        Debug.WriteLine(subResult.Message);
-                        foreach (var error in subResult.Errors.All())
-                        {
-                            Debug.WriteLine(error.Message);
-                        }
-                        return View();
+                        TempData["message"] = subResult.Message;
+
+                        return Redirect(HttpContext.Request.UrlReferrer.AbsoluteUri);
                     }
                     else
                     {
+                        ApplicationUser user = db.Users.Single(u => u.UserName.Equals(User.Identity.Name));
                         switch (int.Parse(planid))
                         {
                             case 1:
@@ -212,6 +200,7 @@ namespace SourceWrestlingSchool.Controllers
                                 break;
                         }
                         db.SaveChanges();
+                        TempData["message"] = "success";
                         return View("Index");
                     }
                 }

@@ -34,6 +34,7 @@ namespace SourceWrestlingSchool.Controllers
                            .Select(s => s.SeatNumber)
                            .ToArray();
 
+            ViewBag.Message = TempData["message"];
             ViewBag.Unavailable = bookings;
             return View(model);
         }
@@ -155,7 +156,7 @@ namespace SourceWrestlingSchool.Controllers
                         }
                     }
 
-                    ViewBag.Message = "Payment Successful, enjoy the event!";
+                    TempData["message"] = "Payment Successful, enjoy the event!";
                     db.SaveChanges();
                     return RedirectToAction("/Tickets/" + currentEvent.EventID);
                 }
@@ -176,13 +177,13 @@ namespace SourceWrestlingSchool.Controllers
                             
                         }
                     }
-                    ViewBag.Message = result.Message;
+                    TempData["message"] = "Payment Failed. Reason: " + result.Message;
                     Console.WriteLine(result.Message);
                 }
                 db.SaveChanges();
             }
             
-            return RedirectToAction("Tickets","LiveTour");
+            return RedirectToAction("/Tickets/" + currentEvent.EventID);
         }
 
         public JsonResult UpdateStatus(int id)
@@ -208,7 +209,5 @@ namespace SourceWrestlingSchool.Controllers
 
             return Json(response, JsonRequestBehavior.AllowGet);
         }
-
-        
     }
 }

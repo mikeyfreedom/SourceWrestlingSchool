@@ -16,12 +16,16 @@ namespace SourceWrestlingSchool.Models
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime DateJoinedSchool { get; set; }
         public ClassLevel ClassLevel { get; set; }
+        [RegularExpression("/^(http(s)?:\\/\\/[a-zA-Z0-9\\-_]+\\.[a-zA-Z]+(.)+)+/gm", ErrorMessage = "Incorrect URL format")]
         public string FacebookUrl { get; set; }
+        [RegularExpression("/^(http(s)?:\\/\\/[a-zA-Z0-9\\-_]+\\.[a-zA-Z]+(.)+)+/gm", ErrorMessage = "Incorrect URL format")]
         public string TwitterUrl { get; set; }
+        [RegularExpression("/^(http(s)?:\\/\\/[a-zA-Z0-9\\-_]+\\.[a-zA-Z]+(.)+)+/gm", ErrorMessage = "Incorrect URL format")]
         public string InstagramUrl { get; set; }
         public string EmailAddress { get; set; }
         [AllowHtml]
         public string BioContent { get; set; }
+        [RegularExpression("/[(http(s) ?)://(www.)?a-zA-Z0-9@:%._+~#=]{2,256}.[a-z]{2,6}\b([-a-zA-Z0-9@:%_+.~#?&//=]*)/ig",ErrorMessage = "Incorrect URL format")]
         public string YoutubeEmbedLink { get; set; }
         public List<string> SlideshowImageFileNames { get; set; }
     }

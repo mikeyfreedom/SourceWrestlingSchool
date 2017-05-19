@@ -44,11 +44,12 @@ namespace SourceWrestlingSchool.Controllers
                             .Where(p => p.UserID == user.Id && p.PaymentSettled == false)
                             .Include(p => p.User)
                             .ToList();
+                ViewBag.Message = TempData["message"];
                 return View(model);
             }
         }
 
-        [HttpPost]
+        [HttpGet]
         public ActionResult SendPayment(int? paymentID)
         {
             if (paymentID == null)
@@ -82,6 +83,7 @@ namespace SourceWrestlingSchool.Controllers
                 clientToken = PaymentGateways.Gateway.ClientToken.generate();
             }
             ViewBag.ClientToken = clientToken;
+            ViewBag.Message = TempData["message"];
 
             return View(payment);
         }
@@ -93,6 +95,7 @@ namespace SourceWrestlingSchool.Controllers
             {
                 string nonceFromTheClient = collection["payment_method_nonce"];
                 decimal amount = decimal.Parse(collection["amount"]);
+                int pID = int.Parse(collection["payID"]);
 
                 var request = new TransactionRequest
                 {
@@ -112,7 +115,6 @@ namespace SourceWrestlingSchool.Controllers
 
                 if (result.IsSuccess())
                 {
-                    int pID = int.Parse(collection["payID"]);
                     Payment payment = db.Payments
                                       .Where(p => p.PaymentID == pID && p.PaymentSettled == false)
                                       .Include(p => p.User)
@@ -120,23 +122,21 @@ namespace SourceWrestlingSchool.Controllers
 
                     payment.PaymentSettled = true;
                     
-                    ViewBag.Message = "Payment Successful.";
+                    TempData["message"] = "Payment Successful.";
                     db.SaveChanges();
-                    return RedirectToAction("/Payments/Outstanding");
+                    return RedirectToAction("Outstanding");
                 }
                 else
                 {
-                    ViewBag.Message = "";
+                    TempData["message"] = "";
                     foreach (var error in result.Errors.All())
                     {
-                        ViewBag.Message = ViewBag.Message + error.Message + " ";
+                        TempData["message"] = TempData["message"] + error.Message + " ";
                     }
-                    Console.WriteLine(result.Message);
                 }
                 db.SaveChanges();
+                return Redirect(HttpContext.Request.UrlReferrer.AbsoluteUri);
             }
-
-            return RedirectToAction("/Payments/SendPayments/" + collection["payID"]);
         }
 
         public ActionResult PaymentHistory()

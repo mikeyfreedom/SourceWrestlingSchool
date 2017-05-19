@@ -6,6 +6,16 @@
 <link href="~/Content/newSub.css" rel="stylesheet" />
 <script src="https://js.braintreegateway.com/js/braintree-2.31.0.min.js"></script>
 
+@if (TempData["message"] != null)
+{
+<div class="alert alert-danger alert-dismissible">
+    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+    <h4><i class="icon fa fa-ban"></i> Sorry!</h4>
+    Your membership request has been declined at the payment stage. Subscription not created.
+    Reason for Failure : @TempData["message"].ToString()
+</div>
+}
+
 <h2>New Membership Agreement</h2>
 
 <div class="container">

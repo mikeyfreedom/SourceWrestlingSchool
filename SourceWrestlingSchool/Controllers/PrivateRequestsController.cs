@@ -16,8 +16,8 @@ namespace SourceWrestlingSchool.Controllers
         public ActionResult Index()
         {
             var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
-            var userID = userManager.FindByEmail(HttpContext.User.Identity.Name).Id;
-            var model = db.PrivateSessions.Where(i => i.InstructorID == userID);
+            var userId = userManager.FindByEmail(HttpContext.User.Identity.Name).Id;
+            var model = db.PrivateSessions.Where(i => i.InstructorID == userId);
 
             return View(model);
         }
@@ -26,14 +26,14 @@ namespace SourceWrestlingSchool.Controllers
         public ActionResult Accept()
         {
             //Get the ID of the session request that was selected
-            string sID = Request.Form.Get("sessionID");
-            int sessionID = int.Parse(sID);
+            string sId = Request.Form.Get("sessionID");
+            int sessionId = int.Parse(sId);
             
             using (db)
             {
                 //Retrieve the session object
                 var session = (from p in db.PrivateSessions
-                               where p.PrivateSessionID == sessionID
+                               where p.PrivateSessionID == sessionId
                                select p).FirstOrDefault();
                 //Update its status if found
                 if (session != null)
@@ -75,7 +75,7 @@ namespace SourceWrestlingSchool.Controllers
                             UserID = user.Id
                         };
                         db.Payments.Add(privateFee);
-                        sendEmail(user.UserName, "accept");
+                        //SendEmail(user.UserName, "accept");
                     }
                     db.SaveChanges();
                 }
@@ -86,23 +86,23 @@ namespace SourceWrestlingSchool.Controllers
         [HttpPost]
         public ActionResult Refuse()
         {
-            int sessionID = int.Parse(Request.Form.Get("sessionID"));
+            int sessionId = int.Parse(Request.Form.Get("sessionID"));
             using (db)
             {
                 var request = (from p in db.PrivateSessions
-                               where p.PrivateSessionID == sessionID
+                               where p.PrivateSessionID == sessionId
                                select p).FirstOrDefault();
                 if (request != null)
                 {
                     request.Status = PrivateSession.RequestStatus.Refused;
                     db.SaveChanges();
-                    sendEmail(request.StudentName, "refuse");
+                    SendEmail(request.StudentName, "refuse");
                 }
             }
             return RedirectToAction("Index", "PrivateRequests");
         }
 
-        public void sendEmail(string user,string reason)
+        public void SendEmail(string user,string reason)
         {
             MailMessage message = new MailMessage("lowlander_glen@yahoo.co.uk", user);
             if (reason.Equals("accept"))

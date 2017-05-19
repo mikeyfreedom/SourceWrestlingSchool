@@ -86,14 +86,14 @@ namespace SourceWrestlingSchool.Controllers
             return View(model : bio);
         }
 
-        [HttpPost]
+        [HttpPost, ValidateInput(false)]
         public ActionResult EditBio(FormCollection collection)
         {
             using (db)
             {
+                string bioText = HttpContext.Request.Unvalidated.Form["editor1"];
                 int profileId = int.Parse(Request.Form["profileID"]);
                 ProfileViewModel profile = db.Profiles.Single(p => p.ProfileId == profileId);
-                string bioText = Request.Form["bioText"];
                 profile.BioContent = bioText;
                 db.SaveChanges();
             }

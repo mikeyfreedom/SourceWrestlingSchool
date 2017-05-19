@@ -47,7 +47,7 @@
                         <input class="btn btn-success" type="submit" value=@buttonText>
                     </form>
                     <script>
-                        var cliantToken = "@Html.Raw(ViewBag.ClientToken)";
+                        var clientToken = "@Html.Raw(ViewBag.ClientToken)";
                         braintree.setup(clientToken, "dropin", {
                                         container: "payment-form",
                                         paypal: {

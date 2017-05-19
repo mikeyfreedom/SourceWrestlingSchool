@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNet.Identity;
+﻿using System;
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using SourceWrestlingSchool.Models;
 using System.Collections.Generic;
@@ -73,32 +74,49 @@ namespace SourceWrestlingSchool.Controllers
             Response.End();
         }
 
-        [HttpGet]
-        public ActionResult EditClass(string id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            ApplicationUser model = db.Users.First(u => u.Id == id);
-            if (model == null)
-            {
-                return HttpNotFound();
-            }
+        //[HttpGet]
+        //public ActionResult EditClass(string id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //    }
+        //    ApplicationUser model = db.Users.First(u => u.Id == id);
+        //    if (model == null)
+        //    {
+        //        return HttpNotFound();
+        //    }
 
-            return View(model);
-        }
+        //    return View(model);
+        //}
+
+        //[HttpPost]
+        //public ActionResult EditClass([Bind(Include = "FirstName,LastName,ClassLevel")] ApplicationUser user)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        db.Entry(user).State = EntityState.Modified;
+        //        db.SaveChanges();
+        //        return RedirectToAction("AdjustClassLevel");
+        //    }
+        //    return View(user);
+        //}
 
         [HttpPost]
-        public ActionResult EditClass([Bind(Include = "ClassLevel")] ApplicationUser user)
+        public ActionResult EditClass(FormCollection collection)
         {
-            if (ModelState.IsValid)
+            string uId = collection["userId"];
+            string level = collection["item.ClassLevel"];
+            //ClassLevel newlevel = (ClassLevel) Enum.Parse(ClassLevel, level);
+
+            using (db)
             {
-                db.Entry(user).State = EntityState.Modified;
+                var user = db.Users.Single(u => u.Id.Equals(uId));
+                user.ClassLevel = (ClassLevel) int.Parse(level);
                 db.SaveChanges();
-                return RedirectToAction("AdjustClassLevel");
             }
-            return View(user);
+
+            return RedirectToAction("AdjustClassLevel");
         }
     }
 }

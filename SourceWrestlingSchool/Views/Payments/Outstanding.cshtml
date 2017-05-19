@@ -58,7 +58,7 @@
                                     @Html.DisplayFor(modelItem => item.PaymentDescription)
                                 </td>
                                 <td>
-                                    @using (Html.BeginForm("SendPayment", "Payments", FormMethod.Post))
+                                    @using (Html.BeginForm("SendPayment", "Payments", FormMethod.Get))
                                     {
                                         <input type="hidden" name="paymentID" value=@item.PaymentID />
                                         <input class="btn btn-success" type="submit" value="Send Payment" />

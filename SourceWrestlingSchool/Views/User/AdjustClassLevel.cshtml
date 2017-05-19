@@ -54,7 +54,12 @@
                                     @Html.DisplayFor(modelItem => item.ClassLevel)
                                 </td>
                                 <td>
-                                    @Html.ActionLink("Edit Class", "EditClass", new { id = item.Id }) 
+                                    @using (Html.BeginForm("EditClass", "User", FormMethod.Post))
+                                    {
+                                        <input type="hidden" name="userId" value=@item.Id>
+                                        @Html.EnumDropDownListFor(modelItem => item.ClassLevel)
+                                        <input class="btn btn-success" type="submit" value="Change Level">
+                                    }
                                 </td>
                             </tr>
                         }
