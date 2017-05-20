@@ -2,7 +2,7 @@
 {
     public class CreateCustomerViewModel
     {
-        public int PlanID { get; set; }
+        public int PlanId { get; set; }
         public ApplicationUser User { get; set; }
 
     }

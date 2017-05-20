@@ -8,7 +8,7 @@ namespace SourceWrestlingSchool.Models
     public class Lesson
     {
         [Key]
-        public int LessonID { get; set; }
+        public int LessonId { get; set; }
         [DisplayName("Class Type")]
         public LessonType ClassType { get; set; }
         [DisplayName("Level")]

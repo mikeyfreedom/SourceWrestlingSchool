@@ -34,7 +34,7 @@
                 
                 @using (Html.BeginForm("Booking", "LiveTour", FormMethod.Post))
                 {
-                    <input id="eventID" name="eventID" type="hidden" value=@Model.EventID />
+                    <input id="eventID" name="eventID" type="hidden" value=@Model.EventId />
                     <input id="seatList" name="seatList" type="hidden" />
                     <input id="checkoutButton" class="checkout-button" type="submit" value="Checkout »">
                 }
@@ -82,7 +82,7 @@ $(document).ready(function() {
             },
             getLabel: function (character, row, column) {
                 return row + column;
-            },
+            }
         },
         legend: {
             node: $('#legend'),
@@ -151,7 +151,7 @@ $(document).ready(function() {
         $.ajax({
             type     : 'get',
             url      : '/LiveTour/UpdateStatus',
-            data     : { id: @Model.EventID },
+            data     : { id: @Model.EventId },
             contentType: "application/json; charset=utf-8",
             dataType : 'json',
             success  : function(response) {

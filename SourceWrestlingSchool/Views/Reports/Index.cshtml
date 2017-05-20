@@ -11,12 +11,48 @@
 
 <form id="monthPicker" action="/Reports/Revenue" method="post">
     Please Select (month and year) to view Revenue Report:
-    <input type="month" name="selectedMonth">
-    <input type="submit" value="View Revenue Sheet">
+    <input type="month" id="month" name="selectedMonth">
+    <input type="button" id="button_1" value="View Revenue Sheet">
 </form>
+<br/>
+<br/>
+<div id="resultView" class="container hidden">
+    
 
+</div>
+ 
 <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
+        var button = '#resultView';
+        $(button).hide(0);
+        $("#button_1").click(function (e) {
+            e.preventDefault();
+            $.ajax({
+                url: '@Url.Action("GetData", "Reports")',
+                type: "GET",
+                data: { selected : $("#month").val()},
+                success: function (result) {
+                    $(button).css('visibility','visible').hide().fadeIn().removeClass('hidden'); 
+                    $(button).replaceWith(
+                        '<div class="row">' +
+                        '<div class="col-lg-6">' +
+                        '<div class="panel panel-default">' +
+                        '<div class="panel-heading">Revenue Summary for ' + $("#month").val() + '</div>' +
+                        '<div class="panel-body" style="color:black">' +
+                        '<ul>' +
+                        '<li>Live Event Revenue : £'+result.TotalEventRevenue+'</li>' +
+                        '<li>Membership Revenue : £'+result.TotalMembershipRevenue+'</li>'+
+                        '<li>Other Revenue : £'+result.TotalOtherRevenue+'</li>'+
+                        '<li>----------------------------</li>'+
+                        '<li>Total Revenue : £'+result.TotalMonthRevenue+'</li>'+
+                        '</ul></div></div></div></div>'
+                        );
+                }
+            });
+            });
+
+
+
         $('#datepicker').datepicker({
             changeMonth: true,
             changeYear: true,
@@ -27,7 +63,7 @@
                 var iYear = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
                 $(this).datepicker('setDate', new Date(iYear, iMonth, 1));
             },
-            
+
             beforeShow: function() {
                 if ((selDate = $(this).val()).length > 0)
                 {

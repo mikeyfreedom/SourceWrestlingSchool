@@ -16,17 +16,17 @@ namespace SourceWrestlingSchool.Controllers
 {
     public class ScheduleController : Controller
     {
-        public static int eventID;
-        public static string email;
-        public static string errormessage = " ";
+        public static int EventId;
+        public static string Email;
+        public static string Errormessage = " ";
         public static PrivateSession request;
         private ApplicationDbContext db = new ApplicationDbContext();
-        private ApplicationUser currentUser;
+        private ApplicationUser _currentUser;
         
         // GET: Schedule
         public ActionResult Index()
         {
-            var model = errormessage;
+            var model = Errormessage;
             return View(model:model);
         }
         
@@ -38,7 +38,7 @@ namespace SourceWrestlingSchool.Controllers
         // GET: Booking
         public ActionResult Booking()
         {
-            int id = eventID;
+            int id = EventId;
             var model = db.Lessons.Find(id);
             
             return View(model);
@@ -47,8 +47,8 @@ namespace SourceWrestlingSchool.Controllers
         public ActionResult RequestPrivate()
         {
             var model = request;
-            currentUser = db.Users.Single(n => n.UserName == User.Identity.Name);
-            string name = currentUser.FirstName;
+            _currentUser = db.Users.Single(n => n.UserName == User.Identity.Name);
+            string name = _currentUser.FirstName;
             model.StudentName = name;
 
             var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
@@ -74,7 +74,7 @@ namespace SourceWrestlingSchool.Controllers
                 db.PrivateSessions.Add(model);
                 db.SaveChanges();
                 sendEmail(User.Identity.Name,"private");
-                errormessage = "Private";
+                Errormessage = "Private";
                 return RedirectToAction("Index");
             }
 
@@ -88,12 +88,12 @@ namespace SourceWrestlingSchool.Controllers
             var user = (from u in db.Users
                         where u.Email == User.Identity.Name
                         select u).First();
-            currentUser = user;
-            int classID = int.Parse(Request.Form["classID"]);
+            _currentUser = user;
+            int classId = int.Parse(Request.Form["classID"]);
             
             using (db)
             {
-                var editedLesson = db.Lessons.Single(s => s.LessonID == classID);
+                var editedLesson = db.Lessons.Single(s => s.LessonId == classId);
                 db.Lessons.Attach(editedLesson);
 
                 var editedUser = db.Users.Single(s => s.Id == user.Id);
@@ -103,8 +103,8 @@ namespace SourceWrestlingSchool.Controllers
                 
                 db.SaveChanges();
             }
-            errormessage = "BookSuccess";
-            sendEmail(currentUser.UserName, "book");
+            Errormessage = "BookSuccess";
+            sendEmail(_currentUser.UserName, "book");
 
             return RedirectToAction("Index","Schedule");
         }
@@ -115,16 +115,16 @@ namespace SourceWrestlingSchool.Controllers
             using (db)
             {
                 ApplicationUser user = db.Users.First(i => i.UserName == User.Identity.Name);
-                int classID = int.Parse(Request.Form["classID"]);
+                int classId = int.Parse(Request.Form["classID"]);
                 Lesson lesson = db.Lessons
-                                .Where(l => l.LessonID == classID)
+                                .Where(l => l.LessonId == classId)
                                 .Include(l => l.Students)
                                 .Single();
                 lesson.Students.Remove(user);
                 TimeSpan difference = lesson.ClassStartDate - DateTime.Now;
                 if(difference.TotalHours < 12)
                 {
-                    errormessage = "CancelSuccessFine";
+                    Errormessage = "CancelSuccessFine";
                     double cancelfine = lesson.ClassCost * 0.15;
                     Payment fine = new Payment
                     {
@@ -133,13 +133,13 @@ namespace SourceWrestlingSchool.Controllers
                         PaymentDescription = "Class Cancellation Fine",
                         PaymentSettled = false,
                         User = user,
-                        UserID = user.Id
+                        UserId = user.Id
                     };
                     db.Payments.Add(fine);
                 }
                 else
                 {
-                    errormessage = "CancelSuccess";
+                    Errormessage = "CancelSuccess";
                 }
                                 
                 db.SaveChanges();
@@ -242,7 +242,7 @@ namespace SourceWrestlingSchool.Controllers
             protected override void OnEventClick(EventClickArgs e)
             {
                 //Parse the event ID for processing
-                eventID = int.Parse(e.Id);
+                EventId = int.Parse(e.Id);
                 //Redirect to the booking page
                 Redirect("/Schedule/Booking");
             }
@@ -258,7 +258,7 @@ namespace SourceWrestlingSchool.Controllers
                               
 
                 //If there is are any other classes that day, loop through them to check for a time conflict
-                if (lessons.Count() != 0)
+                if (lessons.Count != 0)
                 {
                     //Set a flag to denote if an overlap exists
                     bool overlapExists = false;
@@ -281,7 +281,7 @@ namespace SourceWrestlingSchool.Controllers
                     if (overlapExists)
                     {
                         Debug.WriteLine("Overlap Exists");
-                        errormessage = "Overlap";
+                        Errormessage = "Overlap";
                         Redirect("/Schedule/Index");
                     }
                     else

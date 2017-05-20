@@ -24,7 +24,7 @@ namespace SourceWrestlingSchool.Controllers
         public ActionResult Tickets(int id)
         {
             var model = db.LiveEvents
-                        .Where(ev => ev.EventID == id)
+                        .Where(ev => ev.EventId == id)
                         .Include(ev => ev.Venue)
                         .Include(ev => ev.Seats)
                         .Single();
@@ -52,7 +52,7 @@ namespace SourceWrestlingSchool.Controllers
             using (db)
             {
                 LiveEvent newEvent = db.LiveEvents
-                                      .Where(ev => ev.EventID == eId)
+                                      .Where(ev => ev.EventId == eId)
                                       .Include(ev => ev.Venue)
                                       .Include(ev => ev.Seats)
                                       .FirstOrDefault();
@@ -128,7 +128,7 @@ namespace SourceWrestlingSchool.Controllers
                 if (result.IsSuccess())
                 {
                     LiveEvent newEvent = db.LiveEvents
-                                        .Where(ev => ev.EventID == currentEvent.EventID)
+                                        .Where(ev => ev.EventId == currentEvent.EventId)
                                         .Include(ev => ev.Venue)
                                         .Include(ev => ev.Seats)
                                         .FirstOrDefault();
@@ -142,7 +142,7 @@ namespace SourceWrestlingSchool.Controllers
                         User = db.Users.Single(u => u.Email == User.Identity.Name),
                         TransactionId = result.Target.Id
                     };
-                    payment.UserID = payment.User.Id;
+                    payment.UserId = payment.User.Id;
                     payment.Seats = new List<Seat>();
 
                     foreach (var seatNo in seatlist)
@@ -158,12 +158,12 @@ namespace SourceWrestlingSchool.Controllers
 
                     TempData["message"] = "Payment Successful, enjoy the event!";
                     db.SaveChanges();
-                    return RedirectToAction("/Tickets/" + currentEvent.EventID);
+                    return RedirectToAction("/Tickets/" + currentEvent.EventId);
                 }
                 else
                 {
                     LiveEvent newEvent = db.LiveEvents
-                                       .Where(ev => ev.EventID == currentEvent.EventID)
+                                       .Where(ev => ev.EventId == currentEvent.EventId)
                                        .Include(ev => ev.Venue)
                                        .Include(ev => ev.Seats)
                                        .FirstOrDefault();
@@ -183,13 +183,13 @@ namespace SourceWrestlingSchool.Controllers
                 db.SaveChanges();
             }
             
-            return RedirectToAction("/Tickets/" + currentEvent.EventID);
+            return RedirectToAction("/Tickets/" + currentEvent.EventId);
         }
 
         public JsonResult UpdateStatus(int id)
         {
             var model = db.LiveEvents
-                        .Where(ev => ev.EventID == id)
+                        .Where(ev => ev.EventId == id)
                         .Include(ev => ev.Venue)
                         .Include(ev => ev.Seats)
                         .Single();

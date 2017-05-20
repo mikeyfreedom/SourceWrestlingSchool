@@ -17,7 +17,7 @@ namespace SourceWrestlingSchool.Controllers
         {
             var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
             var userId = userManager.FindByEmail(HttpContext.User.Identity.Name).Id;
-            var model = db.PrivateSessions.Where(i => i.InstructorID == userId);
+            var model = db.PrivateSessions.Where(i => i.InstructorId == userId);
 
             return View(model);
         }
@@ -33,7 +33,7 @@ namespace SourceWrestlingSchool.Controllers
             {
                 //Retrieve the session object
                 var session = (from p in db.PrivateSessions
-                               where p.PrivateSessionID == sessionId
+                               where p.PrivateSessionId == sessionId
                                select p).FirstOrDefault();
                 //Update its status if found
                 if (session != null)
@@ -48,7 +48,7 @@ namespace SourceWrestlingSchool.Controllers
                         ClassLevel = ClassLevel.Private,
                         ClassCost = 30,
                         InstructorName = (from i in db.Users
-                            where i.Id == session.InstructorID
+                            where i.Id == session.InstructorId
                             select i.FirstName).FirstOrDefault(),
                         Students = new List<ApplicationUser>()
                     };
@@ -72,7 +72,7 @@ namespace SourceWrestlingSchool.Controllers
                             PaymentDate = DateTime.Today,
                             PaymentSettled = false,
                             User = user,
-                            UserID = user.Id
+                            UserId = user.Id
                         };
                         db.Payments.Add(privateFee);
                         //SendEmail(user.UserName, "accept");
@@ -90,7 +90,7 @@ namespace SourceWrestlingSchool.Controllers
             using (db)
             {
                 var request = (from p in db.PrivateSessions
-                               where p.PrivateSessionID == sessionId
+                               where p.PrivateSessionId == sessionId
                                select p).FirstOrDefault();
                 if (request != null)
                 {

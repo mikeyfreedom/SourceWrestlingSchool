@@ -26,7 +26,7 @@
                             <h2 class="title" style="color:black">@item.EventName</h2>
                             <p class="desc" style="color:black">@item.Venue.VenueLocation</p>
                             <ul>
-                                <li style="width:50%;"><a href="@Url.Action("Tickets","LiveTour",new { id = item.EventID })"><span class="fa fa-ticket">Book Tickets</span></a></li>
+                                <li style="width:50%;"><a href="@Url.Action("Tickets","LiveTour",new { id = item.EventId })"><span class="fa fa-ticket">Book Tickets</span></a></li>
                                 <li class="disabled" style="width:50%;"><span class="fa fa-clock-o">@item.EventTime</span></li>
                             </ul>
                         </div>

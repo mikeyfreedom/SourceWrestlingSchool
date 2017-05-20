@@ -24,7 +24,7 @@ namespace SourceWrestlingSchool.Controllers
                              select u).Single();
 
                 viewModel.User = user;
-                viewModel.UserID = user.Id;
+                viewModel.UserId = user.Id;
             }
             return View(viewModel);
         }
@@ -33,7 +33,7 @@ namespace SourceWrestlingSchool.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult ApplyForm([Bind(Include = "Age,Height,Weight,Notes,UserID")] ApplyViewModel model, HttpPostedFileBase uploadFile)
         {
-            model.User = db.Users.Find(model.UserID);
+            model.User = db.Users.Find(model.UserId);
             
             //Upload File to Directory
             if (uploadFile != null)

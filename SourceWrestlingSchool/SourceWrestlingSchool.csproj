@@ -139,18 +139,6 @@
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
-    <Reference Include="Twilio, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Twilio.5.0.0\lib\net451\Twilio.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Twilio.AspNet.Common, Version=5.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Twilio.AspNet.Mvc.5.0.1\lib\net451\Twilio.AspNet.Common.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Twilio.AspNet.Mvc, Version=5.0.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Twilio.AspNet.Mvc.5.0.1\lib\net451\Twilio.AspNet.Mvc.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="WebGrease">
       <Private>True</Private>
       <HintPath>..\packages\WebGrease.1.5.2\lib\WebGrease.dll</HintPath>
@@ -324,8 +312,6 @@
     <Content Include="AdminLTE\plugins\bootstrap-wysihtml5\css\bootstrap3-wysihtml5.min.css" />
     <Content Include="AdminLTE\plugins\bootstrap-wysihtml5\js\bootstrap3-wysihtml5.all.js" />
     <Content Include="AdminLTE\plugins\bootstrap-wysihtml5\js\bootstrap3-wysihtml5.all.min.js" />
-    <Content Include="AdminLTE\plugins\chartjs\js\chart.js" />
-    <Content Include="AdminLTE\plugins\chartjs\js\chart.min.js" />
     <Content Include="AdminLTE\plugins\ckeditor\js\adapters\jquery.js" />
     <Content Include="AdminLTE\plugins\ckeditor\js\build-config.js" />
     <Content Include="AdminLTE\plugins\ckeditor\js\ckeditor.js" />
@@ -802,48 +788,9 @@
     <Content Include="AdminLTE\plugins\daterangepicker\js\moment.min.js" />
     <Content Include="AdminLTE\plugins\fastclick\js\fastclick.js" />
     <Content Include="AdminLTE\plugins\fastclick\js\fastclick.min.js" />
-    <Content Include="AdminLTE\plugins\flot\js\excanvas.js" />
-    <Content Include="AdminLTE\plugins\flot\js\excanvas.min.js" />
-    <Content Include="AdminLTE\plugins\flot\js\jquery.colorhelpers.js" />
-    <Content Include="AdminLTE\plugins\flot\js\jquery.colorhelpers.min.js" />
-    <Content Include="AdminLTE\plugins\flot\js\jquery.flot.canvas.js" />
-    <Content Include="AdminLTE\plugins\flot\js\jquery.flot.canvas.min.js" />
-    <Content Include="AdminLTE\plugins\flot\js\jquery.flot.categories.js" />
-    <Content Include="AdminLTE\plugins\flot\js\jquery.flot.categories.min.js" />
-    <Content Include="AdminLTE\plugins\flot\js\jquery.flot.crosshair.js" />
-    <Content Include="AdminLTE\plugins\flot\js\jquery.flot.crosshair.min.js" />
-    <Content Include="AdminLTE\plugins\flot\js\jquery.flot.errorbars.js" />
-    <Content Include="AdminLTE\plugins\flot\js\jquery.flot.errorbars.min.js" />
-    <Content Include="AdminLTE\plugins\flot\js\jquery.flot.fillbetween.js" />
-    <Content Include="AdminLTE\plugins\flot\js\jquery.flot.fillbetween.min.js" />
-    <Content Include="AdminLTE\plugins\flot\js\jquery.flot.image.js" />
-    <Content Include="AdminLTE\plugins\flot\js\jquery.flot.image.min.js" />
-    <Content Include="AdminLTE\plugins\flot\js\jquery.flot.js" />
-    <Content Include="AdminLTE\plugins\flot\js\jquery.flot.min.js" />
-    <Content Include="AdminLTE\plugins\flot\js\jquery.flot.navigate.js" />
-    <Content Include="AdminLTE\plugins\flot\js\jquery.flot.navigate.min.js" />
-    <Content Include="AdminLTE\plugins\flot\js\jquery.flot.pie.js" />
-    <Content Include="AdminLTE\plugins\flot\js\jquery.flot.pie.min.js" />
-    <Content Include="AdminLTE\plugins\flot\js\jquery.flot.resize.js" />
-    <Content Include="AdminLTE\plugins\flot\js\jquery.flot.resize.min.js" />
-    <Content Include="AdminLTE\plugins\flot\js\jquery.flot.selection.js" />
-    <Content Include="AdminLTE\plugins\flot\js\jquery.flot.selection.min.js" />
-    <Content Include="AdminLTE\plugins\flot\js\jquery.flot.stack.js" />
-    <Content Include="AdminLTE\plugins\flot\js\jquery.flot.stack.min.js" />
-    <Content Include="AdminLTE\plugins\flot\js\jquery.flot.symbol.js" />
-    <Content Include="AdminLTE\plugins\flot\js\jquery.flot.symbol.min.js" />
-    <Content Include="AdminLTE\plugins\flot\js\jquery.flot.threshold.js" />
-    <Content Include="AdminLTE\plugins\flot\js\jquery.flot.threshold.min.js" />
-    <Content Include="AdminLTE\plugins\flot\js\jquery.flot.time.js" />
-    <Content Include="AdminLTE\plugins\flot\js\jquery.flot.time.min.js" />
     <Content Include="AdminLTE\plugins\font-awesome\css\font-awesome.css" />
     <Content Include="AdminLTE\plugins\font-awesome\css\font-awesome.min.css" />
     <Content Include="AdminLTE\plugins\font-awesome\fonts\fontawesome-webfont.svg" />
-    <Content Include="AdminLTE\plugins\fullcalendar\css\fullcalendar.css" />
-    <Content Include="AdminLTE\plugins\fullcalendar\css\fullcalendar.min.css" />
-    <Content Include="AdminLTE\plugins\fullcalendar\css\print\fullcalendar.print.css" />
-    <Content Include="AdminLTE\plugins\fullcalendar\js\fullcalendar.js" />
-    <Content Include="AdminLTE\plugins\fullcalendar\js\fullcalendar.min.js" />
     <Content Include="AdminLTE\plugins\icheck\css\all.css" />
     <Content Include="AdminLTE\plugins\icheck\css\flat\aero%402x.png" />
     <Content Include="AdminLTE\plugins\icheck\css\flat\aero.css" />
@@ -1191,6 +1138,8 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
+    <Content Include="Scripts\respond.matchmedia.addListener.js" />
+    <Content Include="Scripts\respond.matchmedia.addListener.min.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\SeatChart\jquery.seat-charts.js" />
     <Content Include="Scripts\SeatChart\jquery.seat-charts.min.js" />

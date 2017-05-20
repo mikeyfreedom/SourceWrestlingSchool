@@ -105,7 +105,7 @@ namespace SourceWrestlingSchool.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Seat seat = db.Seats.Single(s => s.SeatID == id);
+            Seat seat = db.Seats.Single(s => s.SeatId == id);
             if (seat != null)
             {
                 db.Seats.Remove(seat);

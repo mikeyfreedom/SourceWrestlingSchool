@@ -5,16 +5,12 @@ namespace SourceWrestlingSchool.Models
 {
     public class Seat
     {
-        public int SeatID { get; set; }
+        public int SeatId { get; set; }
         [DisplayName("Seat Number")]
         public string SeatNumber { get; set; }
         [DisplayName("Current Status")]
         public SeatBookingStatus Status { get; set; }
-
-        public Seat()
-        {
-            Events = new List<LiveEvent>();
-        }
+        
         //navigational properties
         public virtual ICollection<LiveEvent> Events { get; set; }
         

@@ -40,9 +40,9 @@ namespace SourceWrestlingSchool.Models
         public int? Weight { get; set; }
         public string BioContent { get; set; }
         public DateTime? DateJoinedSchool { get; set; }
-        public string FacebookURL { get; set; }
-        public string InstagramURL { get; set; }
-        public string TwitterURL { get; set; }
+        public string FacebookUrl { get; set; }
+        public string InstagramUrl { get; set; }
+        public string TwitterUrl { get; set; }
         public string YoutubeEmbedLink { get; set; }
         public string ProfileImageFileName { get; set; }
         public virtual ICollection<Lesson> Lessons { get; set; }

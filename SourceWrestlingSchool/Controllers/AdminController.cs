@@ -37,12 +37,12 @@ namespace SourceWrestlingSchool.Controllers
                         ClassLevel = (ClassLevel) student.ClassLevel,
                         DateJoinedSchool = (DateTime) student.DateJoinedSchool,
                         EmailAddress = student.Email,
-                        FacebookUrl = student.FacebookURL,
+                        FacebookUrl = student.FacebookUrl,
                         Height = (int) student.Height,
-                        InstagramUrl = student.InstagramURL,
+                        InstagramUrl = student.InstagramUrl,
                         Name = student.FirstName + " " + student.LastName,
                         ProfileImageFileName = student.ProfileImageFileName,
-                        TwitterUrl = student.TwitterURL,
+                        TwitterUrl = student.TwitterUrl,
                         Weight = (int) student.Weight,
                         YoutubeEmbedLink = student.YoutubeEmbedLink
                     };

@@ -7,7 +7,7 @@ namespace SourceWrestlingSchool.Models
     public class Venue
     {
         [Key]
-        public int VenueID { get; set; }
+        public int VenueId { get; set; }
         [DisplayName("Venue")]
         public string VenueName { get; set; }
         [DisplayName("Location")]
@@ -18,10 +18,6 @@ namespace SourceWrestlingSchool.Models
         public string VenuePostcode { get; set; }
         [DisplayName("No of Seats")]
         public int NoOfSeats { get; set; }
-        public Venue()
-        {
-            Events = new List<LiveEvent>();
-        }
         public virtual ICollection<LiveEvent> Events { get; set; }
 
     }

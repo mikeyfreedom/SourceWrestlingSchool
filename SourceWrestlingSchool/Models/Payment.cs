@@ -5,7 +5,7 @@ namespace SourceWrestlingSchool.Models
 {
     public class Payment
     {
-        public int PaymentID { get; set; }
+        public int PaymentId { get; set; }
         public DateTime PaymentDate { get; set; }
         public decimal PaymentAmount { get; set; }
         public string PaymentDescription { get; set; }
@@ -14,7 +14,7 @@ namespace SourceWrestlingSchool.Models
         public virtual ICollection<Seat> Seats  { get; set; }
         
         //navigational Properties
-        public string UserID { get; set; }
+        public string UserId { get; set; }
         public ApplicationUser User { get; set; }
     }
 }

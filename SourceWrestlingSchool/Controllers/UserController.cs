@@ -1,12 +1,9 @@
-﻿using System;
-using Microsoft.AspNet.Identity;
+﻿using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using SourceWrestlingSchool.Models;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Web.Mvc;
 using System.Web.UI;
 
@@ -40,7 +37,6 @@ namespace SourceWrestlingSchool.Controllers
                     students.Add(user);
                 }
             }
-            
             return View(students);
         }
 
@@ -73,34 +69,6 @@ namespace SourceWrestlingSchool.Controllers
             Response.Write(sw.ToString());
             Response.End();
         }
-
-        //[HttpGet]
-        //public ActionResult EditClass(string id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-        //    ApplicationUser model = db.Users.First(u => u.Id == id);
-        //    if (model == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
-
-        //    return View(model);
-        //}
-
-        //[HttpPost]
-        //public ActionResult EditClass([Bind(Include = "FirstName,LastName,ClassLevel")] ApplicationUser user)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        db.Entry(user).State = EntityState.Modified;
-        //        db.SaveChanges();
-        //        return RedirectToAction("AdjustClassLevel");
-        //    }
-        //    return View(user);
-        //}
 
         [HttpPost]
         public ActionResult EditClass(FormCollection collection)

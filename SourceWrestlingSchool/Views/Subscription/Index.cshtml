@@ -17,7 +17,7 @@
 }
 
 <h2>Index</h2>
-@if (Model.IsSubscribed == true)
+@if (Model.IsSubscribed)
 {
     <div class="container">
         <h4>SubscriptionViewModel</h4>
@@ -32,11 +32,11 @@
             </dd>
 
             <dt>
-                @Html.DisplayNameFor(model => model.SubscriptionID)
+                @Html.DisplayNameFor(model => model.SubscriptionId)
             </dt>
 
             <dd>
-                @Html.DisplayFor(model => model.SubscriptionID)
+                @Html.DisplayFor(model => model.SubscriptionId)
             </dd>
 
             <dt>

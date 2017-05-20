@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
@@ -41,7 +40,7 @@ namespace SourceWrestlingSchool.Controllers
             {
                 var user = db.Users.Single(u => u.Email == User.Identity.Name);
                 var model = db.Payments
-                            .Where(p => p.UserID == user.Id && p.PaymentSettled == false)
+                            .Where(p => p.UserId == user.Id && p.PaymentSettled == false)
                             .Include(p => p.User)
                             .ToList();
                 ViewBag.Message = TempData["message"];
@@ -50,14 +49,14 @@ namespace SourceWrestlingSchool.Controllers
         }
 
         [HttpGet]
-        public ActionResult SendPayment(int? paymentID)
+        public ActionResult SendPayment(int? paymentId)
         {
-            if (paymentID == null)
+            if (paymentId == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Payment payment = db.Payments
-                              .Where(p => p.PaymentID == paymentID)
+                              .Where(p => p.PaymentId == paymentId)
                               .Include(u =>u.User)
                               .Single();
             if (payment == null)
@@ -67,14 +66,14 @@ namespace SourceWrestlingSchool.Controllers
 
             var customerRequest = new CustomerSearchRequest().Email.Is(User.Identity.Name);
             ResourceCollection<Customer> collection = PaymentGateways.Gateway.Customer.Search(customerRequest);
-            var clientToken = "";
+            string clientToken;
             if (collection.Ids.Count != 0)
             {
-                string custID = collection.FirstItem.Id;
+                string custId = collection.FirstItem.Id;
                 clientToken = PaymentGateways.Gateway.ClientToken.generate(
                     new ClientTokenRequest
                     {
-                        CustomerId = custID
+                        CustomerId = custId
                     }
                 );
             }
@@ -95,7 +94,7 @@ namespace SourceWrestlingSchool.Controllers
             {
                 string nonceFromTheClient = collection["payment_method_nonce"];
                 decimal amount = decimal.Parse(collection["amount"]);
-                int pID = int.Parse(collection["payID"]);
+                int pId = int.Parse(collection["payID"]);
 
                 var request = new TransactionRequest
                 {
@@ -116,7 +115,7 @@ namespace SourceWrestlingSchool.Controllers
                 if (result.IsSuccess())
                 {
                     Payment payment = db.Payments
-                                      .Where(p => p.PaymentID == pID && p.PaymentSettled == false)
+                                      .Where(p => p.PaymentId == pId && p.PaymentSettled == false)
                                       .Include(p => p.User)
                                       .Single();
 

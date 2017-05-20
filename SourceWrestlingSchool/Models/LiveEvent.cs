@@ -8,7 +8,7 @@ namespace SourceWrestlingSchool.Models
     public class LiveEvent
     {
         [Key]
-        public int EventID { get; set; }
+        public int EventId { get; set; }
         [DisplayName("Event Name")]
         public string EventName { get; set; }
         [DisplayName("Event Date")]
@@ -18,12 +18,6 @@ namespace SourceWrestlingSchool.Models
         public TimeSpan EventTime { get; set; }
         public float EventRevenue { get; set; }
         public virtual Venue Venue { get; set; }
-        
-        public LiveEvent()
-        {
-            Seats = new List<Seat>();
-
-        }
         public virtual ICollection<Seat> Seats { get; set; }
         
         public List<Seat> CreateSeatMap()
@@ -41,6 +35,7 @@ namespace SourceWrestlingSchool.Models
                     {
                         SeatNumber = "" + rowNums.Substring(i-1,1) + rowLetters.Substring(j-1,1),
                         Status = Seat.SeatBookingStatus.Free,
+                        Events = new List<LiveEvent>()
                     };
                     newSeat.Events.Add(this);
                     seatList.Add(newSeat);

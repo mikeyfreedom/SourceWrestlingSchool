@@ -33,12 +33,12 @@ namespace SourceWrestlingSchool.Controllers
                             {
                                 model.LastPaymentDate = sub.PaidThroughDate.Value.Date;
                                 model.NextDueDate = sub.NextBillingDate.Value.Date;
-                                model.SubscriptionID = sub.Id;
+                                model.SubscriptionId = sub.Id;
                             }                                                        
                         }
                     }
                 }
-            };
+            }
             
             return View(model);
         }
@@ -48,23 +48,23 @@ namespace SourceWrestlingSchool.Controllers
         {
             //check for customer, if exists, generate a token off them
             //if not, generate a generic and create the customer on post
-            CreateCustomerViewModel model = new CreateCustomerViewModel {PlanID = id};
+            CreateCustomerViewModel model = new CreateCustomerViewModel {PlanId = id};
 
             using (db)
             {
                 model.User = db.Users.First(u => u.UserName.Equals(User.Identity.Name));
-            };
+            }
 
             var customerRequest = new CustomerSearchRequest().Email.Is(User.Identity.Name);
             ResourceCollection<Customer> collection = PaymentGateways.Gateway.Customer.Search(customerRequest);
-            var clientToken = "";
+            string clientToken;
             if (collection.Ids.Count != 0)
             {
-                string custID = collection.FirstItem.Id;
+                string custId = collection.FirstItem.Id;
                 clientToken = PaymentGateways.Gateway.ClientToken.generate(
                     new ClientTokenRequest
                     {
-                        CustomerId = custID
+                        CustomerId = custId
                     }
                 );
             }
@@ -73,7 +73,7 @@ namespace SourceWrestlingSchool.Controllers
                 clientToken = PaymentGateways.Gateway.ClientToken.generate();
             }
             ViewBag.ClientToken = clientToken;
-            ViewBag.PlanID = model.PlanID;
+            ViewBag.PlanID = model.PlanId;
 
             return View(model);
         }

@@ -7,7 +7,7 @@ namespace SourceWrestlingSchool.Models
     public class PrivateSession
     {
         [Key]
-        public int PrivateSessionID { get; set; }
+        public int PrivateSessionId { get; set; }
         [DisplayName("Name")]
         public string StudentName { get; set; }
         [DisplayName("Start")]
@@ -15,7 +15,7 @@ namespace SourceWrestlingSchool.Models
         [DisplayName("End")]
         public DateTime SessionEnd { get; set; }
         [DisplayName("Instructor")]
-        public string InstructorID { get; set; }
+        public string InstructorId { get; set; }
         public string Notes { get; set; }
         [DisplayName("Current Status")]
         public RequestStatus Status { get; set; }

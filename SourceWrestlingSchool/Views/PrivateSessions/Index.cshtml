@@ -18,7 +18,7 @@
             @Html.DisplayNameFor(model => model.SessionEnd)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.InstructorID)
+            @Html.DisplayNameFor(model => model.InstructorId)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Notes)
@@ -35,15 +35,15 @@
             @Html.DisplayFor(modelItem => item.SessionEnd)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.InstructorID)
+            @Html.DisplayFor(modelItem => item.InstructorId)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Notes)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.PrivateSessionID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.PrivateSessionID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.PrivateSessionID })
+            @Html.ActionLink("Edit", "Edit", new { id=item.PrivateSessionId }) |
+            @Html.ActionLink("Details", "Details", new { id=item.PrivateSessionId }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.PrivateSessionId })
         </td>
     </tr>
 }

@@ -60,7 +60,7 @@
                                 <td>
                                     @using (Html.BeginForm("SendPayment", "Payments", FormMethod.Get))
                                     {
-                                        <input type="hidden" name="paymentID" value=@item.PaymentID />
+                                        <input type="hidden" name="paymentID" value=@item.PaymentId />
                                         <input class="btn btn-success" type="submit" value="Send Payment" />
                                     }
                                 </td>

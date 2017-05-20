@@ -28,7 +28,7 @@ namespace SourceWrestlingSchool.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Lesson lesson = db.Lessons
-                            .Where(l => l.LessonID == id)
+                            .Where(l => l.LessonId == id)
                             .Include(l => l.Students)
                             .Single();
             if (lesson == null)
@@ -78,7 +78,7 @@ namespace SourceWrestlingSchool.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Lesson lesson = db.Lessons
-                            .Where(l => l.LessonID == id)
+                            .Where(l => l.LessonId == id)
                             .Include(l => l.Students)
                             .Single(); 
             if (lesson == null)
@@ -122,7 +122,7 @@ namespace SourceWrestlingSchool.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Lesson lesson = db.Lessons
-                            .Where(l => l.LessonID == id)
+                            .Where(l => l.LessonId == id)
                             .Include(l => l.Students)
                             .Single();
             if (lesson == null)
@@ -138,7 +138,7 @@ namespace SourceWrestlingSchool.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Lesson lesson = db.Lessons
-                            .Where(l => l.LessonID == id)
+                            .Where(l => l.LessonId == id)
                             .Include(l => l.Students)
                             .Single();
             db.Lessons.Remove(lesson);

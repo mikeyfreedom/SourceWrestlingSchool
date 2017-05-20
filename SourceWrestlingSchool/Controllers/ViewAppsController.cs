@@ -29,30 +29,26 @@ namespace SourceWrestlingSchool.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ApplyViewModel application = db.Applications.Where(a => a.ApplicationID == id).Include(a => a.User).Single(); 
+            ApplyViewModel application = db.Applications.Where(a => a.ApplicationId == id).Include(a => a.User).Single(); 
             Image source = Image.FromFile(Server.MapPath("/images/") + application.FileName);
             ImageFormat format = source.RawFormat;
             source.Dispose();
             ImageHelper.RotateImageByExifOrientationData(Server.MapPath("/images/") + application.FileName, Server.MapPath("/images/") + application.FileName,format);
             
-            if (application == null)
-            {
-                return HttpNotFound();
-            }
             return View(application);
         }
 
         [HttpPost]
         public ActionResult Accept()
         {
-            string aID = Request.Form["appID"];
+            string aId = Request.Form["appID"];
             string userMail;
             var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
-            int appID = int.Parse(aID);
+            int appId = int.Parse(aId);
             using (db)
             {
                 var app = db.Applications
-                            .Where(a => a.ApplicationID == appID)
+                            .Where(a => a.ApplicationId == appId)
                             .Include(a => a.User)
                             .Single();
                 app.User.Age = app.Age;
@@ -66,20 +62,20 @@ namespace SourceWrestlingSchool.Controllers
                 db.SaveChanges();
             }
 
-            sendEmail("accept", userMail);    
+            SendEmail("accept", userMail);    
             return View("Index");
         }
 
         [HttpPost]
         public ActionResult Refuse()
         {
-            string aID = Request.Form["appID"];
+            string aId = Request.Form["appID"];
             string userMail;
-            int appID = int.Parse(aID);
+            int appId = int.Parse(aId);
             using (db)
             {
                 var app = db.Applications
-                            .Where(a => a.ApplicationID == appID)
+                            .Where(a => a.ApplicationId == appId)
                             .Include(a => a.User)
                             .Single(); 
                 app.Status = ApplyViewModel.ApplicationStatus.Declined;
@@ -87,11 +83,11 @@ namespace SourceWrestlingSchool.Controllers
                 db.SaveChanges();
             }
                 
-            sendEmail("refuse",userMail);
+            SendEmail("refuse",userMail);
             return View("Index");
         }
 
-        public void sendEmail(string reason, string userMail)
+        public void SendEmail(string reason, string userMail)
         {
             MailMessage message = new MailMessage("lowlander_glen@yahoo.co.uk", userMail);
             if (reason.Equals("accept"))

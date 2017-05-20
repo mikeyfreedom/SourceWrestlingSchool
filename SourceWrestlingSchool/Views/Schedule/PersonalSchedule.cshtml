@@ -11,10 +11,6 @@
 
 @Styles.Render("~/AdminLTE/plugins/datatables/css")
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-
 <div class="row">
     <div class="col-xs-12">
         <div class="box">
@@ -63,7 +59,7 @@
                                     @Html.DisplayFor(modelItem => item.InstructorName)
                                 </td>
                                 <td>
-                                    @Html.ActionLink("Details", "Details", "Lessons", new { id = item.LessonID },"")
+                                    @Html.ActionLink("Details", "Details", "Lessons", new { id = item.LessonId },"")
                                 </td>
                             </tr>
                         }

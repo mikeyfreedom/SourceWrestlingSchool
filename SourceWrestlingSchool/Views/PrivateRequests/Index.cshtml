@@ -64,12 +64,12 @@
                                     {
                                         using (Html.BeginForm("Accept", "PrivateRequests", FormMethod.Post))
                                         {
-                                            <input type="hidden" name="sessionID" value=@item.PrivateSessionID />
+                                            <input type="hidden" name="sessionID" value=@item.PrivateSessionId />
                                             <input class="btn btn-success" type="submit" value="Grant Session">
                                         }
                                         using (Html.BeginForm("Refuse", "PrivateRequests", FormMethod.Post))
                                         {
-                                            <input type="hidden" name="sessionID" value=@item.PrivateSessionID />
+                                            <input type="hidden" name="sessionID" value=@item.PrivateSessionId />
                                             <input class="btn btn-warning" type="submit" value="Refuse Session">
                                         }
                                     }

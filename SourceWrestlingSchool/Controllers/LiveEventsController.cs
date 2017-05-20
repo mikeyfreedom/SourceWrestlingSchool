@@ -30,7 +30,7 @@ namespace SourceWrestlingSchool.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             LiveEvent liveEvent = db.LiveEvents
-                                  .Where(e => e.EventID == id)
+                                  .Where(e => e.EventId == id)
                                   .Include(v => v.Venue)
                                   .Include(s => s.Seats)
                                   .First();
@@ -129,7 +129,7 @@ namespace SourceWrestlingSchool.Controllers
         {
             GridView grid = new GridView();
             var eventQuery = from e in db.LiveEvents
-                             select new { e.EventID, e.EventName, e.EventDate, e.EventRevenue };
+                             select new { e.EventId, e.EventName, e.EventDate, e.EventRevenue };
             grid.DataSource = eventQuery.ToList();
             grid.DataBind();
 

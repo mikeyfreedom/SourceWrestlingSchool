@@ -6,7 +6,7 @@ namespace SourceWrestlingSchool.Models
     public class ApplyViewModel
     {
         [Key]
-        public int ApplicationID { get; set; }
+        public int ApplicationId { get; set; }
         public int Age { get; set; }
         [DisplayName("Height (in cm)")]
         public int Height { get; set; }
@@ -18,7 +18,7 @@ namespace SourceWrestlingSchool.Models
         public string FileName { get; set; }
 
         //Navigation properties
-        public string UserID { get; set; }
+        public string UserId { get; set; }
         public ApplicationUser User { get; set; }
 
         //enumerated status of application

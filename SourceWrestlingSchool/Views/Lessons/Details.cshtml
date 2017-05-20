@@ -50,12 +50,12 @@
 <script>
     function PrintPartOfPage(dvprintid) {
         var prtContent = document.getElementById(dvprintid);
-        var WinPrint = window.open('', '', 'letf=100,top=100,width=600,height=600');
-        WinPrint.document.open();
-        WinPrint.document.write("<!DOCTYPE html>" + "<html>" + prtContent.innerHTML + "</html>");
-        WinPrint.document.close();
-        WinPrint.focus();
-        WinPrint.print();
+        var winPrint = window.open('', '', 'letf=100,top=100,width=600,height=600');
+        winPrint.document.open();
+        winPrint.document.write("<!DOCTYPE html>" + "<html>" + prtContent.innerHTML + "</html>");
+        winPrint.document.close();
+        winPrint.focus();
+        winPrint.print();
         //WinPrint.close()   
     }  
 </script>
