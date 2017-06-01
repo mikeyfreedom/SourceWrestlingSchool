@@ -1,68 +1,88 @@
 ﻿@model SourceWrestlingSchool.Models.PrivateSession
 
 @{
-    ViewBag.Title = "RequestPrivate";
+    ViewBag.Title = "Request Private Session";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    string studentName = Model.User.FirstName + " " + Model.User.LastName;
+}
+<style>
+.well-block {
+    background-color: #fff;
+    border: 1px solid #e9e6e8;
+    padding: 40px;
 }
 
-<h2>RequestPrivate</h2>
+.well-title {
+    margin-bottom: 40px;
+}
+</style>
 
-@using (Html.BeginForm()) 
-{
-    @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <h4>PrivateSession</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            @Html.LabelFor(model => model.StudentName, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DisplayFor(model => model.StudentName)
-                @Html.HiddenFor(model => model.StudentName)
-            </div>
-        </div>
+<div class="container" style="font-size: 16px">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="well-block">
+                <div class="well-title">
+                    <h2>Request Private Session</h2>
+                </div>
+            
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.SessionStart, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DisplayFor(model => model.SessionStart)
-                @Html.HiddenFor(model => model.SessionStart)
-            </div>
-        </div>
+                    <div class="form-horizontal">
+                        <hr />
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.User, new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @studentName
+                                @Html.HiddenFor(model => model.User)
+                            </div>
+                        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.SessionEnd, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DisplayFor(model => model.SessionEnd)
-                @Html.HiddenFor(model => model.SessionEnd)
-            </div>
-        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.SessionStart, new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.DisplayFor(model => model.SessionStart)
+                                @Html.HiddenFor(model => model.SessionStart)
+                            </div>
+                        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.InstructorId, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownListFor(model => model.InstructorId, new SelectList(ViewBag.Instructors, "Id", "FirstName"), "----- none -----", new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.InstructorId, "", new { @class = "text-danger" })
-            </div>
-        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.SessionEnd, new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.DisplayFor(model => model.SessionEnd)
+                                @Html.HiddenFor(model => model.SessionEnd)
+                            </div>
+                        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Notes, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.TextAreaFor(model => model.Notes, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Notes, "", new { @class = "text-danger" })
-            </div>
-        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.InstructorId, new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.DropDownListFor(model => model.InstructorId, new SelectList(ViewBag.Instructors, "Id", "FirstName"), "----- none -----", new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.InstructorId, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
 
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="RequestPrivate" class="btn btn-default" />
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Notes, new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.TextAreaFor(model => model.Notes, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Notes, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10">
+                                <input type="submit" value="Request Private Session" class="btn btn-default" />
+                            </div>
+                        </div>
+                    </div>
+                }
             </div>
         </div>
     </div>
-}
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
+    <div class="row">
+        @Html.ActionLink("Back to List", "Index")
+    </div>
 </div>

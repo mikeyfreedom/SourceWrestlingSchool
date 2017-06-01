@@ -1,14 +1,32 @@
 ﻿@model List<SelectListItem>
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Site Reports";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Index</h2>
 <!-- User Reports -->
+<h3 style="text-decoration: underline">Student Roster Reports</h3>
+<div class="row">
+    <a class="btn btn-app" href='@Url.Action("ExportStudentListToExcel", "User")'>
+        <i class="fa fa-file-excel-o"></i> Export To Excel
+    </a>
+    <a class="btn btn-app" href='@Url.Action("ExportStudentListToPdf", "User")'>
+        <i class="fa fa-file-pdf-o"></i> Export To PDF
+    </a>
+</div>
+<br/>
+<h3 style="text-decoration: underline">Outstanding Payments Report</h3>
+<div class="row">
+    <a class="btn btn-app" href='@Url.Action("ExportOutstandingToExcel", "Payments")'>
+        <i class="fa fa-file-excel-o"></i> Export To Excel
+    </a>
+    <a class="btn btn-app" href='@Url.Action("ExportOutstandingToPdf", "Payments")'>
+        <i class="fa fa-file-pdf-o"></i> Export To PDF
+    </a>
+</div>
+
 <!-- Business Reports -->
-
-
+<h3 style="text-decoration: underline">Revenue Report</h3>
 <form id="monthPicker" action="/Reports/Revenue" method="post">
     Please Select (month and year) to view Revenue Report:
     <input type="month" id="month" name="selectedMonth">
@@ -26,6 +44,7 @@
         var button = '#resultView';
         $(button).hide(0);
         $("#button_1").click(function (e) {
+            $(button).css('display', 'none');
             e.preventDefault();
             $.ajax({
                 url: '@Url.Action("GetData", "Reports")',

@@ -34,6 +34,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\SourceWrestlingSchool.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -79,6 +80,10 @@
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Rotativa, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Rotativa.1.6.4\lib\net40\Rotativa.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -225,6 +230,7 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
     <Compile Include="Models\ApplyViewModel.cs" />
+    <Compile Include="Models\DownloadTicketViewModel.cs" />
     <Compile Include="Models\MemberLevel.cs" />
     <Compile Include="Models\ClassLevel.cs" />
     <Compile Include="Models\CreateCustomerViewModel.cs" />
@@ -1038,6 +1044,7 @@
     <Content Include="Content\themes\base\jquery.ui.slider.css" />
     <Content Include="Content\themes\base\jquery.ui.tabs.css" />
     <Content Include="Content\themes\base\jquery.ui.theme.css" />
+    <Content Include="Content\ticket.css" />
     <Content Include="Content\TourIndex.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -1051,6 +1058,7 @@
     <Content Include="images\Polos1.jpg" />
     <Content Include="images\reserveSeat.png" />
     <Content Include="images\SourceLogo.png" />
+    <Content Include="Rotativa\wkhtmltopdf.exe" />
     <Content Include="Scripts\Account\Login.js" />
     <Content Include="Scripts\Account\Register.js" />
     <Content Include="Scripts\bootstrap.js" />
@@ -1101,6 +1109,7 @@
     <Content Include="AdminLTE\plugins\ionicons\fonts\ionicons.eot" />
     <Content Include="AdminLTE\plugins\ionicons\fonts\ionicons.ttf" />
     <Content Include="AdminLTE\plugins\ionicons\fonts\ionicons.woff" />
+    <Content Include="App_Browsers\qt.browser" />
     <None Include="Scripts\jquery-2.1.3.intellisense.js" />
     <Content Include="Scripts\Documentation\Documentation-menu.js" />
     <Content Include="Scripts\Elements\Buttons-menu.js" />
@@ -1244,6 +1253,11 @@
     <Content Include="Views\Payments\RefundSuccess.cshtml" />
     <Content Include="Views\Admin\EditProfile.cshtml" />
     <Content Include="Views\Admin\EditBio.cshtml" />
+    <Content Include="Views\User\StudentPdf.cshtml" />
+    <Content Include="Views\User\View.cshtml" />
+    <Content Include="Views\Payments\PaymentPdf.cshtml" />
+    <Content Include="Views\LiveTour\Success.cshtml" />
+    <Content Include="Views\LiveTour\PdfTicket.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

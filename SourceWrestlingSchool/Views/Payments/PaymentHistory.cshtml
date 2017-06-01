@@ -1,11 +1,23 @@
 ﻿@model IEnumerable<SourceWrestlingSchool.Models.Payment>
 
 @{
-    ViewBag.Title = "PaymentHistory";
+    ViewBag.Title = "Payment History";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>PaymentHistory</h2>
+@section Menu {
+    @Scripts.Render("~/Scripts/Tables/Data/menu")
+}
+
+@Styles.Render("~/AdminLTE/plugins/datatables/css")
+<style>
+    .label {
+        -webkit-border-radius: 5px;
+        -moz-border-radius: 5px;
+        border-radius: 5px;
+    }
+</style>
+
 @if (ViewBag.Message != null)
 {
     <div class="alert alert-danger alert-dismissible">
@@ -15,35 +27,75 @@
     </div>
 }
 
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.PaymentDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.PaymentAmount)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.PaymentDescription)
-        </th>
-        <th></th>
-    </tr>
+<div class="row">
+    <div class="col-xs-12">
+        <div class="box">
+            <div class="box-header">
+                <h3 class="box-title">@ViewBag.Username - Payment History</h3>
+            </div>
+            <div class="box-body">
+                <table id="example1" class="table table-bordered table-striped">
+                    <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.PaymentDate)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.PaymentAmount)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.PaymentDescription)
+                        </th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var item in Model) {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.PaymentDate)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.PaymentAmount)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.PaymentDescription)
+                            </td>
+                            <td>
+                                @Html.ActionLink("Refund", "Refund", new { id=item.TransactionId })
+                            </td>
+                        </tr>
+                    }
+                    </tbody>
+                    <tfoot>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.PaymentDate)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.PaymentAmount)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.PaymentDescription)
+                        </th>
+                        <th></th>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <a class="btn btn-app" href='@Url.Action("ExportOutstandingToExcel", "Payments")'>
+        <i class="fa fa-file-excel-o"></i> Export To Excel
+    </a>
+    <a class="btn btn-app" href='@Url.Action("ExportOutstandingToPdf", "Payments")'>
+        <i class="fa fa-file-pdf-o"></i> Export To PDF
+    </a>
+</div>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.PaymentDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.PaymentAmount)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.PaymentDescription)
-        </td>
-        <td>
-            @Html.ActionLink("Refund", "Refund", new { id=item.TransactionId })
-        </td>
-    </tr>
+@section Scripts {
+    @Scripts.Render("~/AdminLTE/plugins/datatables/js")
+    @Scripts.Render("~/Scripts/Tables/Data")
 }
-
-</table>

@@ -1,0 +1,105 @@
+﻿@model SourceWrestlingSchool.Models.DownloadTicketViewModel
+@{
+    Layout = null;
+    var username = Model.User.FirstName + " " + Model.User.LastName;
+    var amount = (Model.EventDetails.Seats.Count * 5).ToString("#.##");
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>PDF Ticket for @Model.EventDetails.Event.EventName</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="~/Content/ticket.css" rel="stylesheet" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="receipt-main col-xs-10 col-sm-10 col-md-6 col-xs-offset-1 col-sm-offset-1 col-md-offset-3">
+            <div class="row">
+                <div class="receipt-header-mid">
+                    <div class="col-xs-6 col-sm-6 col-md-6">
+                        <div class="receipt-left">
+                            <img class="img-responsive" alt="iamgurdeeposahan" src="~/images/SourceLogo.png" style="width: 71px; border-radius: 43px;">
+                        </div>
+                    </div>
+                    <div class="col-xs-6 col-sm-6 col-md-6 text-right">
+                        <div class="receipt-right">
+                            <h5>@Model.EventDetails.Event.Venue.VenueName</h5>
+                            <p>@Model.EventDetails.Event.Venue.VenueAddress<i class="fa fa-globe"></i></p>
+                            <p>@Model.EventDetails.Event.Venue.VenueLocation</p>
+                            <p>@Model.EventDetails.Event.Venue.VenuePostcode</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+			
+            <div class="row">
+                <div class="receipt-header-mid">
+                    <div class="col-xs-8 col-sm-8 col-md-8 text-left">
+                        <div class="receipt-right">
+                            <h5>@username </h5>
+                            <p><b>Mobile :</b> @Model.User.MobileNumber</p>
+                            <p><b>Email :</b> @Model.User.Email</p>
+                            <p><b>Address :</b> @Model.User.Address</p>
+                            <p><b>Town :</b> @Model.User.Town</p>
+                            <p><b>Postcode :</b> @Model.User.Postcode</p>
+                        </div>
+                    </div>
+                    <div class="col-xs-4 col-sm-4 col-md-4">
+                        <div class="receipt-left">
+                            <h1>Ticket Details</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+			
+            <div>
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>Description</th>
+                        <th>Amount</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var seat in Model.EventDetails.Seats)
+                    {
+                        var description = "Seat " + seat.SeatNumber + " for " + Model.EventDetails.Event.EventName;
+                        <tr>
+                            <td class="col-md-9">@description</td>
+                            <td class="col-md-3"><i class="fa fa-gbp"></i> 5.00</td>
+                        </tr>
+                    }
+                    <tr>
+
+                        <td class="text-right">
+                            <h2><strong>Total: </strong>
+                            </h2></td>
+                        <td class="text-left text-danger">
+                            <h2><strong><i class="fa fa-gbp"></i> @amount</strong>
+                            </h2></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+			
+            <div class="row">
+                <div class="receipt-header-mid receipt-footer">
+                    <div class="col-xs-8 col-sm-8 col-md-8 text-left">
+                        <div class="receipt-right">
+                            <p><b>Event Date :</b> @Model.EventDetails.Event.EventDate.ToShortDateString()</p>
+                            <h5 style="color: rgb(140, 140, 140);">Thank you! See you at the show!</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>    
+    </div>
+</div>
+</body>
+</html>

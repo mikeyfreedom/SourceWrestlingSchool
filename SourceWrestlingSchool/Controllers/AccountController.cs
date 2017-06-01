@@ -77,7 +77,19 @@ namespace SourceWrestlingSchool.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
-                    return RedirectToLocal(returnUrl);
+                    using (var db = new ApplicationDbContext())
+                    {
+                        var user = db.Users.Single(u => u.Email == model.Email);
+                        var userStore = new UserStore<ApplicationUser>(db);
+                        var userManager = new UserManager<ApplicationUser>(userStore);
+                        if (userManager.IsInRole(user.Id, "Student_User"))
+                        {
+
+                            return RedirectToAction("StudentProfile", "Admin");
+                        }
+                        
+                        return RedirectToLocal(returnUrl);
+                    }
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 case SignInStatus.RequiresVerification:
@@ -162,7 +174,8 @@ namespace SourceWrestlingSchool.Controllers
                     MobileNumber = model.MobileNumber,
                     Address = model.Address,
                     Town = model.Town,
-                    Postcode = model.Postcode                    
+                    Postcode = model.Postcode,
+                    EmailConfirmed = true
                 };
                 var result = await userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)

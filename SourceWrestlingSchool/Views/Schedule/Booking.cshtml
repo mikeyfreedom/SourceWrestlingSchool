@@ -88,6 +88,10 @@
             <input class="btn btn-success" type="submit" value="Book Attendance">
         }
     }
+    else if (Model.Students.Count >= 10)
+    {
+        <p>This class is currently full. Please check back later for any vacated spaces.</p>
+    }
     else
     {
         foreach (var student in Model.Students)

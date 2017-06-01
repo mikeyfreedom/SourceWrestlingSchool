@@ -1,14 +1,12 @@
 ﻿@model SourceWrestlingSchool.Models.LiveEvent
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Event Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Details</h2>
-
-<div>
-    <h4>LiveEvent</h4>
+<div class="container">
+    <h4>@Html.DisplayFor(model => model.EventName)</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -17,6 +15,14 @@
 
         <dd>
             @Html.DisplayFor(model => model.EventName)
+        </dd>
+        
+        <dt>
+            @Html.DisplayNameFor(model => model.Venue.VenueName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Venue.VenueName)
         </dd>
 
         <dt>
@@ -40,7 +46,7 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.EventRevenue)
+            £@Html.DisplayFor(model => model.EventRevenue)
         </dd>
 
     </dl>

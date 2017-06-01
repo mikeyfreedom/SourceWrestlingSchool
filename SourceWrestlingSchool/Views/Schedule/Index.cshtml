@@ -51,6 +51,12 @@ else if (Model.Equals("CancelSuccessFine"))
 }
 
 <div class="container">
+    <div class="space">
+        Week:
+        <a href="javascript:Dpc.commandCallBack('previous');">Previous</a>
+        |
+        <a href="javascript:Dpc.commandCallBack('next');">Next</a>
+    </div>
     @Html.DayPilotCalendar("Dpc", new DayPilotCalendarConfig
     {
         Width = "85%",

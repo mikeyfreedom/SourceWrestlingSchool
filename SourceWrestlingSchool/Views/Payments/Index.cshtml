@@ -1,49 +1,113 @@
 ﻿@model IEnumerable<SourceWrestlingSchool.Models.Payment>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Payment Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Index</h2>
-
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.User.FirstName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.PaymentDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.PaymentAmount)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.PaymentDescription)
-        </th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.User.FirstName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.PaymentDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.PaymentAmount)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.PaymentDescription)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.PaymentId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.PaymentId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.PaymentId })
-        </td>
-    </tr>
+@section Menu {
+    @Scripts.Render("~/Scripts/Tables/Data/menu")
 }
 
-</table>
+@Styles.Render("~/AdminLTE/plugins/datatables/css")
+<style>
+    .label{ -webkit-border-radius: 5px;
+            -moz-border-radius: 5px;
+            border-radius: 5px;
+          }
+</style>
+
+<div class="row">
+    <div class="col-xs-12">
+        <div class="box">
+            <div class="box-header">
+                <h3 class="box-title">Site Payment History</h3>
+            </div>
+            <div class="box-body">
+                <table id="example1" class="table table-bordered table-striped">
+                    <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.User.FirstName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.PaymentDate)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.PaymentAmount)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.PaymentDescription)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.PaymentSettled)
+                        </th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var item in Model) {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.User.FirstName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.PaymentDate)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.PaymentAmount)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.PaymentDescription)
+                            </td>
+                            <td>
+                                @if (item.PaymentSettled)
+                                {
+                                    <small class="label label-success">Settled</small>
+                                }
+                                else
+                                {
+                                    <small class="label label-danger">Outstanding</small>
+                                }
+                            </td>
+                            <td>
+                                @Html.ActionLink("Details", "Details", new { id=item.PaymentId }) |
+                            </td>
+                        </tr>
+                    }
+                    </tbody>
+                    <tfoot>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.User.FirstName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.PaymentDate)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.PaymentAmount)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.PaymentDescription)
+                        </th>
+                        <th></th>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <a class="btn btn-app" href='@Url.Action("ExportOutstandingToExcel", "Payments")'>
+        <i class="fa fa-file-excel-o"></i> Export To Excel
+    </a>
+    <a class="btn btn-app" href='@Url.Action("ExportOutstandingToPdf", "Payments")'>
+        <i class="fa fa-file-pdf-o"></i> Export To PDF
+    </a>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/AdminLTE/plugins/datatables/js")
+    @Scripts.Render("~/Scripts/Tables/Data")
+}

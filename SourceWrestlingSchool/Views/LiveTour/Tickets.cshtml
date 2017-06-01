@@ -1,13 +1,13 @@
 ﻿@model SourceWrestlingSchool.Models.LiveEvent
 
 @{
-    ViewBag.Title = "Tickets";
+    ViewBag.Title = Model.EventName + " Tickets";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <link rel="stylesheet" type="text/css" href="~/Content/jquery.seat-charts.css">
 <script src="~/Scripts/SeatChart/jquery.seat-charts.js"></script>
 
-<h2>Tickets</h2>
+<h2>Seat Map</h2>
 
 <div class="container">
     @if (ViewBag.Message != null)

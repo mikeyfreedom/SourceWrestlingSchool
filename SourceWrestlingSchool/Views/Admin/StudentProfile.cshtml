@@ -1,6 +1,6 @@
 ﻿@model SourceWrestlingSchool.Models.ProfileViewModel
 @{
-    ViewBag.Title = "Dashboard v1";
+    ViewBag.Title = "Profile";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <link href="~/Content/slider.css" rel="stylesheet" />
@@ -11,7 +11,7 @@
         <div class="col-sm-9">
             <h1 class="">@Model.Name</h1>
          
-            <button type="button" class="btn btn-success">Book me!</button>  <button type="button" class="btn btn-info">Send me a message</button>
+            <button type="button" class="btn btn-success disabled">Book me!</button>  <button type="button" class="btn btn-info disabled">Send me a message</button>
             <br>
         </div>
         <div class="col-sm-2"><img title="profile image" class="img-circle img-responsive" src="@Html.Raw(Model.ProfileImageFileName)" onerror="this.onerror=null;this.src='/images/SourceLogo.png';" /></div>
@@ -22,7 +22,7 @@
             <!--left col-->
             <ul class="list-group">
                 <li class="list-group-item text-muted" contenteditable="false">Profile</li>
-                <li class="list-group-item text-right"><span class="pull-left"><strong class="">Joined</strong></span> @Model.DateJoinedSchool.Date</li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong class="">Joined</strong></span> @Model.DateJoinedSchool.ToShortDateString()</li>
                 <li class="list-group-item text-right"><span class="pull-left"><strong class="">Level</strong></span> @Model.ClassLevel</li>
                 <li class="list-group-item text-right"><span class="pull-left"><strong class="">Height</strong></span> @Model.Height cm</li>
                 <li class="list-group-item text-right"><span class="pull-left"><strong class="">Weight </strong></span> @Model.Weight kg</li>

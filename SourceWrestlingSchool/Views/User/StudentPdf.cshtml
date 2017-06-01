@@ -1,0 +1,52 @@
+﻿@model IEnumerable<SourceWrestlingSchool.Models.ApplicationUser>
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>StudentPDF</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+</head>
+<style>
+    *, html, body {
+        font-family: Helvetica, Arial, Tahoma;
+    }
+
+    thead {
+        display: table-header-group;
+    }
+
+    tr {
+        page-break-inside: avoid;
+        border: black;
+    }
+</style>
+<body>
+    <table class="table table-striped" style="width: 100%;" class="table">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Date Joined School</th>
+        <th>Email</th>
+        <th>ClassLevel</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var student in Model)
+    {
+        string fullName = student.FirstName + " " + student.LastName;
+        <tr>
+            <td>@fullName</td>
+            <td>@student.DateJoinedSchool.Value.ToShortDateString()</td>
+            <td>@student.Email</td>
+            <td>@student.ClassLevel</td>
+        </tr>
+    }
+    </tbody>
+</table>
+</body>

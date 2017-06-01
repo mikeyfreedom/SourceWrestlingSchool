@@ -157,7 +157,10 @@ namespace SourceWrestlingSchool.Models
                         ClassLevel = ClassLevel.Beginner,
                         DateJoinedSchool = DateTime.Now,
                         Height = 174,
-                        Weight = 85
+                        Weight = 85,
+                        FacebookUrl = "http://www.facebook.com/superstardunbar",
+                        TwitterUrl = "http://www.twitter.com/SuperstarDunbar",
+                        YoutubeEmbedLink = "https://www.youtube.com/embed/mh-ru6wQ9hM"
                     };
                     userManager.Create(newStudentUser, password);
                     userManager.AddToRole(newStudentUser.Id, RoleNames.ROLE_STUDENTUSER);
@@ -224,8 +227,8 @@ namespace SourceWrestlingSchool.Models
                 }  
                 
                 //Seed Lessons
-                DateTime startDate = new DateTime(2017, 4, 24);
-                DateTime endDate = new DateTime(2017, 5, 28);
+                DateTime startDate = new DateTime(2017, 5, 22);
+                DateTime endDate = new DateTime(2017, 6, 25);
 
                 for (DateTime date = startDate; date.Date <= endDate.Date; date = date.AddDays(1))
                 {

@@ -1,0 +1,14 @@
+﻿@model SourceWrestlingSchool.Models.TicketViewModel
+@{
+    ViewBag.Title = "Success";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    TempData["ticketModel"] = TempData["model"];
+}
+
+<h2>Booking Successful!</h2>
+
+<h3>Congratulations, your purchase was successful!</h3>
+
+@Html.ActionLink("Download PDF Ticket","DownloadTicket", "LiveTour", new {@class = "btn btn-success"})
+
+

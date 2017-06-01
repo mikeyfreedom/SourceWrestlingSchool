@@ -2,8 +2,10 @@
 
 namespace SourceWrestlingSchool.Models
 {
+    /// <summary>Represents the payment gateway for all payments on the site.</summary>
     public class PaymentGateways
     {
+        /// <summary>Initialises a new instance of the Braintree financial gateway, to process payments.</summary>
         public static BraintreeGateway Gateway = new BraintreeGateway
         {
             Environment = Environment.SANDBOX,

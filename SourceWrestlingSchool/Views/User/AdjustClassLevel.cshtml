@@ -1,7 +1,8 @@
-﻿@model IEnumerable<SourceWrestlingSchool.Models.ApplicationUser>
+﻿@using SourceWrestlingSchool.Models
+@model IEnumerable<SourceWrestlingSchool.Models.ApplicationUser>
 
 @{
-    ViewBag.Title = "AdjustClassLevel";
+    ViewBag.Title = "Student Roster";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @section Menu {
@@ -9,8 +10,9 @@
 }
 
 @Styles.Render("~/AdminLTE/plugins/datatables/css")
-
-<h2>AdjustClassLevel</h2>
+<style>
+    .label{-webkit-border-radius: 5px;-moz-border-radius: 5px;}
+</style>
 
 <div class="row">
     <div class="col-xs-12">
@@ -28,7 +30,7 @@
                             <th>
                                 @Html.DisplayNameFor(model => model.LastName)
                             </th>
-                            <th>
+                            <th id="email">
                                 @Html.DisplayNameFor(model => model.Email)
                             </th>
                             <th>
@@ -51,14 +53,29 @@
                                     @Html.DisplayFor(modelItem => item.Email)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.ClassLevel)
+                                    @if (item.ClassLevel == ClassLevel.Beginner)
+                                    {
+                                        <small class="label label-primary">@Html.DisplayFor(modelItem => item.ClassLevel)</small>
+                                    }
+                                    else if (item.ClassLevel == ClassLevel.Intermediate)
+                                    {
+                                        <small class="label label-warning">@Html.DisplayFor(modelItem => item.ClassLevel)</small>
+                                    }
+                                    else if (item.ClassLevel == ClassLevel.Advanced)
+                                    {
+                                        <small class="label label-success">@Html.DisplayFor(modelItem => item.ClassLevel)</small>
+                                    }
+                                    else if (item.ClassLevel == ClassLevel.Womens)
+                                    {
+                                        <small class="label bg-maroon">@Html.DisplayFor(modelItem => item.ClassLevel)</small>
+                                    }
                                 </td>
                                 <td>
                                     @using (Html.BeginForm("EditClass", "User", FormMethod.Post))
                                     {
                                         <input type="hidden" name="userId" value=@item.Id>
                                         @Html.EnumDropDownListFor(modelItem => item.ClassLevel)
-                                        <input class="btn btn-success" type="submit" value="Change Level">
+                                        <input class="btn btn-success btn-xs" type="submit" value="Change Level">
                                     }
                                 </td>
                             </tr>
@@ -87,9 +104,12 @@
     </div>
 </div>
 <div class="row">
-    <button class="btn btn-success" onclick="location.href='@Url.Action("ExportStudentListToExcel", "User")'">
-    <span class="glyphicon glyphicon-download">Export To Excel</span>
-    </button>
+    <a class="btn btn-app" href='@Url.Action("ExportStudentListToExcel", "User")'>
+        <i class="fa fa-file-excel-o"></i> Export To Excel
+    </a>
+    <a class="btn btn-app" href='@Url.Action("ExportStudentListToPdf", "User")'>
+        <i class="fa fa-file-pdf-o"></i> Export To PDF
+    </a>
 </div>
 
 @section Scripts {

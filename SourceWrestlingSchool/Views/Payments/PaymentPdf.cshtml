@@ -1,0 +1,58 @@
+﻿@model IEnumerable<SourceWrestlingSchool.Models.Payment>
+@{
+    Layout = null;
+}
+<style>
+    *, html, body { font-family: Helvetica, Arial, Tahoma; }
+    thead { display: table-header-group; }
+    tr { page-break-inside: avoid; border: black; }
+</style>
+
+<table style="width: 100%;" class="table">
+    <tr>
+        <th>
+            Name
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PaymentDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PaymentAmount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PaymentDescription)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PaymentSettled)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TransactionId)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @item.User.FirstName &nbsp; @item.User.LastName
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PaymentDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PaymentAmount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PaymentDescription)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PaymentSettled)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TransactionId)
+            </td>
+        </tr>
+    }
+
+</table>
